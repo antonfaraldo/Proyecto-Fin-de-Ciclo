@@ -80,6 +80,23 @@ public class Tablero {
 		}
 		
 	}
+	public void revelarCasilla(int f, int c) {
+		// Coordenada fuera del tablero o revelada
+		if (f < 0 || f >= filas || c < 0 || c >= columnas || celdas[f][c].isRevelada()) {
+			return;
+		}
+		// Marcamos la casilla
+		celdas[f][c].setRevelada(true);
+		
+		// Si no tiene minas alrededor
+		if (celdas[f][c].getMinasAlrededor() == 0 && !celdas[f][c].isEsMina()) {
+			for (int i = f - 1; i <= f + 1; i++) {
+				for (int j = c - 1; j <= c + 1; j++) {
+					revelarCasilla(i, j);
+				}
+			}
+		}
+	}
 	
 	// Permite a la interfaz dibujar los botones
 	public Casilla[][] getCeldas() {

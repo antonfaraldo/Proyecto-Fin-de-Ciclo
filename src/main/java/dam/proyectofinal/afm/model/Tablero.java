@@ -13,7 +13,7 @@ public class Tablero {
 	public Tablero(Dificultad dificultad) {
 		this.filas = dificultad.getFilas();
 		this.columnas = dificultad.getColumnas();
-		this.numeroMinas = dificultad.getNumMinas();
+		this.numeroMinas = dificultad.getNumMInas();
 		this.celdas = new Casilla[filas][columnas];
 		this.juegoTerminado = false;
 		

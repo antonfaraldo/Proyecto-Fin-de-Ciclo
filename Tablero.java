@@ -98,4 +98,18 @@ public class Tablero {
 	public int getColumnas() {
 		return columnas;
 	}
+
+	public void imprimirTableroConsola() {
+		// TODO Auto-generated method stub
+		for (int f = 0; f < filas; f++) {
+			for (int c = 0; c < columnas; c++) {
+				if (celdas[f][c].isEsMina()) {
+					System.out.print("[*] "); // Mina representada por el asterisco
+				} else {
+					System.out.print("[" + celdas[f][c].getMinasAlrededor() + "] ");
+				}
+			}
+			System.out.println();
+		}
+	}
 }

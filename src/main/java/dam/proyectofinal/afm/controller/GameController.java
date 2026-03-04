@@ -1,5 +1,8 @@
 package dam.proyectofinal.afm.controller;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import dam.proyectofinal.afm.model.Dificultad;
 import dam.proyectofinal.afm.model.Partida;
@@ -13,6 +16,7 @@ import dam.proyectofinal.afm.model.Casilla;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
 
 public class GameController {
 	@FXML private Label lblMinas;
@@ -20,6 +24,9 @@ public class GameController {
 	private Tablero tablero; // Conectamos la lógica
 	@FXML
 	private GridPane gridTablero; // Panel de los botones
+	private Timeline cronometro;
+	private int segundosTranscurridos = 0;
+	private boolean juegoIniciado = false; // El juego inica una vez el primer click
 	
 	public void inicializarJuego(Tablero tablero) {
 		this.tablero = tablero;
@@ -78,6 +85,12 @@ public class GameController {
 
 	// Inicializar la vista del juego con la dificultad
 	public void prepararPartida(int filas, int columnas, int minas) {
+		// Reseteamos el cronometro
+		if (cronometro != null) cronometro.stop();
+		segundosTranscurridos = 0;
+		juegoIniciado = false;
+		lblTiempo.setText("Teimpo: 0s");
+		
 		// Creamos el objeto Dificultad 
 		Dificultad dificultad = new Dificultad(0, null, filas, columnas, minas);
 		
@@ -96,28 +109,25 @@ public class GameController {
 		if (casilla.isMarcada() || casilla.isRevelada())
 			return;
 		
+		// Iniciar el crónometro al primer click
+		if (!juegoIniciado) {
+			iniciarCronometro();
+			juegoIniciado = true;
+		}
+		
 		tablero.revelarCasilla(f, c);
 		refrescarTablero();
 		
 		if (casilla.isEsMina()) {
+			cronometro.stop();
 			System.out.println("BOOM" + "Has perdido");
-			Partida p = new Partida();
-			p.setUsuario(AppShell.getInstance().getUsuario());
-			p.setVictoria(false);
-			p.setTiempoSegundos(0);
 			
-			CSVManager.exportarPartida(p);
+			guardarResultado(false);
 		} else if (tablero.verificarVictoria()) {
+			cronometro.stop();
 			System.out.println("Victoria");
 			
-			// Se crea el objeto Partida
-			Partida p = new Partida();
-			p.setUsuario(AppShell.getInstance().getUsuario());
-			p.setVictoria(true);
-			p.setTiempoSegundos(0);
-			
-			// Se guarda en el CSV
-			CSVManager.exportarPartida(p);
+			guardarResultado(true);
 		}
 		
 	}
@@ -154,6 +164,28 @@ public class GameController {
 				}
 			}
 		}
+	}
+	private void iniciarCronometro() {
+		if (cronometro != null) {
+			cronometro.stop();
+		}
+		segundosTranscurridos = 0;
+		lblTiempo.setText("Tiempo: 0s");
+		
+		cronometro = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+			segundosTranscurridos++;
+			lblTiempo.setText("Tiempo: " + segundosTranscurridos + "s");
+		}));
+		cronometro.setCycleCount(Animation.INDEFINITE);
+		cronometro.play();
+	}
+	private void guardarResultado(boolean victoria) {
+		Partida p = new Partida();
+		p.setUsuario(AppShell.getInstance().getUsuario());
+		p.setVictoria(victoria);
+		p.setTiempoSegundos(segundosTranscurridos);
+		
+		CSVManager.exportarPartida(p);
 	}
 
 	@FXML

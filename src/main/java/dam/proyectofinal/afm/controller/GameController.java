@@ -95,19 +95,44 @@ public class GameController {
 		}
 		
 		tablero.revelarCasilla(f, c);
+		refrescarTablero();
 		
-		// Se actualiza la vista
-		if (casilla.isEsMina()) {
-			botonPulsado.setText("💣");
-			botonPulsado.setStyle("-fx-background-color: red;"); // Luego hay que añadir el estilo
-			System.out.println("GAME OVER");
-		} else {
-			int minas = casilla.getMinasAlrededor();
-			botonPulsado.setText(minas > 0 ? String.valueOf(minas) : "");
-			botonPulsado.setDisable(true);
-			botonPulsado.setStyle("-fx-background-color: #ddd; -fx-opacity: 1;"); // Luego hay que añadir el estilo
+	}
+	private void refrescarTablero() {
+		// TODO Auto-generated method stub
+		// Recorrer todos los nodos
+		for (javafx.scene.Node node : gridTablero.getChildren()) {
+			// Verificación que el Nodo sea un botn
+			if (node instanceof Button) {
+				Button btn = (Button) node;
+				
+				// Se obtiene la posición del boton
+				Integer c = GridPane.getColumnIndex(btn);
+				Integer f = GridPane.getRowIndex(btn);
+				
+				if (f != null && c != null) {
+					// Se consulta el estado de la casilla 
+					Casilla casilla = tablero.getCeldas()[f][c];
+					
+					// Si esta revelada se actualiza el boton
+					if (casilla.isRevelada()) {
+						if (casilla.isEsMina()) {
+							btn.setText("💣");
+	                        btn.setStyle("-fx-background-color: red;");
+						} else {
+							int minas = casilla.getMinasAlrededor();
+							btn.setText(minas > 0 ? String.valueOf(minas) : "");
+							
+							// Se bloquea el botn
+							btn.setDisable(true);
+							btn.setStyle("-fx-background-color: #ddd; -fx-opacity: 1;");
+						}
+					}
+				}
+			}
 		}
 	}
+
 	@FXML
 	void resetJuego(ActionEvent event) {
 		if (tablero != null) {

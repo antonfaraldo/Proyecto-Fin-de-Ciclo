@@ -54,7 +54,7 @@ public class Dificultad {
 		return numMinas;
 	}
 
-	public void setNumMInas(int numMinas) {
+	public void setNumMinas(int numMinas) {
 		this.numMinas = numMinas;
 	}
 	

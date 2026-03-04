@@ -8,9 +8,11 @@ public class Tablero {
 	private int columnas;
 	private int numeroMinas;
 	private boolean juegoTerminado;
+	private Dificultad dificultad;
 	
 	//Con el constructor configuro el tamaño según la dificultad
 	public Tablero(Dificultad dificultad) {
+		this.dificultad = dificultad;
 		this.filas = dificultad.getFilas();
 		this.columnas = dificultad.getColumnas();
 		this.numeroMinas = dificultad.getNumMinas();
@@ -144,5 +146,8 @@ public class Tablero {
 	public int getNumMinas() {
 		// TODO Auto-generated method stub
 		return numeroMinas;
+	}
+	public Dificultad getDificultad() {
+		return dificultad;
 	}
 }

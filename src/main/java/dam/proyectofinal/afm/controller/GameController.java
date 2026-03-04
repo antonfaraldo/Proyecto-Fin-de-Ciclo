@@ -5,6 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import dam.proyectofinal.afm.model.Dificultad;
+import dam.proyectofinal.afm.model.Nivel;
 import dam.proyectofinal.afm.model.Partida;
 import dam.proyectofinal.afm.model.Tablero;
 import dam.proyectofinal.afm.util.AppShell;
@@ -84,20 +85,36 @@ public class GameController {
 	}
 
 	// Inicializar la vista del juego con la dificultad
-	public void prepararPartida(int filas, int columnas, int minas) {
+	public void prepararPartida(Nivel nivelSeleccionado) {
 		// Reseteamos el cronometro
 		if (cronometro != null) cronometro.stop();
 		segundosTranscurridos = 0;
 		juegoIniciado = false;
-		lblTiempo.setText("Teimpo: 0s");
+		lblTiempo.setText("Tiempo: 0s");
+		
+		// Extraer datos según el nievel
+		int filas, columnas, minas;
+		
+		switch (nivelSeleccionado) {
+		case FACIL: 
+			filas = 8; columnas = 8; minas = 10;
+			break;		
+		case MEDIO: 
+			filas = 16; columnas = 16; minas = 40;
+			break;
+		case DIFICIL: 
+			filas = 16; columnas = 30; minas = 99;
+			break;
+		default:
+			filas = 8; columnas = 8; minas = 10;
+		}
 		
 		// Creamos el objeto Dificultad 
-		Dificultad dificultad = new Dificultad(0, null, filas, columnas, minas);
-		
-		
+		Dificultad dificultad = new Dificultad(0, nivelSeleccionado, filas, columnas, minas);
 		this.tablero = new Tablero(dificultad);
-		lblMinas.setText("Minas: " + minas);
 		
+		
+		lblMinas.setText("Minas: " + minas);
 		generarBotones(filas, columnas);
 
 	}
@@ -184,14 +201,19 @@ public class GameController {
 		p.setUsuario(AppShell.getInstance().getUsuario());
 		p.setVictoria(victoria);
 		p.setTiempoSegundos(segundosTranscurridos);
+		p.setFechaHora(java.time.LocalDateTime.now());
+		
+		if (tablero != null) {
+			p.setDificultad(tablero.getDificultad());
+		}
 		
 		CSVManager.exportarPartida(p);
 	}
 
 	@FXML
 	void resetJuego(ActionEvent event) {
-		if (tablero != null) {
-			prepararPartida(tablero.getFilas(), tablero.getColumnas(), tablero.getNumMinas());
+		if (tablero != null && tablero.getDificultad() != null) {
+			prepararPartida(tablero.getDificultad().getNivel());
 			System.out.println("Partida reiniciada con éxito");
 		}
 	}

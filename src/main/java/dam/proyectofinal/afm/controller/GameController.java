@@ -2,7 +2,10 @@ package dam.proyectofinal.afm.controller;
 
 import javafx.event.ActionEvent;
 import dam.proyectofinal.afm.model.Dificultad;
+import dam.proyectofinal.afm.model.Partida;
 import dam.proyectofinal.afm.model.Tablero;
+import dam.proyectofinal.afm.util.AppShell;
+import dam.proyectofinal.afm.util.CSVManager;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -90,12 +93,32 @@ public class GameController {
 		Casilla casilla = tablero.getCeldas()[f][c];
 		
 		// SI hay bandera o la casilla esta revelada, no pasa nada
-		if (casilla.isMarcada() || casilla.isRevelada()) {
+		if (casilla.isMarcada() || casilla.isRevelada())
 			return;
-		}
 		
 		tablero.revelarCasilla(f, c);
 		refrescarTablero();
+		
+		if (casilla.isEsMina()) {
+			System.out.println("BOOM" + "Has perdido");
+			Partida p = new Partida();
+			p.setUsuario(AppShell.getInstance().getUsuario());
+			p.setVictoria(false);
+			p.setTiempoSegundos(0);
+			
+			CSVManager.exportarPartida(p);
+		} else if (tablero.verificarVictoria()) {
+			System.out.println("Victoria");
+			
+			// Se crea el objeto Partida
+			Partida p = new Partida();
+			p.setUsuario(AppShell.getInstance().getUsuario());
+			p.setVictoria(true);
+			p.setTiempoSegundos(0);
+			
+			// Se guarda en el CSV
+			CSVManager.exportarPartida(p);
+		}
 		
 	}
 	private void refrescarTablero() {

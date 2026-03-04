@@ -129,6 +129,17 @@ public class Tablero {
 			System.out.println();
 		}
 	}
+	public boolean verificarVictoria() {
+		for (int f = 0; f < filas; f++) {
+			for (int c = 0; c < columnas; c++) {
+				Casilla casilla = celdas[f][c];
+				if (!casilla.isEsMina() && !casilla.isRevelada()) {
+					return false;
+				}
+			}
+		}
+		return true; // Solo llega aquí si todas las casillas que no son minas del tablero han sido revelados
+	}
 
 	public int getNumMinas() {
 		// TODO Auto-generated method stub

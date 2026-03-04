@@ -11,7 +11,7 @@ public class App extends Application{
 //		Dificultad prueba = new Dificultad();
 //		prueba.setFilas(8);
 //		prueba.setColumnas(8);
-//		prueba.setNumMInas(10);
+//		prueba.setNumMinas(10);
 //		
 //		// Creación del Tablero
 //		Tablero pruebaTablero = new Tablero(prueba);

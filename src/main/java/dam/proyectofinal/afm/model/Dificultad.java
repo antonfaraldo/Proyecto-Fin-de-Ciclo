@@ -5,17 +5,17 @@ public class Dificultad {
 	private Nivel nivel;
 	private int filas;
 	private int columnas;
-	private int numMInas;
+	private int numMinas;
 	
 	public Dificultad() {}
 
-	public Dificultad(int idDificultad, Nivel nivel, int filas, int columnas, int numMInas) {
+	public Dificultad(int idDificultad, Nivel nivel, int filas, int columnas, int numMinas) {
 		super();
 		this.idDificultad = idDificultad;
 		this.nivel = nivel;
 		this.filas = filas;
 		this.columnas = columnas;
-		this.numMInas = numMInas;
+		this.numMinas = numMinas;
 	}
 
 	public int getIdDificultad() {
@@ -50,12 +50,12 @@ public class Dificultad {
 		this.columnas = columnas;
 	}
 
-	public int getNumMInas() {
-		return numMInas;
+	public int getNumMinas() {
+		return numMinas;
 	}
 
-	public void setNumMInas(int numMInas) {
-		this.numMInas = numMInas;
+	public void setNumMInas(int numMinas) {
+		this.numMinas = numMinas;
 	}
 	
 	

@@ -7,6 +7,7 @@ public class Partida {
 	private int tiempoSegundos;
 	private LocalDateTime fechaHora;
 	private boolean victoria;
+	private int numBanderasUsadas;
 	
 	//Relaciones del diagrama
 	private Usuario usuario;
@@ -72,6 +73,14 @@ public class Partida {
 	public void setDificultad(Dificultad dificultad) {
 		this.dificultad = dificultad;
 	}
-	
+
+	public int getNumBanderasUsadas() {
+		return numBanderasUsadas;
+	}
+
+	public void setNumBanderasUsadas(int numBanderasUsadas) {
+		this.numBanderasUsadas = numBanderasUsadas;
+	}
+
 	
 }

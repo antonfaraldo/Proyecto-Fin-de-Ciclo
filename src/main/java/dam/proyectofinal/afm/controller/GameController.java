@@ -29,6 +29,7 @@ public class GameController {
 	private Timeline cronometro;
 	private int segundosTranscurridos = 0;
 	private boolean juegoIniciado = false; // El juego inica una vez el primer click
+	private int banderasColocadas = 0;
 	
 	public void inicializarJuego(Tablero tablero) {
 		this.tablero = tablero;
@@ -78,10 +79,12 @@ public class GameController {
 			casilla.setMarcada(false);
 			btn.setText(""); // Se quita el icono
 			btn.setStyle(""); // Se quita el supuesto icono
+			banderasColocadas--;
 		} else {
 			casilla.setMarcada(true);
 			btn.setText("🚩"); // Acordarse de meter luego el icono
-			btn.setStyle("-fx-text-fill: red; -fx-font-weight: bold;"); // Luego hay que añadir el estilo 
+			btn.setStyle("-fx-text-fill: red; -fx-font-weight: bold;"); // Luego hay que añadir el estilo
+			banderasColocadas++;
 		}
 	}
 
@@ -91,6 +94,7 @@ public class GameController {
 		if (cronometro != null) cronometro.stop();
 		segundosTranscurridos = 0;
 		juegoIniciado = false;
+		banderasColocadas = 0;
 		lblTiempo.setText("Tiempo: 0s");
 		
 		// Extraer datos según el nievel
@@ -159,6 +163,7 @@ public class GameController {
 			p.setDificultad(tablero.getDificultad());
 			p.setTiempoSegundos(segundosTranscurridos);
 			p.setVictoria(true);
+			p.setNumBanderasUsadas(banderasColocadas);
 			
 			logroService.comprobarLogros(AppShell.getInstance().getUsuario(), p);
 		}

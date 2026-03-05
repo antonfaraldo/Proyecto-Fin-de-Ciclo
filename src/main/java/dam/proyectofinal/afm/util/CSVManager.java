@@ -17,7 +17,8 @@ public class CSVManager {
 				String datos = String.format("%s;%d;%b;%n",
 						partida.getUsuario().getNickname(),
 						partida.getTiempoSegundos(),
-						partida.isVictoria()
+						partida.isVictoria(),
+                        partida.getFechaHora().toString()
 						);
 				writer.write(datos);
 				System.out.println("Datos guardados en CSV: " + datos);

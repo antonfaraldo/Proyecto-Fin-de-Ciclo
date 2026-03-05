@@ -1,10 +1,10 @@
 package dam.proyectofinal.afm.util;
 
 public enum View {
-	GAME("/dam/proyectofinal/view/game-view.fxml"),
-	LOGIN("/dam/proyectofinal/view/login-view.fxml"),
-	MENU("/dam/proyectofinal/view/menu-view.fxml"),
-	RANKING("/dam/proyectofinal/view/ranking-view.fxml");
+	GAME("/fxml/game-view.fxml"),
+	LOGIN("/fxml/login-view.fxml"),
+	MENU("/fxml/menu-view.fxml"),
+	RANKING("/fxml/ranking-view.fxml");
 	
 	private final String fxmlPath;
 

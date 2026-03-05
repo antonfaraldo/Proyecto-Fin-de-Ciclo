@@ -27,8 +27,9 @@ public class App extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		AppShell.getInstance().init(primaryStage);
-		// Cargamos la primera vista, que ahora mismp es el juego
-		AppShell.getInstance().loadView(View.GAME);
+		// Cargamos la primera vista
+		AppShell.getInstance().loadView(View.LOGIN);
+		AppShell.getInstance().ajustarVentana();
 		
 	}
 	public static void main(String[] args) {

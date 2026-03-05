@@ -1,6 +1,7 @@
 package dam.proyectofinal.afm.util;
 
 import java.io.IOException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,11 +10,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class AppShell {
 	private static AppShell instance;
-	private BorderPane mainLayout;
 	private Stage primaryStage;
 	private Map<View, Object> controllers = new HashMap<>();
 	
@@ -29,10 +30,9 @@ public class AppShell {
 	}
 	
 	public void init(Stage stage) {
-		this.mainLayout = new BorderPane();
 		this.primaryStage = stage;
-		// Se ajusta el tamaño
-		Scene scene = new Scene(mainLayout, 800, 600);
+		// Se ajusta el tamaño (temporal)
+		Scene scene = new Scene(new Pane(), 800, 600);
 		stage.setScene(scene);
 		stage.setTitle("Mine Manager Pro");
 		stage.show();
@@ -77,6 +77,8 @@ public class AppShell {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
+	public Object getController(View view) {
+		return controllers.get(view);
+	}
 
 }

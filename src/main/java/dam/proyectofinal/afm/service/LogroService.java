@@ -3,6 +3,9 @@ package dam.proyectofinal.afm.service;
 import dam.proyectofinal.afm.model.Nivel;
 import dam.proyectofinal.afm.model.Partida;
 import dam.proyectofinal.afm.model.Usuario;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class LogroService {
 	private static int partidasGanadasTotales = 0;
@@ -41,7 +44,16 @@ public class LogroService {
 
 	private void registrarLogro(Usuario usuario, String nombreLogro) {
 		// TODO Auto-generated method stub
-		// Por ahora solo se imprimen en consola 
+		// Solo se imprimen en consola 
 		System.out.println("Logro Desbloqueado para " + usuario.getNickname() + ": " + nombreLogro);
+		
+		// Notificación visual
+		Platform.runLater(() -> {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("¡Logro Desbloqueado!");
+			alert.setHeaderText(null);
+			alert.setContentText("🏆 ¡Felicidades, " + usuario.getNickname() + "!\nHas desbloqeuado el logro: " + nombreLogro);
+			alert.showAndWait();
+		});
 	}
 }

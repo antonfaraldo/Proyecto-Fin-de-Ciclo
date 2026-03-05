@@ -32,6 +32,7 @@ public class MenuController {
 	@FXML
 	private void handleVerRanking() {
 		System.out.println("Cargando ranking desde CSV...");
+		AppShell.getInstance().loadView(View.RANKING);
 	}
 	@FXML
 	private void handleCerrarSesion() {

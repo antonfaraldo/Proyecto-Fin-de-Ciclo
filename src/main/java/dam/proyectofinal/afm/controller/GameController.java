@@ -11,6 +11,7 @@ import dam.proyectofinal.afm.model.Tablero;
 import dam.proyectofinal.afm.service.LogroService;
 import dam.proyectofinal.afm.util.AppShell;
 import dam.proyectofinal.afm.util.CSVManager;
+import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -240,5 +241,10 @@ public class GameController {
 			prepararPartida(tablero.getDificultad().getNivel());
 			System.out.println("Partida reiniciada con éxito");
 		}
+	}
+	@FXML
+	private void volverAlMenu() {
+	    AppShell.getInstance().loadView(View.MENU);
+	    AppShell.getInstance().ajustarVentana();
 	}
 }

@@ -24,4 +24,6 @@
       <GridPane fx:id="gridTablero" alignment="CENTER" BorderPane.alignment="CENTER">
          </GridPane>
    </center>
+   <Button text="🏠 Menú" onAction="#volverAlMenu" 
+        style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;" />
 </BorderPane>

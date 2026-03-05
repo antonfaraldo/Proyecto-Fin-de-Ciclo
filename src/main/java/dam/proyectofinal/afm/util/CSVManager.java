@@ -3,6 +3,8 @@ package dam.proyectofinal.afm.util;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import dam.proyectofinal.afm.model.Partida;
 
@@ -23,6 +25,13 @@ public class CSVManager {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+	}
+
+	public static List<Partida> importarPartidas() {
+		// TODO Auto-generated method stub
+		List<Partida> partidas = new ArrayList<>();
+		// Esto luego se tiene que modficiar 
+		return partidas;
 	}
 
 }

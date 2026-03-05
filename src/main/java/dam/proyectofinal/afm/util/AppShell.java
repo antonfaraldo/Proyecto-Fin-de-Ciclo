@@ -55,6 +55,12 @@ public class AppShell {
 			throw new RuntimeException("Error al cargar la vista " + view, e);
 		}
 	}
+	public void ajustarVentana() {
+		if (primaryStage != null) {
+			primaryStage.sizeToScene(); // La ventana se ajusta ala tamaño del Layout
+			primaryStage.centerOnScreen(); // Se centra la ventana 
+		}
+	}
 
 	public Stage getPrimaryStage() {
 		return primaryStage;

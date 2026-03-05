@@ -116,6 +116,11 @@ public class GameController {
 		
 		lblMinas.setText("Minas: " + minas);
 		generarBotones(filas, columnas);
+		
+		// Ajustamos el tamaño de la ventana según el nivel
+		javafx.application.Platform.runLater(() -> {
+			AppShell.getInstance().ajustarVentana();
+		});
 
 	}
 

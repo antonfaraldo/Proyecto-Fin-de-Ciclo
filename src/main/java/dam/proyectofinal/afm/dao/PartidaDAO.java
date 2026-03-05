@@ -2,6 +2,7 @@ package dam.proyectofinal.afm.dao;
 
 import java.util.List;
 
+import dam.proyectofinal.afm.model.Nivel;
 import dam.proyectofinal.afm.model.Partida;
 import dam.proyectofinal.afm.model.Usuario;
 
@@ -16,6 +17,6 @@ public interface PartidaDAO {
 	List<Partida> listarPorUsuario(Usuario usuario);
 	
 	// Obtener las mejores puntuaciones 
-	List<Partida> obtenerRankingTop(int limite);
+	List<Partida> obtenerRankingTop(Nivel nivel, int limite);
 
 }

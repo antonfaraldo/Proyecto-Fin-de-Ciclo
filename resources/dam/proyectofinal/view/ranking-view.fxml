@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="20.0" prefWidth="600.0" prefHeight="500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.RankingController">
+   <children>
+      <Label text="RANKING GLOBAL (TOP 5)">
+         <font><Font name="System Bold" size="24.0" /></font>
+      </Label>
+
+      <TabPane fx:id="tabPaneRanking" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+        <tabs>
+          <Tab text="FÁCIL">
+              <TableView fx:id="tableFacil">
+                 <columns>
+                    <TableColumn fx:id="colUserFacil" text="Usuario" prefWidth="150" />
+                    <TableColumn fx:id="colTiempoFacil" text="Tiempo (s)" prefWidth="100" />
+                    <TableColumn fx:id="colFechaFacil" text="Fecha" prefWidth="200" />
+                 </columns>
+              </TableView>
+          </Tab>
+          <Tab text="MEDIO">
+              <TableView fx:id="tableMedio">
+                 <columns>
+                    <TableColumn fx:id="colUserMedio" text="Usuario" prefWidth="150" />
+                    <TableColumn fx:id="colTiempoMedio" text="Tiempo (s)" prefWidth="100" />
+                    <TableColumn fx:id="colFechaMedio" text="Fecha" prefWidth="200" />
+                 </columns>
+              </TableView>
+          </Tab>
+          <Tab text="DIFÍCIL">
+              <TableView fx:id="tableDificil">
+                 <columns>
+                    <TableColumn fx:id="colUserDificil" text="Usuario" prefWidth="150" />
+                    <TableColumn fx:id="colTiempoDificil" text="Tiempo (s)" prefWidth="100" />
+                    <TableColumn fx:id="colFechaDificil" text="Fecha" prefWidth="200" />
+                 </columns>
+              </TableView>
+          </Tab>
+        </tabs>
+      </TabPane>
+
+      <Button text="Volver al Menú" onAction="#handleVolver" prefWidth="150" />
+   </children>
+   <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+</VBox>

@@ -36,7 +36,7 @@ public class LoginController {
 		
 		if (usuario != null) {
 			AppShell.getInstance().setUsuario(usuario);
-			AppShell.getInstance().loadView(View.GAME);
+			AppShell.getInstance().loadView(View.MENU);
 			AppShell.getInstance().ajustarVentana();
 		} else {
 			feedbackLabel.setText("Nickname o contraseña incorrectos.");

@@ -1,6 +1,6 @@
 package dam.proyectofinal.afm.controller;
 
-import javafx.animation.Animation;
+import javafx.animation.Animation; 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -14,11 +14,14 @@ import dam.proyectofinal.afm.util.CSVManager;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import dam.proyectofinal.afm.dao.PartidaDAO;
+import dam.proyectofinal.afm.dao.PartidaDAOImpl;
 import dam.proyectofinal.afm.model.Casilla;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
+import java.time.LocalDateTime;
 
 public class GameController {
 	@FXML private Label lblMinas;
@@ -30,6 +33,7 @@ public class GameController {
 	private int segundosTranscurridos = 0;
 	private boolean juegoIniciado = false; // El juego inica una vez el primer click
 	private int banderasColocadas = 0;
+	private PartidaDAO partidaDAO = new PartidaDAOImpl();
 	
 	public void inicializarJuego(Tablero tablero) {
 		this.tablero = tablero;
@@ -99,20 +103,19 @@ public class GameController {
 		
 		// Extraer datos según el nievel
 		int filas, columnas, minas;
-		
 		switch (nivelSeleccionado) {
-		case FACIL: 
-			filas = 8; columnas = 8; minas = 10;
-			break;		
-		case MEDIO: 
-			filas = 16; columnas = 16; minas = 40;
-			break;
-		case DIFICIL: 
-			filas = 16; columnas = 30; minas = 99;
-			break;
-		default:
-			filas = 8; columnas = 8; minas = 10;
-		}
+	    case FACIL: 
+	        filas = 8; columnas = 8; minas = 10;
+	        break;      
+	    case MEDIO: 
+	        filas = 16; columnas = 16; minas = 40;
+	        break;
+	    case DIFICIL: 
+	        filas = 16; columnas = 30; minas = 99;
+	        break;
+	    default:
+	        filas = 8; columnas = 8; minas = 10;
+	}
 		
 		// Creamos el objeto Dificultad 
 		Dificultad dificultad = new Dificultad(0, nivelSeleccionado, filas, columnas, minas);
@@ -223,12 +226,12 @@ public class GameController {
 		p.setVictoria(victoria);
 		p.setTiempoSegundos(segundosTranscurridos);
 		p.setFechaHora(java.time.LocalDateTime.now());
-		
-		if (tablero != null) {
-			p.setDificultad(tablero.getDificultad());
-		}
+		p.setDificultad(tablero.getDificultad());
+		p.setNumBanderasUsadas(banderasColocadas);
 		
 		CSVManager.exportarPartida(p);
+		
+		partidaDAO.guardar(p);
 	}
 
 	@FXML

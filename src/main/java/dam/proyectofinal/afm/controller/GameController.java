@@ -1,6 +1,7 @@
 package dam.proyectofinal.afm.controller;
 
-import javafx.animation.Animation; 
+import dam.proyectofinal.afm.dao.PartidaDAOImpl;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -14,15 +15,12 @@ import dam.proyectofinal.afm.util.CSVManager;
 import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import dam.proyectofinal.afm.dao.PartidaDAO;
-import dam.proyectofinal.afm.dao.PartidaDAOImpl;
 import dam.proyectofinal.afm.model.Casilla;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
-import java.time.LocalDateTime;
 
 public class GameController {
 	@FXML private Label lblMinas;

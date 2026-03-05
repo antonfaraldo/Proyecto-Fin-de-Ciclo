@@ -1,8 +1,8 @@
 package dam.proyectofinal.afm.util;
 
 public enum View {
-	GAME("/dam/proyectofinal/afm/view/game-view.fxml"),
-	LOGIN("/dam/proyectofinal/afm/view/login-view.fxml"),
+	GAME("/dam/proyectofinal/view/game-view.fxml"),
+	LOGIN("/dam/proyectofinal/view/login-view.fxml"),
 	MENU("/dam/proyectofinal/view/menu-view.fxml"),
 	RANKING("/dam/proyectofinal/view/ranking-view.fxml");
 	

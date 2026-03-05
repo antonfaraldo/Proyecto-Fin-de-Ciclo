@@ -8,6 +8,7 @@ import dam.proyectofinal.afm.model.Dificultad;
 import dam.proyectofinal.afm.model.Nivel;
 import dam.proyectofinal.afm.model.Partida;
 import dam.proyectofinal.afm.model.Tablero;
+import dam.proyectofinal.afm.service.LogroService;
 import dam.proyectofinal.afm.util.AppShell;
 import dam.proyectofinal.afm.util.CSVManager;
 import javafx.fxml.FXML;
@@ -150,6 +151,16 @@ public class GameController {
 			System.out.println("Victoria");
 			
 			guardarResultado(true);
+			
+			// Se comprueban los logros
+			LogroService logroService = new LogroService();
+			// Se obtiene la partida que se acaba de ganar
+			Partida p = new Partida();
+			p.setDificultad(tablero.getDificultad());
+			p.setTiempoSegundos(segundosTranscurridos);
+			p.setVictoria(true);
+			
+			logroService.comprobarLogros(AppShell.getInstance().getUsuario(), p);
 		}
 		
 	}

@@ -33,6 +33,7 @@ public class GameController {
 	private boolean juegoIniciado = false; // El juego inica una vez el primer click
 	private int banderasColocadas = 0;
 	private PartidaDAO partidaDAO = new PartidaDAOImpl();
+	private boolean juegoTerminado = false;
 	
 	public void inicializarJuego(Tablero tablero) {
 		this.tablero = tablero;
@@ -97,6 +98,7 @@ public class GameController {
 		if (cronometro != null) cronometro.stop();
 		segundosTranscurridos = 0;
 		juegoIniciado = false;
+		juegoTerminado = false;
 		banderasColocadas = 0;
 		lblTiempo.setText("Tiempo: 0s");
 		
@@ -135,7 +137,8 @@ public class GameController {
 		Casilla casilla = tablero.getCeldas()[f][c];
 		
 		// SI hay bandera o la casilla esta revelada, no pasa nada
-		if (casilla.isMarcada() || casilla.isRevelada())
+		// Ahora si el juego termina tampoco se puede hacer clic
+		if (casilla.isMarcada() || casilla.isRevelada() || juegoTerminado)
 			return;
 		
 		// Iniciar el crónometro al primer click
@@ -148,13 +151,18 @@ public class GameController {
 		refrescarTablero();
 		
 		if (casilla.isEsMina()) {
+			juegoTerminado = true; 
 			cronometro.stop();
+			revelarTodo();
 			System.out.println("BOOM" + "Has perdido");
+			mostrarAlerta("¡BOOM!", "Has pisado una mina. Partida terminada.");
 			
 			guardarResultado(false);
 		} else if (tablero.verificarVictoria()) {
+			juegoTerminado = true;
 			cronometro.stop();
 			System.out.println("Victoria");
+			mostrarAlerta("¡!VICTORIA", "Enhorabuena. Has ganado la partida.");
 			
 			guardarResultado(true);
 			
@@ -171,6 +179,27 @@ public class GameController {
 		}
 		
 	}
+	private void mostrarAlerta(String titulo, String mensaje) {
+		// TODO Auto-generated method stub
+		javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+	}
+
+	private void revelarTodo() {
+		// TODO Auto-generated method stub
+		for (int f = 0; f < tablero.getFilas(); f++) {
+			for (int c = 0; c < tablero.getColumnas(); c++) {
+				if (tablero.getCeldas()[f][c].isEsMina()) {
+					tablero.getCeldas()[f][c].setRevelada(true);
+				}
+			}
+		}
+		refrescarTablero();
+	}
+
 	private void refrescarTablero() {
 		// TODO Auto-generated method stub
 		// Recorrer todos los nodos

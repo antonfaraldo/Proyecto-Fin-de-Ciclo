@@ -39,8 +39,8 @@
             <content>
               <VBox alignment="CENTER" spacing="15.0">
                      <children>
-                        <TextField fx:id="registerNicknameField" promptText="Nickname" />
                         <TextField fx:id="registerEmailField" promptText="Email" />
+                        <TextField fx:id="registerNicknameField" promptText="Nickname" />
                         <PasswordField fx:id="registerPasswordField" promptText="Contraseña" />
                         <Button maxWidth="Infinity" onAction="#handleRegister" style="-fx-background-color: #4CAF50;" text="CREAR CUENTA" textFill="WHITE" />
                      </children>

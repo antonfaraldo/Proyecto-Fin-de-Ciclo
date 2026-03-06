@@ -1,6 +1,8 @@
 package dam.proyectofinal.afm.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Usuario {
 	private int idUsuario;
@@ -8,6 +10,21 @@ public class Usuario {
 	private String password;
 	private String email;
 	private LocalDate fechaRegistro;
+	
+	public int getIdUsuario() {
+		return idUsuario;
+	}
+	public void setIdUsuario(int idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+	public List<Logro> getLogros() {
+		return logros;
+	}
+	public void setLogros(List<Logro> logros) {
+		this.logros = logros;
+	}
+	private List<Logro> logros = new ArrayList<>();
+	
 	public int getId() {
 		return idUsuario;
 	}
@@ -45,6 +62,12 @@ public class Usuario {
 		this.password = password;
 		this.email = email;
 		this.fechaRegistro = fechaRegistro;
+		this.logros = new ArrayList<>();
+		
+		inicializarLogrosPorDefecto();
+	}
+	private void inicializarLogrosPorDefecto() {
+		// TODO Auto-generated method stub
 	}
 	public Usuario() {}
 }

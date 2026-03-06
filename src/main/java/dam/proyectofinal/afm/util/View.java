@@ -4,7 +4,8 @@ public enum View {
 	GAME("/fxml/game-view.fxml"),
 	LOGIN("/fxml/login-view.fxml"),
 	MENU("/fxml/menu-view.fxml"),
-	RANKING("/fxml/ranking-view.fxml");
+	RANKING("/fxml/ranking-view.fxml"),
+	LOGROS("/fxml/logros-view.fxml");
 	
 	private final String fxmlPath;
 

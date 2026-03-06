@@ -5,15 +5,17 @@ public class Logro {
 	private String nombre;
 	private String descripcion;
 	private int tiempoObjetivo;
+	private boolean desbloqueado;
 	
 	public Logro() {}
 
-	public Logro(int idLogro, String nombre, String descripcion, int tiempoObjetivo) {
+	public Logro(int idLogro, String nombre, String descripcion, int tiempoObjetivo, boolean desbloqueado) {
 		super();
 		this.idLogro = idLogro;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.tiempoObjetivo = tiempoObjetivo;
+		this.desbloqueado = desbloqueado;
 	}
 
 	public int getIdLogro() {
@@ -48,6 +50,13 @@ public class Logro {
 		this.tiempoObjetivo = tiempoObjetivo;
 	}
 	
+	public boolean isDesbloqueado() {
+        return desbloqueado;
+    }
+
+    public void setDesbloqueado(boolean desbloqueado) {
+        this.desbloqueado = desbloqueado;
+    }
 	
 
 }

@@ -21,8 +21,6 @@ public class Tablero {
 		
 		// UNa vez el tablero esta creado, se prepara
 		inicializarCeldas();
-		colocarMinas();
-		calcularNumeros();
 	}
 
 	private void calcularNumeros() {
@@ -55,7 +53,7 @@ public class Tablero {
 		return contador;
 	}
 
-	private void colocarMinas() {
+	public void colocarMinas(int filaInicial, int colInicial) {
 		// TODO Auto-generated method stub
 		Random rand = new Random();
 		int minasColocadas = 0;
@@ -65,12 +63,12 @@ public class Tablero {
 			int c = rand.nextInt(columnas); // Elige la columna al azar
 			
 			// Solo se coloca la mina si la casilla está vacía
-			if (!celdas[f][c].isEsMina()) {
+			if (!celdas[f][c].isEsMina() && (f != filaInicial || c != colInicial)) {
 				celdas[f][c].setEsMina(true);
 				minasColocadas++;
 			}
 		}
-		
+		calcularNumeros();
 	}
 
 	private void inicializarCeldas() {

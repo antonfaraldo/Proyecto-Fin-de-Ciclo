@@ -143,6 +143,7 @@ public class GameController {
 		
 		// Iniciar el crónometro al primer click
 		if (!juegoIniciado) {
+			tablero.colocarMinas(f, c);
 			iniciarCronometro();
 			juegoIniciado = true;
 		}

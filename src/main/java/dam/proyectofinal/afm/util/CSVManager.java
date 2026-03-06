@@ -13,12 +13,15 @@ public class CSVManager {
 	
 	public static void exportarPartida(Partida partida) {
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(ficheroPartidas, true))) {
+			// Se define un formato para la fecha 
+			java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+			String fechaStr = partida.getFechaHora().format(formato);
 				
 				String datos = String.format("%s;%d;%b;%n",
 						partida.getUsuario().getNickname(),
 						partida.getTiempoSegundos(),
 						partida.isVictoria(),
-                        partida.getFechaHora().toString()
+                        fechaStr
 						);
 				writer.write(datos);
 				System.out.println("Datos guardados en CSV: " + datos);

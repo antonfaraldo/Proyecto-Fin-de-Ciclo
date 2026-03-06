@@ -263,7 +263,7 @@ public class GameController {
 		case 2: return "-fx-text-fill: green;";
 		case 3: return "-fx-text-fill: red;";
 		case 4: return "-fx-text-fill: darkblue;";
-		case 5: return "-fx-text-fill: maronn";
+		case 5: return "-fx-text-fill: maroon;";
 		case 6: return "-fx-text-fill: cyan;";
 		case 7: return "-fx-text-fill: black;";
 		case 8: return "-fx-text-fill: gray;";

@@ -17,15 +17,25 @@
    </top>
    
    <center>
-      <GridPane fx:id="gridTablero" alignment="CENTER" BorderPane.alignment="CENTER">
-      	<StackPane>
-	      <VBox fx:id="vboxPausa" visible="false" alignment="CENTER" style="-fx-background-color: rgba(0,0,0,0.8);">
-	         <Label text="JUEGO PAUSADO" style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" />
-	         <Button text="Reanudar" onAction="#handlePausa" style="-fx-margin-top: 10;" />
-	      </VBox>
-   		</StackPane>
-         <padding><Insets bottom="10" left="10" right="10" top="10"/></padding>
-      </GridPane>
+      <StackPane BorderPane.alignment="CENTER">
+        <padding>
+            <Insets bottom="10" left="10" right="10" top="10" />
+        </padding>
+        
+        <GridPane fx:id="gridTablero" alignment="CENTER" hgap="1" vgap="1" />
+        
+        <VBox fx:id="vboxPausa" alignment="CENTER" spacing="20" visible="false" 
+              style="-fx-background-color: rgba(0,0,0,0.8); -fx-background-radius: 10;">
+            <children>
+                <Label text="⏸ JUEGO PAUSADO" 
+                       style="-fx-text-fill: white; -fx-font-size: 32px; -fx-font-weight: bold;" />
+                <Label text="No puedes ver el tablero mientras el tiempo está detenido" 
+                       style="-fx-text-fill: #aaa; -fx-font-size: 14px;" />
+                <Button onAction="#handlePausa" text="Reanudar Partida" 
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-padding: 10 20; -fx-font-weight: bold; -fx-cursor: hand;" />
+            </children>
+        </VBox>
+    </StackPane>
    </center>
 
    <bottom>

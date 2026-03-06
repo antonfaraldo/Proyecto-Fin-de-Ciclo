@@ -62,8 +62,10 @@ public class Tablero {
 			int f = rand.nextInt(filas); // Elige la fila al azar
 			int c = rand.nextInt(columnas); // Elige la columna al azar
 			
+			boolean esAreaSegura = Math.abs(f - filaInicial) <= 1 && Math.abs(c - colInicial) <= 1;
+			
 			// Solo se coloca la mina si la casilla está vacía
-			if (!celdas[f][c].isEsMina() && (f != filaInicial || c != colInicial)) {
+			if (!celdas[f][c].isEsMina() && !esAreaSegura) {
 				celdas[f][c].setEsMina(true);
 				minasColocadas++;
 			}

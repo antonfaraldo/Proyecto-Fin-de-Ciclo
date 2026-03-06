@@ -107,6 +107,21 @@ public class GameController {
 		banderasColocadas = 0;
 		lblTiempo.setText("Tiempo: 0s");
 		
+		// Reseteamos el estado de Pausa
+		pausado = false;
+		if (vboxPausa != null) {
+			vboxPausa.setVisible(false);
+		}
+		if (gridTablero != null) {
+			gridTablero.setVisible(true);
+			gridTablero.setOpacity(1.0);
+			gridTablero.setDisable(false);
+		}
+		if (btnPausa != null) {
+			btnPausa.setText("⏸ Pausa");
+			btnPausa.setStyle("");
+		}
+		
 		// Extraer datos según el nievel
 		int filas, columnas, minas;
 		switch (nivelSeleccionado) {
@@ -307,14 +322,19 @@ public class GameController {
 		
 		if (pausado) {
 			cronometro.pause();
-			vboxPausa.setVisible(true); // Muestra una capa negra 
+			vboxPausa.setVisible(true); // Muestra el aviso y la capa negra
 			gridTablero.setVisible(false); // Oculta las minas
+			gridTablero.setOpacity(0.2);
+			gridTablero.setDisable(true); // Bloqueamos los clics 
 			btnPausa.setText("▶ Reanudar");
 		} else {
 			cronometro.play();
 			vboxPausa.setVisible(false);
+			gridTablero.setOpacity(1.0);
+			gridTablero.setDisable(false);
 			gridTablero.setVisible(true);
 			btnPausa.setText("⏸ Pausa");
+			btnPausa.setStyle("");
 		}
 	}
 

@@ -221,20 +221,49 @@ public class GameController {
 					if (casilla.isRevelada()) {
 						if (casilla.isEsMina()) {
 							btn.setText("💣");
-	                        btn.setStyle("-fx-background-color: red;");
+	                        btn.setStyle("-fx-background-color: #ff0000; " +
+	                        			"-fx-text-fill: black; " +
+	                        			"-fx-font-size: 14px; " +
+	                        			"-fx-font-weight: bold; " +
+	                        			"-fx-padding: 0; " +
+	                        			"-fx-alignment: center; " +
+	                        			"-fx-opacity: 1.0;");
 						} else {
 							int minas = casilla.getMinasAlrededor();
 							btn.setText(minas > 0 ? String.valueOf(minas) : "");
 							
-							// Se bloquea el botn
+							// Se aplica un color según cada numero
+							String colorStyle = obtenerColorPorNumero(minas);
+							btn.setStyle("-fx-background-color: #e0e0e0; " +
+                                    "-fx-border-color: #bdbdbd; " +
+                                    "-fx-border-width: 0.5; " +
+                                    "-fx-opacity: 1; " +
+                                    "-fx-font-weight: bold; " +
+                                    colorStyle);
+							
+							// Se bloquea el boton
 							btn.setDisable(true);
-							btn.setStyle("-fx-background-color: #ddd; -fx-opacity: 1;");
 						}
 					}
 				}
 			}
 		}
 	}
+	private String obtenerColorPorNumero(int numero) {
+		// TODO Auto-generated method stub
+		switch (numero) {
+		case 1: return "-fx-text-fill: blue;";
+		case 2: return "-fx-text-fill: green;";
+		case 3: return "-fx-text-fill: red;";
+		case 4: return "-fx-text-fill: darkblue;";
+		case 5: return "-fx-text-fill: maronn";
+		case 6: return "-fx-text-fill: cyan;";
+		case 7: return "-fx-text-fill: black;";
+		case 8: return "-fx-text-fill: gray;";
+		default: return "-fx-text-fill: transparent;";
+		}
+	}
+
 	private void iniciarCronometro() {
 		if (cronometro != null) {
 			cronometro.stop();

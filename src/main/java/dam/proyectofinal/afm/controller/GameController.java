@@ -154,15 +154,21 @@ public class GameController {
 	}
 
 	private void manejarClic(int f, int c, Button botonPulsado) {
+		// No se puede hacer clic mientras el cronometro esta pausado
+		if (pausado || juegoTerminado) return;		
 		Casilla casilla = tablero.getCeldas()[f][c];
+		// Lógica Chording
+		if (casilla.isRevelada()) {
+			if (casilla.getMinasAlrededor() > 0 && !casilla.isEsMina()) {
+				ejecutarChording(f, c);
+			}
+			return;
+		}
 		
 		// SI hay bandera o la casilla esta revelada, no pasa nada
 		// Ahora si el juego termina tampoco se puede hacer clic
-		if (casilla.isMarcada() || casilla.isRevelada() || juegoTerminado)
+		if (casilla.isMarcada())
 			return;
-		// No se puede hacer clic mientras el cronometro esta pausado
-		if (pausado || juegoTerminado) return;
-		
 		// Iniciar el crónometro al primer click
 		if (!juegoIniciado) {
 			tablero.colocarMinas(f, c);
@@ -174,34 +180,84 @@ public class GameController {
 		refrescarTablero();
 		
 		if (casilla.isEsMina()) {
-			juegoTerminado = true; 
-			cronometro.stop();
-			revelarTodo();
-			System.out.println("BOOM" + "Has perdido");
-			mostrarAlerta("¡BOOM!", "Has pisado una mina. Partida terminada.");
-			
-			guardarResultado(false);
+			finalizarPartida(false);
 		} else if (tablero.verificarVictoria()) {
-			juegoTerminado = true;
-			cronometro.stop();
-			System.out.println("Victoria");
-			mostrarAlerta("¡!VICTORIA", "Enhorabuena. Has ganado la partida.");
-			
-			guardarResultado(true);
-			
-			// Se comprueban los logros
-			LogroService logroService = new LogroService();
-			// Se obtiene la partida que se acaba de ganar
-			Partida p = new Partida();
-			p.setDificultad(tablero.getDificultad());
-			p.setTiempoSegundos(segundosTranscurridos);
-			p.setVictoria(true);
-			p.setNumBanderasUsadas(banderasColocadas);
-			
-			logroService.comprobarLogros(AppShell.getInstance().getUsuario(), p);
+			finalizarPartida(true);
 		}
-		
 	}
+	private void finalizarPartida(boolean victoria) {
+		// TODO Auto-generated method stub
+		juegoTerminado = true;
+        cronometro.stop();
+        if (victoria) {
+            System.out.println("Victoria");
+            mostrarAlerta("¡VICTORIA!", "Enhorabuena. Has ganado la partida.");
+            guardarResultado(true);
+
+            LogroService logroService = new LogroService();
+            Partida p = new Partida();
+            p.setDificultad(tablero.getDificultad());
+            p.setTiempoSegundos(segundosTranscurridos);
+            p.setVictoria(true);
+            p.setNumBanderasUsadas(banderasColocadas);
+            logroService.comprobarLogros(AppShell.getInstance().getUsuario(), p);
+        } else {
+            revelarTodo();
+            System.out.println("BOOM Has perdido");
+            mostrarAlerta("¡BOOM!", "Has pisado una mina. Partida terminada.");
+            guardarResultado(false);
+        }
+	}
+
+	private void ejecutarChording(int fila, int col) {
+		// TODO Auto-generated method stub
+		Casilla casillaCentral = tablero.getCeldas()[fila][col];
+		int minasIndicadas = casillaCentral.getMinasAlrededor();
+		int banderasAlrededor = 0;
+		
+		// Contamos banderas en las casillas vecinas
+		for (int i = fila - 1; i <= fila + 1; i++) {
+			for (int j = col - 1; j <= col + 1; j++) {
+				// Se verifican los limites del tablero y la casilla central
+				if (i >= 0 && i < tablero.getFilas() && j >= 0 && j < tablero.getColumnas() && !(i == fila && j == col)) {
+					if (tablero.getCeldas()[i][j].isMarcada()) {
+						banderasAlrededor++;
+					}
+				}
+			}
+		}
+		// El num de banderas coincide, se revelan las casillas vecinas sin bandera
+		if (banderasAlrededor == minasIndicadas) {
+			System.out.println("Ejecutando Chording en (" + fila + ", " + col + ")");
+			boolean minaTocada = false;
+			
+			for (int i = fila - 1; i <= fila + 1; i++) {
+				for (int j = col - 1; j <= col + 1; j++) {
+					if (i >= 0 && i < tablero.getFilas() && j >= 0 && j < tablero.getColumnas() && !(i == fila && j == col)) {
+						Casilla vecina = tablero.getCeldas()[i][j];
+						
+						// Solo se revela si no está marcada y no está ya revelada
+						if (!vecina.isMarcada() && !vecina.isRevelada()) {
+							tablero.revelarCasilla(i, j);
+							if (vecina.isEsMina()) {
+								minaTocada = true;
+							}
+						}
+					}
+				}
+			}
+			// Se actualiza la interfaz
+			refrescarTablero();
+			
+			// Se comprueba 
+			if (minaTocada) {
+				finalizarPartida(false);
+			} else if (tablero.verificarVictoria()) {
+				finalizarPartida(true);
+			}
+		} 
+	}
+
 	private void mostrarAlerta(String titulo, String mensaje) {
 		// TODO Auto-generated method stub
 		javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
@@ -262,9 +318,7 @@ public class GameController {
                                     "-fx-opacity: 1; " +
                                     "-fx-font-weight: bold; " +
                                     colorStyle);
-							
-							// Se bloquea el boton
-							btn.setDisable(true);
+					
 						}
 					}
 				}

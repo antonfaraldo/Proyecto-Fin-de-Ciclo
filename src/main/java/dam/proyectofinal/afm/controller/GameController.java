@@ -18,7 +18,10 @@ import javafx.fxml.FXML;
 import javafx.scene.input.MouseButton;
 import dam.proyectofinal.afm.dao.PartidaDAO;
 import dam.proyectofinal.afm.model.Casilla;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -55,6 +58,19 @@ public class GameController {
 					for (int c = 0; c < columnas; c++) {
 						Button btn = new Button();
 						btn.setPrefSize(30,  30);
+						
+						// Efecto Hover
+						btn.setOnMouseEntered(e -> {
+							if (btn.getText().isEmpty()) {
+								btn.setStyle("-fx-background-color: #dcdcdc;");
+							}
+						});
+						btn.setOnMouseExited(e -> {
+							// Al salir se restaura el fondo original
+							if (btn.getText().isEmpty()) {
+								btn.setStyle("");
+							}
+						});
 						
 						int filaActual = f;
 						int colActual = c;
@@ -401,6 +417,11 @@ public class GameController {
 	}
 	@FXML
 	private void volverAlMenu() {
+		if (!juegoTerminado && juegoIniciado) {
+			Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "¿Seguro que quieres abandonar la partida?");
+			if (confirm.showAndWait().get() != ButtonType.OK) return;
+		}
+		
 	    AppShell.getInstance().loadView(View.MENU);
 	    AppShell.getInstance().ajustarVentana();
 	}

@@ -1,6 +1,7 @@
 package dam.proyectofinal.afm.controller;
 
 import dam.proyectofinal.afm.dao.PartidaDAOImpl;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -20,6 +21,7 @@ import dam.proyectofinal.afm.model.Casilla;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class GameController {
@@ -34,6 +36,9 @@ public class GameController {
 	private int banderasColocadas = 0;
 	private PartidaDAO partidaDAO = new PartidaDAOImpl();
 	private boolean juegoTerminado = false;
+	@FXML private VBox vboxPausa;
+	@FXML private Button btnPausa;
+	private boolean pausado = false;
 	
 	public void inicializarJuego(Tablero tablero) {
 		this.tablero = tablero;
@@ -140,6 +145,8 @@ public class GameController {
 		// Ahora si el juego termina tampoco se puede hacer clic
 		if (casilla.isMarcada() || casilla.isRevelada() || juegoTerminado)
 			return;
+		// No se puede hacer clic mientras el cronometro esta pausado
+		if (pausado || juegoTerminado) return;
 		
 		// Iniciar el crónometro al primer click
 		if (!juegoIniciado) {
@@ -290,6 +297,25 @@ public class GameController {
 		CSVManager.exportarPartida(p);
 		
 		partidaDAO.guardar(p);
+	}
+	@FXML
+	private void handlePausa() {
+		// Si el juego no ha empezado, no se pausa
+		if (!juegoIniciado || juegoTerminado) return;
+		
+		pausado = !pausado;
+		
+		if (pausado) {
+			cronometro.pause();
+			vboxPausa.setVisible(true); // Muestra una capa negra 
+			gridTablero.setVisible(false); // Oculta las minas
+			btnPausa.setText("▶ Reanudar");
+		} else {
+			cronometro.play();
+			vboxPausa.setVisible(false);
+			gridTablero.setVisible(true);
+			btnPausa.setText("⏸ Pausa");
+		}
 	}
 
 	@FXML

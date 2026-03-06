@@ -10,6 +10,7 @@
           <children>
             <Label fx:id="lblMinas" text="Minas: 000" />
             <Button fx:id="btnReiniciar" onAction="#resetJuego" text="Reiniciar" />
+            <Button fx:id="btnPausa" onAction="#handlePausa" text="⏸ Pausa" />
             <Label fx:id="lblTiempo" text="Tiempo: 000" />
           </children>
       </HBox>
@@ -17,6 +18,12 @@
    
    <center>
       <GridPane fx:id="gridTablero" alignment="CENTER" BorderPane.alignment="CENTER">
+      	<StackPane>
+	      <VBox fx:id="vboxPausa" visible="false" alignment="CENTER" style="-fx-background-color: rgba(0,0,0,0.8);">
+	         <Label text="JUEGO PAUSADO" style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" />
+	         <Button text="Reanudar" onAction="#handlePausa" style="-fx-margin-top: 10;" />
+	      </VBox>
+   		</StackPane>
          <padding><Insets bottom="10" left="10" right="10" top="10"/></padding>
       </GridPane>
    </center>

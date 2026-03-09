@@ -16,6 +16,9 @@ import dam.proyectofinal.afm.util.CSVManager;
 import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseButton;
+
+import java.util.List;
+
 import dam.proyectofinal.afm.dao.PartidaDAO;
 import dam.proyectofinal.afm.model.Casilla;
 import javafx.scene.control.Alert;
@@ -42,6 +45,8 @@ public class GameController {
 	@FXML private VBox vboxPausa;
 	@FXML private Button btnPausa;
 	private boolean pausado = false;
+	@FXML private Label lblMejorTiempo;
+	private int recordActual = -1;
 	
 	public void inicializarJuego(Tablero tablero) {
 		this.tablero = tablero;
@@ -169,6 +174,21 @@ public class GameController {
 		javafx.application.Platform.runLater(() -> {
 			AppShell.getInstance().ajustarVentana();
 		});
+		// Cargar Record Actual
+		try {
+			List<Partida> mejores = partidaDAO.obtenerRankingTop(nivelSeleccionado, 1);
+			if (!mejores.isEmpty()) {
+				recordActual = mejores.get(0).getTiempoSegundos();
+				lblMejorTiempo.setText("Récord: " + recordActual + "s");
+				lblMejorTiempo.setStyle("-fx-text-fill: white;");
+			} else {
+				recordActual = -1;
+				lblMejorTiempo.setText("Récord: --");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			recordActual = -1;
+		}
 
 	}
 
@@ -369,6 +389,20 @@ public class GameController {
 		cronometro = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
 			segundosTranscurridos++;
 			lblTiempo.setText("Tiempo: " + segundosTranscurridos + "s");
+			
+			// Comparamos con el record
+			if (recordActual != -1) {
+				int diferencia = recordActual - segundosTranscurridos;
+				if (diferencia >= 0) {
+					// Por debajo del record, GANANDO
+					lblMejorTiempo.setText("Récord: " + recordActual + "s (-" + diferencia + ")");
+					lblMejorTiempo.setStyle("-fx-text-fill: #00FF00;");
+				} else {
+					// Perdiendo
+					lblMejorTiempo.setText("Récord: " + recordActual + "s (+" + Math.abs(diferencia) + ")");
+	                lblMejorTiempo.setStyle("-fx-text-fill: #FF4444;");
+				}
+			}
 		}));
 		cronometro.setCycleCount(Animation.INDEFINITE);
 		cronometro.play();

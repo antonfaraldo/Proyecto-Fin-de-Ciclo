@@ -7,27 +7,29 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="25.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.LoginController" style="-fx-background-color: #f4f4f4;">
+<VBox alignment="CENTER" spacing="25.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.LoginController" style="-fx-background-color: #f4f4f4;">
    <children>
       <VBox alignment="CENTER" spacing="5.0">
          <children>
+            <ImageView fitHeight="150.0" fitWidth="350.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/LogoMineManager.png" />
+               </image>
+            </ImageView>
             <Label text="MINE MANAGER PRO" textFill="#2c3e50">
                <font>
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <Label text="Plataforma de Competición" textFill="#7f8c8d">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
          </children>
       </VBox>
       
-      <TabPane fx:id="authTabPane" prefWidth="380.0" prefHeight="310.0" tabClosingPolicy="UNAVAILABLE" 
+      <TabPane fx:id="authTabPane" prefWidth="480.0" prefHeight="310.0" tabClosingPolicy="UNAVAILABLE" 
                style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); -fx-tab-header-background: white;">
         <tabs>
           <Tab text="Iniciar Sesión">
@@ -43,7 +45,7 @@
                         </Button>
                      </children>
                      <padding>
-                        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                        <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
                      </padding>
                   </VBox>
             </content>
@@ -63,7 +65,7 @@
                         </Button>
                      </children>
                      <padding>
-                        <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+                        <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
                      </padding>
                   </VBox>
             </content>

@@ -60,20 +60,23 @@ public class GameController {
 						btn.setPrefSize(30,  30);
 						
 						// Efecto Hover
+						final int filaActual = f;
+						final int colActual = c;
+						
 						btn.setOnMouseEntered(e -> {
-							if (btn.getText().isEmpty()) {
-								btn.setStyle("-fx-background-color: #dcdcdc;");
+							Casilla casillaLogica = tablero.getCeldas()[filaActual][colActual];
+							if (!casillaLogica.isRevelada() && !casillaLogica.isMarcada() && !pausado && !juegoTerminado ) {
+								btn.setStyle("-fx-background-color: #dcdcdc; -fx-cursor: hand;");
 							}
 						});
 						btn.setOnMouseExited(e -> {
 							// Al salir se restaura el fondo original
-							if (btn.getText().isEmpty()) {
+							Casilla casillaLogica = tablero.getCeldas()[filaActual][colActual];
+							if (!casillaLogica.isRevelada() && !casillaLogica.isMarcada()) {
 								btn.setStyle("");
 							}
 						});
 						
-						int filaActual = f;
-						int colActual = c;
 						
 						// Se usa el setOnMouseClicked para detectar si es click derecho o izquierdo
 						btn.setOnMouseClicked(event -> {

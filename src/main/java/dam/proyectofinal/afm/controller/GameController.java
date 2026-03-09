@@ -47,6 +47,9 @@ public class GameController {
 	private boolean pausado = false;
 	@FXML private Label lblMejorTiempo;
 	private int recordActual = -1;
+	@FXML private VBox vboxFinal;
+	@FXML private Label lblEstadoFinal;
+	@FXML private Label lblDetallesFinal;
 	
 	public void inicializarJuego(Tablero tablero) {
 		this.tablero = tablero;
@@ -145,6 +148,12 @@ public class GameController {
 			btnPausa.setText("⏸ Pausa");
 			btnPausa.setStyle("");
 		}
+		// Ocultamos el panel de fin de partida
+		if (vboxFinal != null) vboxFinal.setVisible(false);
+		if (gridTablero != null) {
+			gridTablero.setOpacity(1.0);
+			gridTablero.setDisable(false);
+		}
 		
 		// Extraer datos según el nievel
 		int filas, columnas, minas;
@@ -229,8 +238,8 @@ public class GameController {
 		juegoTerminado = true;
         cronometro.stop();
         if (victoria) {
-            System.out.println("Victoria");
-            mostrarAlerta("¡VICTORIA!", "Enhorabuena. Has ganado la partida.");
+        	lblEstadoFinal.setText("¡VICTORIA!");
+            lblEstadoFinal.setStyle("-fx-text-fill: #2ecc71;");
             guardarResultado(true);
 
             LogroService logroService = new LogroService();
@@ -242,10 +251,15 @@ public class GameController {
             logroService.comprobarLogros(AppShell.getInstance().getUsuario(), p);
         } else {
             revelarTodo();
-            System.out.println("BOOM Has perdido");
-            mostrarAlerta("¡BOOM!", "Has pisado una mina. Partida terminada.");
+            lblEstadoFinal.setText("¡BOOM!");
+            lblEstadoFinal.setStyle("-fx-text-fill: #e74c3c;");
             guardarResultado(false);
         }
+        lblDetallesFinal.setText("Tiempo: " + segundosTranscurridos + "s | Banderas: " + banderasColocadas);
+        // Mostrar y ocultar el panel
+        vboxFinal.setVisible(true);
+        gridTablero.setOpacity(0.4);
+        gridTablero.setDisable(true);
 	}
 
 	private void ejecutarChording(int fila, int col) {

@@ -2,6 +2,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.GameController">
    <top>
@@ -28,13 +29,32 @@
         <VBox fx:id="vboxPausa" alignment="CENTER" spacing="20" visible="false" 
               style="-fx-background-color: rgba(0,0,0,0.8); -fx-background-radius: 10;">
             <children>
-                <Label text="⏸ JUEGO PAUSADO" 
-                       style="-fx-text-fill: white; -fx-font-size: 32px; -fx-font-weight: bold;" />
-                <Label text="No puedes ver el tablero mientras el tiempo está detenido" 
-                       style="-fx-text-fill: #aaa; -fx-font-size: 14px;" />
-                <Button onAction="#handlePausa" text="Reanudar Partida" 
-                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-padding: 10 20; -fx-font-weight: bold; -fx-cursor: hand;" />
+                <Label text="⏸ JUEGO PAUSADO" style="-fx-text-fill: white; -fx-font-size: 32px; -fx-font-weight: bold;" />
+                <Label text="No puedes ver el tablero mientras el tiempo está detenido" style="-fx-text-fill: #aaa; -fx-font-size: 14px;" />
+                <Button onAction="#handlePausa" text="Reanudar Partida" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-padding: 10 20; -fx-font-weight: bold; -fx-cursor: hand;" />
             </children>
+        </VBox>
+
+        <VBox fx:id="vboxFinal" alignment="CENTER" spacing="15.0" visible="false" maxWidth="400" maxHeight="250"
+              style="-fx-background-color: rgba(44, 62, 80, 0.95); -fx-background-radius: 20; -fx-padding: 30;">
+           <children>
+              <Label fx:id="lblEstadoFinal" text="¡VICTORIA!" textFill="WHITE">
+                 <font>
+                    <Font name="System Bold" size="40.0" />
+                 </font>
+              </Label>
+              <Label fx:id="lblDetallesFinal" text="Tiempo: 0s | Banderas: 0" textFill="#bdc3c7">
+                 <font>
+                    <Font size="18.0" />
+                 </font>
+              </Label>
+              <HBox alignment="CENTER" spacing="20.0">
+                 <children>
+                    <Button onAction="#resetJuego" prefHeight="40" prefWidth="130" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;" text="REINTENTAR" />
+                    <Button onAction="#volverAlMenu" prefHeight="40" prefWidth="130" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;" text="MENÚ" />
+                 </children>
+              </HBox>
+           </children>
         </VBox>
     </StackPane>
    </center>
@@ -42,8 +62,7 @@
    <bottom>
       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
           <padding><Insets bottom="15" top="5"/></padding>
-          <Button text="🏠 Volver al Menú" onAction="#volverAlMenu" 
-                  style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20 8 20;" />
+          <Button text="🏠 Volver al Menú" onAction="#volverAlMenu" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20 8 20;" />
       </VBox>
    </bottom>
 </BorderPane>

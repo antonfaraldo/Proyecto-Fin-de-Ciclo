@@ -507,4 +507,21 @@ public class GameController {
 	    AppShell.getInstance().loadView(View.MENU);
 	    AppShell.getInstance().ajustarVentana();
 	}
+
+	public void prepararPartidaPersonalizada(int filas, int columnas, int minas) {
+		// TODO Auto-generated method stub
+		prepararPartida(Nivel.FACIL);
+		
+		// Sobrescribimos con los valores personalizados
+		Dificultad personalizada = new Dificultad(0, Nivel.FACIL, filas, columnas, minas);
+		this.tablero = new Tablero(personalizada);
+		
+		lblMinas.setText("mINAS: " + minas);
+		
+		generarBotones(filas, columnas);
+		
+		javafx.application.Platform.runLater(() -> {
+			AppShell.getInstance().ajustarVentana();
+		});
+	}
 }

@@ -42,4 +42,9 @@ public class MenuController {
 		AppShell.getInstance().loadView(View.LOGIN);
 		AppShell.getInstance().ajustarVentana();
 	}
+	@FXML
+	private void handlePersonalizar() {
+		// Cambiamos a la vista de configuracion personalizada
+		AppShell.getInstance().loadView(View.PERSONALIZAR);
+	}
 }

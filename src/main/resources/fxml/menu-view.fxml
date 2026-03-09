@@ -24,6 +24,8 @@
             <Button maxWidth="Infinity" text="MODO FÁCIL" onAction="#handleJugarFacil" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
             <Button maxWidth="Infinity" text="MODO MEDIO" onAction="#handleJugarMedio" style="-fx-background-color: #FF9800; -fx-text-fill: white;" />
             <Button maxWidth="Infinity" text="MODO DIFÍCIL" onAction="#handleJugarDificil" style="-fx-background-color: #F44336; -fx-text-fill: white;" />
+            <Button text="Personalizado" onAction="#handlePersonalizar" 
+        style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-weight: bold;" />
          </children>
       </VBox>
 

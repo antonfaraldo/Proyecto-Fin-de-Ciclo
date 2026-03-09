@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="25.0" prefWidth="400.0" style="-fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.PersonalizarNivelController">
+    <children>
+        <Label text="CONFIGURAR NIVEL" textFill="#2c3e50">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        
+        <VBox spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); -fx-padding: 25;">
+            <children>
+                <GridPane vgap="15" hgap="15" alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="100" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="100" />
+                    </columnConstraints>
+                    <children>
+                        <Label text="Filas:" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                            <font><Font name="System Bold" size="14.0" /></font>
+                        </Label>
+                        <Spinner fx:id="spinFilas" editable="true" GridPane.rowIndex="0" GridPane.columnIndex="1" maxWidth="Infinity" />
+                        
+                        <Label text="Columnas:" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                            <font><Font name="System Bold" size="14.0" /></font>
+                        </Label>
+                        <Spinner fx:id="spinColumnas" editable="true" GridPane.rowIndex="1" GridPane.columnIndex="1" maxWidth="Infinity" />
+                        
+                        <Label text="Minas:" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                            <font><Font name="System Bold" size="14.0" /></font>
+                        </Label>
+                        <Spinner fx:id="spinMinas" editable="true" GridPane.rowIndex="2" GridPane.columnIndex="1" maxWidth="Infinity" />
+                    </children>
+                </GridPane>
+            </children>
+        </VBox>
+
+        <HBox spacing="20" alignment="CENTER">
+            <children>
+                <Button text="VOLVER" onAction="#handleCancelar" prefHeight="40" prefWidth="120" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" />
+                <Button text="¡A JUGAR!" onAction="#handleJugar" prefHeight="40" prefWidth="120" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" />
+            </children>
+        </HBox>
+    </children>
+    <padding>
+        <Insets top="40" right="40" bottom="40" left="40" />
+    </padding>
+</VBox>

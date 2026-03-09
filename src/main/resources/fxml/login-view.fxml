@@ -10,26 +10,40 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.LoginController">
+<VBox alignment="CENTER" spacing="25.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.LoginController" style="-fx-background-color: #f4f4f4;">
    <children>
-      <Label text="MINE MANAGER PRO">
-         <font>
-            <Font name="System Bold" size="28.0" />
-         </font>
-      </Label>
+      <VBox alignment="CENTER" spacing="5.0">
+         <children>
+            <Label text="MINE MANAGER PRO" textFill="#2c3e50">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+            <Label text="Plataforma de Competición" textFill="#7f8c8d">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
       
-      <TabPane fx:id="authTabPane" prefWidth="350.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="authTabPane" prefWidth="380.0" prefHeight="310.0" tabClosingPolicy="UNAVAILABLE" 
+               style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); -fx-tab-header-background: white;">
         <tabs>
           <Tab text="Iniciar Sesión">
             <content>
               <VBox alignment="CENTER" spacing="15.0">
                      <children>
-                        <TextField fx:id="loginNicknameField" promptText="Nickname" />
-                        <PasswordField fx:id="loginPasswordField" promptText="Contraseña" />
-                        <Button maxWidth="Infinity" onAction="#handleLogin" style="-fx-background-color: #2196F3;" text="ENTRAR" textFill="WHITE" />
+                        <TextField fx:id="loginNicknameField" promptText="Nickname" prefHeight="40.0" style="-fx-background-radius: 5;" />
+                        <PasswordField fx:id="loginPasswordField" promptText="Contraseña" prefHeight="40.0" style="-fx-background-radius: 5;" />
+                        <Button maxWidth="Infinity" prefHeight="45.0" onAction="#handleLogin" style="-fx-background-color: #2196F3; -fx-background-radius: 5; -fx-cursor: hand;" text="ENTRAR" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
                      </children>
                      <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
                      </padding>
                   </VBox>
             </content>
@@ -39,13 +53,17 @@
             <content>
               <VBox alignment="CENTER" spacing="15.0">
                      <children>
-                        <TextField fx:id="registerEmailField" promptText="Email" />
-                        <TextField fx:id="registerNicknameField" promptText="Nickname" />
-                        <PasswordField fx:id="registerPasswordField" promptText="Contraseña" />
-                        <Button maxWidth="Infinity" onAction="#handleRegister" style="-fx-background-color: #4CAF50;" text="CREAR CUENTA" textFill="WHITE" />
+                        <TextField fx:id="registerEmailField" promptText="Email" prefHeight="40.0" style="-fx-background-radius: 5;" />
+                        <TextField fx:id="registerNicknameField" promptText="Nickname" prefHeight="40.0" style="-fx-background-radius: 5;" />
+                        <PasswordField fx:id="registerPasswordField" promptText="Contraseña" prefHeight="40.0" style="-fx-background-radius: 5;" />
+                        <Button maxWidth="Infinity" prefHeight="45.0" onAction="#handleRegister" style="-fx-background-color: #4CAF50; -fx-background-radius: 5; -fx-cursor: hand;" text="CREAR CUENTA" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
                      </children>
                      <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
                      </padding>
                   </VBox>
             </content>
@@ -53,9 +71,13 @@
         </tabs>
       </TabPane>
       
-      <Label fx:id="feedbackLabel" textFill="RED" wrapText="true" />
+      <Label fx:id="feedbackLabel" textFill="#e74c3c" wrapText="true">
+         <font>
+            <Font name="System Italic" size="13.0" />
+         </font>
+      </Label>
    </children>
    <padding>
-      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+      <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
    </padding>
 </VBox>

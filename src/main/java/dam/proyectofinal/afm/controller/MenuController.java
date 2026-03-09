@@ -11,7 +11,9 @@ public class MenuController {
 	@FXML
 	public void initialize() {
 		if (AppShell.getInstance().getUsuario() != null) {
-			lblBienvenida.setText("Hola" + AppShell.getInstance().getUsuario().getNickname());
+			String nombre = AppShell.getInstance().getUsuario().getNickname();
+			
+			lblBienvenida.setText("Bienvenido, " + nombre);
 		}
 	}
 	

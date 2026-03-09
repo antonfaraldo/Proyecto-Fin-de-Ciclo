@@ -1,6 +1,6 @@
 package dam.proyectofinal.afm.controller;
 
-import dam.proyectofinal.afm.dao.PartidaDAOImpl;
+import dam.proyectofinal.afm.dao.PartidaDAOImpl; 
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -18,6 +18,10 @@ import javafx.fxml.FXML;
 import javafx.scene.input.MouseButton;
 
 import java.util.List;
+
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
+import javafx.util.Duration;
 
 import dam.proyectofinal.afm.dao.PartidaDAO;
 import dam.proyectofinal.afm.model.Casilla;
@@ -143,13 +147,18 @@ public class GameController {
 			gridTablero.setVisible(true);
 			gridTablero.setOpacity(1.0);
 			gridTablero.setDisable(false);
+			gridTablero.setTranslateX(0); // Reset de la animación
 		}
 		if (btnPausa != null) {
 			btnPausa.setText("⏸ Pausa");
 			btnPausa.setStyle("");
 		}
 		// Ocultamos el panel de fin de partida
-		if (vboxFinal != null) vboxFinal.setVisible(false);
+		if (vboxFinal != null) {
+			vboxFinal.setVisible(false);
+			vboxFinal.setScaleX(1.0); // Reset de la animación de escala
+			vboxFinal.setScaleY(1.0); // Reset de la animación de escala
+		}
 		if (gridTablero != null) {
 			gridTablero.setOpacity(1.0);
 			gridTablero.setDisable(false);
@@ -249,8 +258,17 @@ public class GameController {
             p.setVictoria(true);
             p.setNumBanderasUsadas(banderasColocadas);
             logroService.comprobarLogros(AppShell.getInstance().getUsuario(), p);
+            animarPanelFinal();
         } else {
             revelarTodo();
+            // Animación 
+            TranslateTransition tt = new TranslateTransition(Duration.millis(50), gridTablero);
+            tt.setFromX(-10);
+            tt.setToX(10);
+            tt.setCycleCount(6);
+            tt.setAutoReverse(true);
+            tt.play();
+            
             lblEstadoFinal.setText("¡BOOM!");
             lblEstadoFinal.setStyle("-fx-text-fill: #e74c3c;");
             guardarResultado(false);
@@ -260,6 +278,19 @@ public class GameController {
         vboxFinal.setVisible(true);
         gridTablero.setOpacity(0.4);
         gridTablero.setDisable(true);
+	}
+
+	private void animarPanelFinal() {
+		// TODO Auto-generated method stub
+		vboxFinal.setScaleX(0);
+		vboxFinal.setScaleY(0);
+		vboxFinal.setVisible(true);
+		
+		ScaleTransition st = new ScaleTransition(Duration.millis(500), vboxFinal);
+		st.setToX(1);
+	    st.setToY(1);
+	    st.setDelay(Duration.millis(200)); // Espera un poco a que termine la sacudida si perdiste
+	    st.play();
 	}
 
 	private void ejecutarChording(int fila, int col) {

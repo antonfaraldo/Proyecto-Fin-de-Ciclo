@@ -4,6 +4,7 @@ import dam.proyectofinal.afm.dao.PartidaDAOImpl;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import dam.proyectofinal.afm.model.Dificultad;
@@ -228,7 +229,7 @@ public class GameController {
 		// Lógica Chording
 		if (casilla.isRevelada()) {
 			if (casilla.getMinasAlrededor() > 0 && !casilla.isEsMina()) {
-				ejecutarChording(f, c);
+				ejecutarChording(f, c, botonPulsado);
 			}
 			return;
 		}
@@ -305,7 +306,7 @@ public class GameController {
 	    st.play();
 	}
 
-	private void ejecutarChording(int fila, int col) {
+	private void ejecutarChording(int fila, int col, Button botonPulsado) {
 		// TODO Auto-generated method stub
 		Casilla casillaCentral = tablero.getCeldas()[fila][col];
 		int minasIndicadas = casillaCentral.getMinasAlrededor();
@@ -352,6 +353,16 @@ public class GameController {
 				finalizarPartida(true);
 			}
 		} 
+		// Animación de parpadeo
+		else {
+			botonPulsado.setStyle(botonPulsado.getStyle() + "-fx-border-color: #e74c3c; -fx-border-width: 2px; -fx-background-color: #ffcccc;");
+			
+			PauseTransition pausa = new PauseTransition(Duration.millis(200));
+			pausa.setOnFinished(e -> {
+				refrescarTablero();
+			});
+			pausa.play();
+		}
 	}
 
 	private void mostrarAlerta(String titulo, String mensaje) {

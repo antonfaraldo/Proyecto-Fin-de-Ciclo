@@ -179,6 +179,8 @@ public class GameController {
 	    case DIFICIL: 
 	        filas = 16; columnas = 30; minas = 99;
 	        break;
+	    case PERSONALIZADO:
+	    return;
 	    default:
 	        filas = 8; columnas = 8; minas = 10;
 	}
@@ -501,10 +503,10 @@ public class GameController {
 			mostrarAlerta("Recomendación de pantalla", "Has diseñado un tablero grande. Se recomienda jugar en pantalla completa para ver todas las casillas.");
 		}
 		
-		prepararPartida(Nivel.FACIL);
+		prepararPartida(Nivel.PERSONALIZADO);
 		
 		// Sobrescribimos con los valores personalizados
-		Dificultad personalizada = new Dificultad(0, Nivel.FACIL, filas, columnas, minas);
+		Dificultad personalizada = new Dificultad(0, Nivel.PERSONALIZADO, filas, columnas, minas);
 		this.tablero = new Tablero(personalizada);
 		
 		lblMinas.setText("MINAS: " + minas);

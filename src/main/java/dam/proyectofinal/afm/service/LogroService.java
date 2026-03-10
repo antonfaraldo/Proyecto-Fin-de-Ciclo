@@ -35,12 +35,8 @@ public class LogroService {
 			verificarYRegistrarLogro(usuario, "Campo de Minas Superado");
 		}
 		// Jugar una personalizado
-		if (partida.getDificultad().getNivel() == Nivel.FACIL ) {
-			if (partida.getDificultad().getFilas() != 8 || 
-		            partida.getDificultad().getColumnas() != 8 || 
-		            partida.getDificultad().getNumMinas() != 10) {
-		            verificarYRegistrarLogro(usuario, "Arquitecto");
-		        }
+		if (partida.getDificultad().getNivel() == Nivel.PERSONALIZADO ) {
+			verificarYRegistrarLogro(usuario, "Arquitecto");
 		}
 		// Logros Acumulativos
 		if (partidasGanadasTotales == 5) {

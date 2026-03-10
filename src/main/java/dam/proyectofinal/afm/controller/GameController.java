@@ -17,6 +17,7 @@ import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.animation.ScaleTransition;
@@ -25,6 +26,7 @@ import javafx.util.Duration;
 
 import dam.proyectofinal.afm.dao.PartidaDAO;
 import dam.proyectofinal.afm.model.Casilla;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -117,15 +119,15 @@ public class GameController {
 		// Si hay bandera se quita, si no hay se pone
 		if (casilla.isMarcada()) {
 			casilla.setMarcada(false);
-			btn.setText(""); // Se quita el icono
-			btn.setStyle(""); // Se quita el supuesto icono
 			banderasColocadas--;
 		} else {
 			casilla.setMarcada(true);
-			btn.setText("🚩"); // Acordarse de meter luego el icono
-			btn.setStyle("-fx-text-fill: red; -fx-font-weight: bold;"); // Luego hay que añadir el estilo
 			banderasColocadas++;
 		}
+		actualizarBotonCasilla(btn, casilla);
+		
+		int minasRestantes = tablero.getDificultad().getNumMinas() - banderasColocadas;
+		lblMinas.setText("Minas: " + minasRestantes);
 	}
 
 	// Inicializar la vista del juego con la dificultad
@@ -260,7 +262,7 @@ public class GameController {
             logroService.comprobarLogros(AppShell.getInstance().getUsuario(), p);
             animarPanelFinal();
         } else {
-            revelarTodo();
+            revelarMinasAnimado();
             // Animación 
             TranslateTransition tt = new TranslateTransition(Duration.millis(50), gridTablero);
             tt.setFromX(-10);
@@ -376,35 +378,7 @@ public class GameController {
 				Integer f = GridPane.getRowIndex(btn);
 				
 				if (f != null && c != null) {
-					// Se consulta el estado de la casilla 
-					Casilla casilla = tablero.getCeldas()[f][c];
-					
-					// Si esta revelada se actualiza el boton
-					if (casilla.isRevelada()) {
-						if (casilla.isEsMina()) {
-							btn.setText("💣");
-	                        btn.setStyle("-fx-background-color: #ff0000; " +
-	                        			"-fx-text-fill: black; " +
-	                        			"-fx-font-size: 14px; " +
-	                        			"-fx-font-weight: bold; " +
-	                        			"-fx-padding: 0; " +
-	                        			"-fx-alignment: center; " +
-	                        			"-fx-opacity: 1.0;");
-						} else {
-							int minas = casilla.getMinasAlrededor();
-							btn.setText(minas > 0 ? String.valueOf(minas) : "");
-							
-							// Se aplica un color según cada numero
-							String colorStyle = obtenerColorPorNumero(minas);
-							btn.setStyle("-fx-background-color: #e0e0e0; " +
-                                    "-fx-border-color: #bdbdbd; " +
-                                    "-fx-border-width: 0.5; " +
-                                    "-fx-opacity: 1; " +
-                                    "-fx-font-weight: bold; " +
-                                    colorStyle);
-					
-						}
-					}
+					actualizarBotonCasilla(btn, tablero.getCeldas()[f][c]);
 				}
 			}
 		}
@@ -523,5 +497,58 @@ public class GameController {
 		javafx.application.Platform.runLater(() -> {
 			AppShell.getInstance().ajustarVentana();
 		});
+	}
+	private void revelarMinasAnimado() {
+		List<Button> botonesConMina = new ArrayList<>();
+		
+		// Se buscan todos los botones que tienen una mina oculta
+		for (Node node : gridTablero.getChildren()) {
+			if (node instanceof Button) {
+				Button btn = (Button) node;
+				Integer c = GridPane.getColumnIndex(btn);
+				Integer f = GridPane.getRowIndex(btn);
+				if (f != null && c != null) {
+					Casilla casilla = tablero.getCeldas()[f][c];
+					if (casilla.isEsMina() && !casilla.isRevelada()) {
+						botonesConMina.add(btn);
+					}
+				}
+			}
+		}
+		// Timeline para revelar las casillas
+		Timeline timelineAnimacion = new Timeline();
+		for (int i = 0; i < botonesConMina.size(); i++) {
+			Button btnMina = botonesConMina.get(i);
+			KeyFrame frame = new KeyFrame(Duration.millis(50 * i), e -> {
+				Integer col = GridPane.getColumnIndex(btnMina);
+				Integer fil = GridPane.getRowIndex(btnMina);
+				Casilla c = tablero.getCeldas()[fil][col];
+				c.setRevelada(true);
+				actualizarBotonCasilla(btnMina, c);
+			});
+			timelineAnimacion.getKeyFrames().add(frame);
+		}
+		timelineAnimacion.play();
+	}
+
+	private void actualizarBotonCasilla(Button btn, Casilla casilla) {
+		// TODO Auto-generated method stub
+		btn.setGraphic(null);
+	    btn.setText("");
+	    if (casilla.isRevelada()) {
+	        if (casilla.isEsMina()) {
+	            btn.setText("💣");
+	            btn.setStyle("-fx-background-color: #ff0000; -fx-text-fill: black; -fx-font-weight: bold; -fx-opacity: 1.0;");
+	        } else {
+	            int minas = casilla.getMinasAlrededor();
+	            btn.setText(minas > 0 ? String.valueOf(minas) : "");
+	            btn.setStyle("-fx-background-color: #e0e0e0; -fx-border-color: #bdbdbd; -fx-opacity: 1; -fx-font-weight: bold; " + obtenerColorPorNumero(minas));
+	        }
+	    } else if (casilla.isMarcada()) {
+	        btn.setText("🚩");
+	        btn.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+	    } else {
+	        btn.setStyle("");
+	    }
 	}
 }

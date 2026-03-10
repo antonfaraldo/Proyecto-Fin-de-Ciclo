@@ -34,6 +34,14 @@ public class LogroService {
 		if (partida.getDificultad().getNivel() == Nivel.MEDIO) {
 			verificarYRegistrarLogro(usuario, "Campo de Minas Superado");
 		}
+		// Jugar una personalizado
+		if (partida.getDificultad().getNivel() == Nivel.FACIL ) {
+			if (partida.getDificultad().getFilas() != 8 || 
+		            partida.getDificultad().getColumnas() != 8 || 
+		            partida.getDificultad().getNumMinas() != 10) {
+		            verificarYRegistrarLogro(usuario, "Arquitecto");
+		        }
+		}
 		// Logros Acumulativos
 		if (partidasGanadasTotales == 5) {
 			verificarYRegistrarLogro(usuario, "Desactivador Novato");

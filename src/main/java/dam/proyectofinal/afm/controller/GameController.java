@@ -467,6 +467,10 @@ public class GameController {
 
 	@FXML
 	void resetJuego(ActionEvent event) {
+		// Se impide el reset si la animación esta corriendo
+		if (juegoTerminado && !vboxFinal.isVisible()) {
+			return;
+		}
 		if (tablero != null && tablero.getDificultad() != null) {
 			prepararPartida(tablero.getDificultad().getNivel());
 			System.out.println("Partida reiniciada con éxito");

@@ -428,7 +428,9 @@ public class GameController {
 		
 		cronometro = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
 			segundosTranscurridos++;
-			lblTiempo.setText("Tiempo: " + segundosTranscurridos + "s");
+			int minutos = segundosTranscurridos / 60;
+			int segundos = segundosTranscurridos % 60;
+			lblTiempo.setText(String.format("Tiempo: %02d:%02d", minutos, segundos));
 			
 			// Comparamos con el record
 			if (recordActual != -1) {

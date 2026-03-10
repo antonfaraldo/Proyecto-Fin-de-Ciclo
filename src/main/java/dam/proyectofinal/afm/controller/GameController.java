@@ -248,6 +248,9 @@ public class GameController {
 		// TODO Auto-generated method stub
 		juegoTerminado = true;
         cronometro.stop();
+        // Se bloque el tablero inmediatamente
+        gridTablero.setDisable(true);
+        
         if (victoria) {
         	lblEstadoFinal.setText("¡VICTORIA!");
             lblEstadoFinal.setStyle("-fx-text-fill: #2ecc71;");
@@ -261,6 +264,8 @@ public class GameController {
             p.setNumBanderasUsadas(banderasColocadas);
             logroService.comprobarLogros(AppShell.getInstance().getUsuario(), p);
             animarPanelFinal();
+            vboxFinal.setVisible(true);
+            gridTablero.setOpacity(0.4);
         } else {
             revelarMinasAnimado();
             // Animación 
@@ -276,10 +281,6 @@ public class GameController {
             guardarResultado(false);
         }
         lblDetallesFinal.setText("Tiempo: " + segundosTranscurridos + "s | Banderas: " + banderasColocadas);
-        // Mostrar y ocultar el panel
-        vboxFinal.setVisible(true);
-        gridTablero.setOpacity(0.4);
-        gridTablero.setDisable(true);
 	}
 
 	private void animarPanelFinal() {
@@ -528,6 +529,12 @@ public class GameController {
 			});
 			timelineAnimacion.getKeyFrames().add(frame);
 		}
+		timelineAnimacion.setOnFinished(event -> {
+	        vboxFinal.setVisible(true);
+	        gridTablero.setOpacity(0.4);
+	        animarPanelFinal(); 
+	    });
+		
 		timelineAnimacion.play();
 	}
 

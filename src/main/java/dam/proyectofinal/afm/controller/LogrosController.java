@@ -11,6 +11,8 @@ import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
@@ -51,9 +53,26 @@ public class LogrosController {
 		String estiloBase = "-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);";
         vbox.setStyle(estiloBase);
 		
-        Label icon = new Label(logro.isDesbloqueado() ? "⭐" : "🔒");
-        icon.setStyle("-fx-font-size: 40px;");
-
+        ImageView iconView = new ImageView();
+        iconView.setFitWidth(50);
+        iconView.setFitHeight(50);
+        iconView.setPreserveRatio(true);
+        
+        try {
+        	String rutaImagen;
+        if(logro.isDesbloqueado()) {
+        	rutaImagen = "/images/LogroDesbloqueado.png"; // Estrella significa desbloqueado
+        	vbox.setOpacity(1.0); // Visible
+        } else {
+        	rutaImagen = "/images/LogroBloqueado.png"; // Candado para bloqueado
+            vbox.setOpacity(0.6); // Transparente
+        }
+        iconView.setImage(new Image(getClass().getResourceAsStream(rutaImagen)));
+        } catch (Exception e) {
+			// TODO: handle exception
+        	System.out.println("No se pudo cargar la imagen del logro: " + e.getMessage());
+		}
+        
         Label name = new Label(logro.getNombre());
         name.setStyle("-fx-font-weight: bold; -fx-text-alignment: center;");
         name.setWrapText(true);
@@ -62,12 +81,7 @@ public class LogrosController {
         desc.setStyle("-fx-font-size: 11px; -fx-text-fill: #777; -fx-text-alignment: center;");
         desc.setWrapText(true);
 
-        vbox.getChildren().addAll(icon, name, desc);
-        
-        // SI esta bloqueado sepone transparente
-        if (!logro.isDesbloqueado()) {
-        	vbox.setOpacity(0.5);
-        }
+        vbox.getChildren().addAll(iconView, name, desc);
         
 		return vbox;
 	}

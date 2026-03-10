@@ -30,6 +30,7 @@ public class MenuController {
 	@FXML
 	private void handleVerLogros() {
 			System.out.println("Cargando vitrina de logros...");
+			AppShell.getInstance().loadView(View.LOGROS);
 	}
 	@FXML
 	private void handleVerRanking() {

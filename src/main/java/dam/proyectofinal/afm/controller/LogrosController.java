@@ -2,7 +2,10 @@ package dam.proyectofinal.afm.controller;
 
 import java.util.List;
 
+import dam.proyectofinal.afm.dao.LogroDAO;
+import dam.proyectofinal.afm.dao.LogroDAOImpl;
 import dam.proyectofinal.afm.model.Logro;
+import dam.proyectofinal.afm.model.Usuario;
 import dam.proyectofinal.afm.util.AppShell;
 import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
@@ -13,6 +16,7 @@ import javafx.scene.layout.VBox;
 
 public class LogrosController {
 	@FXML private TilePane tilePaneLogros;
+	private LogroDAO logroDAO = new LogroDAOImpl();
 	@FXML
 	public void initialize() {
 		cargarLogros();
@@ -21,13 +25,19 @@ public class LogrosController {
 		// TODO Auto-generated method stub
 		tilePaneLogros.getChildren().clear();
 		
-		// Se obtienen los logros del usuario
-		// Temporalmente usamos la lista
-		List<Logro> logrosUsuario = AppShell.getInstance().getUsuario().getLogros();
+		// Se obtienen todos los logros posibles 
+		List<Logro> todosLosLogros = logroDAO.listarTodos();
+		Usuario usuarioActual = AppShell.getInstance().getUsuario();
 		
-		for (Logro logro: logrosUsuario) {
-			VBox card = crearTarjetaLogro(logro);
-			tilePaneLogros.getChildren().add(card);
+		if (todosLosLogros != null) {
+			for (Logro logro : todosLosLogros) {
+				// Se comprueba si el usuario ya tiene ese logro
+				boolean conseguido = logroDAO.tieneUsuarioLogro(usuarioActual, logro.getNombre());
+				logro.setDesbloqueado(conseguido);
+				
+				VBox card = crearTarjetaLogro(logro);
+				tilePaneLogros.getChildren().add(card);
+			}
 		}
 		
 	}

@@ -15,7 +15,17 @@ public class LogroDAOImpl  implements LogroDAO {
     public List<Logro> listarTodos() {
         // TODO Auto-generated method stub
         // Temporalmente devolvemos una lista
-        return new ArrayList<>();
+    	List<Logro> todos = new ArrayList<>();
+    	
+    	// Se añanden los logros
+    	todos.add(new Logro(1, "Principiante Veloz", "Gana en menos de 30 segundos en nivel FÁCIL.", 30, false));
+		todos.add(new Logro(2, "Pura Suerte", "Gana una partida en menos de 5 segundos.", 5, false));
+		todos.add(new Logro(3, "Maestro Minero", "Supera el desafío del nivel DIFÍCIL.", 0, false));
+		todos.add(new Logro(4, "Campo de Minas Superado", "Gana una partida en nivel MEDIO.", 0, false));
+		todos.add(new Logro(5, "Desactivador Novato", "Acumula un total de 5 victorias.", 0, false));
+		todos.add(new Logro(6, "Estratega Preciso", "Gana una partida sin colocar ni una sola bandera.", 0, false));
+    	
+        return todos;
     }
 
     @Override

@@ -21,7 +21,7 @@
       <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
          <TilePane fx:id="tilePaneLogros" hgap="20" vgap="20" alignment="CENTER">
             <padding>
-               <Insets all="20.0" />
+               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
             </TilePane>
       </ScrollPane>

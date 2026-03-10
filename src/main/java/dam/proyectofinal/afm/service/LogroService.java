@@ -50,13 +50,19 @@ public class LogroService {
 		// TODO Auto-generated method stub
 		// Verificar si el usuario ya tiene el logro 
 		if (!logroDAO.tieneUsuarioLogro(usuario, nombreLogro)) {
-			// En caso de no tener el logro, se crea
-			Logro nuevoLogro = new Logro();
-			nuevoLogro.setNombre(nombreLogro);
-			
-			if (logroDAO.asignarLogroAUsuario(usuario, nuevoLogro)) {
-				// Si se guarda correctamente se lanza la alerta
-				lanzarNotificacionLogro(usuario, nombreLogro);
+			// Se buscar el logro en el DAO
+			Logro logroA_Asignar = null;
+			for (Logro l : logroDAO.listarTodos()) {
+				if (l.getNombre().equals(nombreLogro)) {
+					logroA_Asignar = l;
+					break;
+				}
+			}
+			// Si se encuentra el logro en la lista, se asigna
+			if (logroA_Asignar != null) {
+				if (logroDAO.asignarLogroAUsuario(usuario, logroA_Asignar) ) {
+					lanzarNotificacionLogro(usuario, nombreLogro);
+				}
 			}
 		}
 	}

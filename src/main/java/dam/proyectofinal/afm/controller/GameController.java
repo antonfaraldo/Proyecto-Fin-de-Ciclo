@@ -34,6 +34,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GameController {
@@ -192,7 +193,13 @@ public class GameController {
 		
 		// Ajustamos el tamaño de la ventana según el nivel
 		javafx.application.Platform.runLater(() -> {
-			AppShell.getInstance().ajustarVentana();
+			Stage stage = (Stage) gridTablero.getScene().getWindow();
+			if (nivelSeleccionado == Nivel.DIFICIL) {
+				stage.setMaximized(true);
+			} else {
+				stage.setMaximized(false);
+				AppShell.getInstance().ajustarVentana();
+			}
 		});
 		// Cargar Record Actual
 		try {
@@ -489,13 +496,18 @@ public class GameController {
 
 	public void prepararPartidaPersonalizada(int filas, int columnas, int minas) {
 		// TODO Auto-generated method stub
+		// Alerta Preventiva
+		if (columnas > 20 || filas > 15) {
+			mostrarAlerta("Recomendación de pantalla", "Has diseñado un tablero grande. Se recomienda jugar en pantalla completa para ver todas las casillas.");
+		}
+		
 		prepararPartida(Nivel.FACIL);
 		
 		// Sobrescribimos con los valores personalizados
 		Dificultad personalizada = new Dificultad(0, Nivel.FACIL, filas, columnas, minas);
 		this.tablero = new Tablero(personalizada);
 		
-		lblMinas.setText("mINAS: " + minas);
+		lblMinas.setText("MINAS: " + minas);
 		
 		generarBotones(filas, columnas);
 		

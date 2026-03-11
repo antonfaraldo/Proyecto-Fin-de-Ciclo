@@ -230,6 +230,7 @@ public class GameController {
 			} else {
 				recordActual = -1;
 				lblMejorTiempo.setText("Récord: --");
+				lblMejorTiempo.setStyle("-fx-text-fill: #FFD700;"); // Color para que resalte mejor 
 			}
 		} catch (Exception e) {
 			// TODO: handle exception

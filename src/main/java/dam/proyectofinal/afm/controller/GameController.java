@@ -494,7 +494,14 @@ public class GameController {
 			return;
 		}
 		if (tablero != null && tablero.getDificultad() != null) {
-			prepararPartida(tablero.getDificultad().getNivel());
+			Dificultad difActual = tablero.getDificultad();
+			
+			// Nivel personalizado se reinicia con los valores especificos
+			if (difActual.getNivel() == Nivel.PERSONALIZADO) {
+				prepararPartidaPersonalizada(difActual.getFilas(), difActual.getColumnas(), difActual.getNumMinas());
+			} else {
+				prepararPartida(difActual.getNivel());
+			}
 			System.out.println("Partida reiniciada con éxito");
 		}
 	}

@@ -147,8 +147,9 @@ public class GameController {
 		}
 		actualizarBotonCasilla(btn, casilla);
 		
-		int minasRestantes = tablero.getDificultad().getNumMinas() - banderasColocadas;
-		lblMinas.setText("Minas: " + minasRestantes);
+		int totalMinas = tablero.getDificultad().getNumMinas();
+		int minasRestantes = totalMinas - banderasColocadas;
+		lblMinas.setText(String.format("💣 %d | 🚩 %d/%d", minasRestantes, banderasColocadas, totalMinas));
 	}
 
 	// Inicializar la vista del juego con la dificultad
@@ -210,7 +211,7 @@ public class GameController {
 		this.tablero = new Tablero(dificultad);
 		
 		
-		lblMinas.setText("Minas: " + minas);
+		lblMinas.setText(String.format("💣 %d | 🚩 0/%d", minas, minas));
 		generarBotones(filas, columnas);
 		
 		// Ajustamos el tamaño de la ventana según el nivel
@@ -552,7 +553,7 @@ public class GameController {
 		Dificultad personalizada = new Dificultad(0, Nivel.PERSONALIZADO, filas, columnas, minas);
 		this.tablero = new Tablero(personalizada);
 		
-		lblMinas.setText("MINAS: " + minas);
+		lblMinas.setText(String.format("💣 %d | 🚩 0/%d", minas, minas));
 		
 		generarBotones(filas, columnas);
 		

@@ -75,6 +75,9 @@ public class GameController {
 						Button btn = new Button();
 						btn.setPrefSize(30,  30);
 						
+						GridPane.setRowIndex(btn, f);
+						GridPane.setColumnIndex(btn, c);
+						
 						// Efecto Hover
 						final int filaActual = f;
 						final int colActual = c;
@@ -82,15 +85,14 @@ public class GameController {
 						btn.setOnMouseEntered(e -> {
 							Casilla casillaLogica = tablero.getCeldas()[filaActual][colActual];
 							if (!casillaLogica.isRevelada() && !casillaLogica.isMarcada() && !pausado && !juegoTerminado ) {
-								btn.setStyle("-fx-background-color: #dcdcdc; -fx-cursor: hand;");
+								btn.setStyle("-fx-background-color: #d1d8e0; -fx-cursor: hand; " +
+					                     "-fx-border-color: #ecf0f1 #7f8c8d #7f8c8d #ecf0f1; -fx-border-width: 2px;");
 							}
 						});
 						btn.setOnMouseExited(e -> {
 							// Al salir se restaura el fondo original
 							Casilla casillaLogica = tablero.getCeldas()[filaActual][colActual];
-							if (!casillaLogica.isRevelada() && !casillaLogica.isMarcada()) {
-								btn.setStyle("");
-							}
+							actualizarBotonCasilla(btn, casillaLogica);
 						});
 						
 						
@@ -123,6 +125,7 @@ public class GameController {
 						
 						// Se añade al GridPane
 						gridTablero.add(btn, c, f);
+						actualizarBotonCasilla(btn, tablero.getCeldas()[f][c]);
 					}
 				}
 		
@@ -607,13 +610,22 @@ public class GameController {
 	        } else {
 	            int minas = casilla.getMinasAlrededor();
 	            btn.setText(minas > 0 ? String.valueOf(minas) : "");
-	            btn.setStyle("-fx-background-color: #e0e0e0; -fx-border-color: #bdbdbd; -fx-opacity: 1; -fx-font-weight: bold; " + obtenerColorPorNumero(minas));
+	            btn.setStyle("-fx-background-color: #f1f2f6; " +
+                        "-fx-border-color: #bdc3c7; " +
+                        "-fx-border-width: 0.5px; " +
+                        "-fx-font-weight: bold; " + 
+                        obtenerColorPorNumero(minas));
 	        }
 	    } else if (casilla.isMarcada()) {
 	        btn.setText("🚩");
-	        btn.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+	        btn.setStyle("-fx-background-color: #bdc3c7; " +
+                    "-fx-border-color: #ecf0f1 #7f8c8d #7f8c8d #ecf0f1; " +
+                    "-fx-border-width: 2px; " +
+                    "-fx-text-fill: red; -fx-font-weight: bold;");
 	    } else {
-	        btn.setStyle("");
+	        btn.setStyle("-fx-background-color: #bdc3c7; "
+	        		+                  "-fx-border-color: #ecf0f1 #7f8c8d #7f8c8d #ecf0f1; " 
+	        		+                   "-fx-border-width: 2px;");
 	    }
 	}
 	private void resaltarVecinas (int fila, int col, boolean resaltar) {
@@ -629,7 +641,7 @@ public class GameController {
 								if (resaltar) {
 									btnVecino.setStyle("-fx-background-color: #b0c4de; -fx-border-color: white;");
 								} else {
-									btnVecino.setStyle("");
+									actualizarBotonCasilla(btnVecino, vecinaLogica);
 								}
 								break;
 							}

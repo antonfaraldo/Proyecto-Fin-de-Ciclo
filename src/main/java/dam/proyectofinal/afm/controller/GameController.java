@@ -511,6 +511,9 @@ public class GameController {
 			Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "¿Seguro que quieres abandonar la partida?");
 			if (confirm.showAndWait().get() != ButtonType.OK) return;
 		}
+		// Obtener la ventana actual y quitando el maximizado de la dificultad dificil
+		Stage stage = (Stage) gridTablero.getScene().getWindow();
+		stage.setMaximized(false);
 		
 	    AppShell.getInstance().loadView(View.MENU);
 	    AppShell.getInstance().ajustarVentana();

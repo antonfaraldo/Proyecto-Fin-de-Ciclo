@@ -104,6 +104,22 @@ public class GameController {
 								manejarClic(filaActual, colActual, btn);
 							}
 						});
+						// Efecto resaltado del chording
+						btn.setOnMousePressed(e -> {
+							if (e.getButton() == MouseButton.PRIMARY && !pausado && !juegoTerminado) {
+								Casilla casillaLogica = tablero.getCeldas()[filaActual][colActual];
+								// Si la casilla esta revelada o es un num, se resaltan las de al lado
+								if ( casillaLogica.isRevelada() && casillaLogica.getMinasAlrededor() > 0) {
+									resaltarVecinas(filaActual, colActual, true);
+								}
+							}
+						});
+						btn.setOnMouseReleased(e -> {
+							if (e.getButton() == MouseButton.PRIMARY) {
+								// Al soltar , se quita el resaltado
+								resaltarVecinas(filaActual, colActual, false);
+							}
+						});
 						
 						// Se añade al GridPane
 						gridTablero.add(btn, c, f);
@@ -598,5 +614,28 @@ public class GameController {
 	    } else {
 	        btn.setStyle("");
 	    }
+	}
+	private void resaltarVecinas (int fila, int col, boolean resaltar) {
+		for (int i = fila - 1; i <= fila + 1; i++) {
+			for (int j = col - 1; j <= col + 1; j++) {
+				if (i >= 0 && i < tablero.getFilas() && j >= 0 && j < tablero.getColumnas() && !(i == fila && j == col)) {
+					Casilla vecinaLogica = tablero.getCeldas()[i][j];
+					// Solo se resalta si no está revelada ni marcada con bandera
+					if (!vecinaLogica.isRevelada() && !vecinaLogica.isMarcada()) {
+						for (Node node : gridTablero.getChildren()) {
+							if (GridPane.getRowIndex(node) == i && GridPane.getColumnIndex(node) == j) {
+								Button btnVecino = (Button) node;
+								if (resaltar) {
+									btnVecino.setStyle("-fx-background-color: #b0c4de; -fx-border-color: white;");
+								} else {
+									btnVecino.setStyle("");
+								}
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }

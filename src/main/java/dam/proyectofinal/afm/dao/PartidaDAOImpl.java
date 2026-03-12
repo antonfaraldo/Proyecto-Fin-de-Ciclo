@@ -17,7 +17,7 @@ public class PartidaDAOImpl implements PartidaDAO{
 	// contructor
 	public PartidaDAOImpl() {
 		if (historialPartidas.isEmpty()) {
-			List<Partida> cargadas = CSVManager.importarPartidas();
+			List<Partida> cargadas = CSVManager.importarPartidas(null);
 			if (cargadas != null) {
 				historialPartidas.addAll(cargadas);
 				System.out.println("Historial cargado desde CSV: " + cargadas.size() + " partidas"); 

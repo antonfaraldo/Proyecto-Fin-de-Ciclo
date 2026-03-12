@@ -44,6 +44,7 @@
       </TabPane>
 
       <Button text="Volver al Menú" onAction="#handleVolver" prefWidth="150" />
+      <Button text="📥 Importar Rankings" onAction="#handleImportarCSV" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;" />
    </children>
    <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
 </VBox>

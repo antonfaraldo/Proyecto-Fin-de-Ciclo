@@ -4,12 +4,18 @@ import dam.proyectofinal.afm.dao.PartidaDAOImpl;
 import dam.proyectofinal.afm.model.Nivel;
 import dam.proyectofinal.afm.model.Partida;
 import dam.proyectofinal.afm.util.AppShell;
+import dam.proyectofinal.afm.util.CSVManager;
 import dam.proyectofinal.afm.util.View;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
+
+import java.io.File;
+import java.util.List;
+
 import dam.proyectofinal.afm.dao.PartidaDAO;
 
 public class RankingController {
@@ -63,5 +69,21 @@ public class RankingController {
 		AppShell.getInstance().loadView(View.MENU);
 		AppShell.getInstance().ajustarVentana();
 	}
-
+	@FXML
+	private void handleImportarCSV() {
+		FileChooser fc = new FileChooser();
+		fc.setTitle("Importar Raking Externo");
+		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Archivos CSV", "*.csv"));
+		
+		File selectedFile = fc.showOpenDialog(AppShell.getInstance().getPrimaryStage());
+		if (selectedFile != null) {
+			List<Partida> importadas = CSVManager.importarPartidas(selectedFile);
+			if (!importadas.isEmpty()) {
+				for (Partida p : importadas) {
+					partidaDao.guardar(p);
+				}
+				initialize();
+			}
+		}
+	}
 }

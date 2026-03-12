@@ -150,6 +150,29 @@ public class GameController {
 		int totalMinas = tablero.getDificultad().getNumMinas();
 		int minasRestantes = totalMinas - banderasColocadas;
 		lblMinas.setText(String.format("💣 %d | 🚩 %d/%d", minasRestantes, banderasColocadas, totalMinas));
+		
+		if (minasRestantes < 0) {
+			// Se cambia a color rojo para alertar 
+			lblMinas.setStyle(lblMinas.getStyle() + "-fx-text-fill: #ff4444; -fx-font-weight: bold;");
+			// Animacion de sacudida
+			vibrarLabel(lblMinas);
+		} else {
+			// Se restaura al color normal si vuelve a tener valores positivos
+			lblMinas.setStyle(lblMinas.getStyle() + "-fx-text-fill: black; -fx-font-weight: bold;");
+		}
+	}
+
+	private void vibrarLabel(Label label) {
+		// TODO Auto-generated method stub
+		TranslateTransition tt = new TranslateTransition(Duration.millis(50), label);
+		tt.setFromX(0);
+		tt.setByX(5); // Se mueve 5 pixeles a la derecha
+		tt.setCycleCount(4); // Hace el movimiento 4 veces
+		tt.setAutoReverse(true); // Vuelve al origen
+		
+		tt.setOnFinished(e -> label.setTranslateX(0));
+		
+		tt.play();
 	}
 
 	// Inicializar la vista del juego con la dificultad
@@ -212,6 +235,7 @@ public class GameController {
 		
 		
 		lblMinas.setText(String.format("💣 %d | 🚩 0/%d", minas, minas));
+		lblMinas.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
 		generarBotones(filas, columnas);
 		
 		// Ajustamos el tamaño de la ventana según el nivel
@@ -554,6 +578,7 @@ public class GameController {
 		this.tablero = new Tablero(personalizada);
 		
 		lblMinas.setText(String.format("💣 %d | 🚩 0/%d", minas, minas));
+		lblMinas.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
 		
 		generarBotones(filas, columnas);
 		

@@ -4,10 +4,12 @@ import dam.proyectofinal.afm.model.Nivel;
 import dam.proyectofinal.afm.util.AppShell;
 import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class MenuController {
 	@FXML private Label lblBienvenida;
+	@FXML private Button btnAdmin;
 	@FXML
 	public void initialize() {
 		if (AppShell.getInstance().getUsuario() != null) {
@@ -15,6 +17,9 @@ public class MenuController {
 			
 			lblBienvenida.setText("Bienvenido, " + nombre);
 		}
+		boolean esAdmin = AppShell.getInstance().getUsuario().getNickname().equalsIgnoreCase("admin");
+		btnAdmin.setVisible(esAdmin);
+		btnAdmin.setManaged(esAdmin);
 	}
 	
 	@FXML private void handleJugarFacil() { iniciarJuego(Nivel.FACIL);}
@@ -47,5 +52,9 @@ public class MenuController {
 	private void handlePersonalizar() {
 		// Cambiamos a la vista de configuracion personalizada
 		AppShell.getInstance().loadView(View.PERSONALIZAR);
+	}
+	@FXML
+	private void handleIrAdmin() {
+	    AppShell.getInstance().loadView(View.ADMIN);
 	}
 }

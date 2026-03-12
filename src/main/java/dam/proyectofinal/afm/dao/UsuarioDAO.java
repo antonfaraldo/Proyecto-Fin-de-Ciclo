@@ -1,5 +1,7 @@
 package dam.proyectofinal.afm.dao;
 
+import java.util.List;
+
 import dam.proyectofinal.afm.model.Usuario;
 
 public interface UsuarioDAO {
@@ -7,4 +9,6 @@ public interface UsuarioDAO {
 	Usuario login(String nickname, String password);
 	boolean existeEmail(String email);
 
+	List<Usuario> obtenerTodos();
+	boolean eliminar(String nickname);
 }

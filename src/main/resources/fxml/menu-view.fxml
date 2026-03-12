@@ -32,6 +32,7 @@
          <children>
             <Button maxWidth="Infinity" text="🏆 Ver mis Logros" onAction="#handleVerLogros" />
             <Button maxWidth="Infinity" text="📊 Ranking Global" onAction="#handleVerRanking" />
+            <Button maxWidth="Infinity" fx:id="btnAdmin" text="Panel Admin" onAction="#handleIrAdmin" />
             <Button maxWidth="Infinity" text="🚪 Cerrar Sesión" onAction="#handleCerrarSesion" style="-fx-border-color: red; -fx-text-fill: red; -fx-background-color: transparent;" />
          </children>
          <padding>

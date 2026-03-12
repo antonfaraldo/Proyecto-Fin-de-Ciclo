@@ -35,5 +35,14 @@ public class UsuarioDAOImpl  implements UsuarioDAO{
 		// Se busca si algun usuario ya tiene asignado ese email
 		return usuariosMemoria.stream().anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
 	}
+	@Override
+	public List<Usuario> obtenerTodos() {
+	    return new ArrayList<>(usuariosMemoria);
+	}
+
+	@Override
+	public boolean eliminar(String nickname) {
+	    return usuariosMemoria.removeIf(u -> u.getNickname().equals(nickname));
+	}
 
 }

@@ -81,7 +81,7 @@ public class LogroService {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("¡Logro Desbloqueado!");
 			alert.setHeaderText(null);
-			alert.setContentText("🏆 ¡Felicidades, " + usuario.getNickname() + "!\nHas desbloqeuado el logro: " + nombreLogro);
+			alert.setContentText("🏆 ¡Felicidades, " + usuario.getNickname() + "!\nHas desbloqueado el logro: " + nombreLogro);
 			alert.showAndWait();
 		});
 	}

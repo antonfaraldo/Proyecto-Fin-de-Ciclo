@@ -4,7 +4,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" spacing="20.0" prefWidth="500.0" prefHeight="600.0" 
+<VBox alignment="TOP_CENTER" spacing="20.0" prefWidth="500.0" prefHeight="650.0" 
       style="-fx-background-color: #ecf0f1;" xmlns:fx="http://javafx.com/fxml/1" 
       fx:controller="dam.proyectofinal.afm.controller.EstadisticasController">
     <children>
@@ -15,22 +15,37 @@
         </HBox>
 
         <VBox spacing="15.0" style="-fx-padding: 20;">
-            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;">
+            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                 <Label text="Resumen General" style="-fx-font-weight: bold; -fx-text-fill: #7f8c8d;"/>
                 <Label fx:id="lblRatioTotal" text="Ratio de Victorias: 0%" />
                 <Label fx:id="lblTiempoTotal" text="Tiempo Total Jugado: 0s" />
                 <Label fx:id="lblNivelFavorito" text="Nivel Favorito: Ninguno" />
             </VBox>
 
-            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;">
+            <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                 <Label text="Victorias por Nivel" style="-fx-font-weight: bold; -fx-text-fill: #7f8c8d;"/>
-                <Label fx:id="lblPctFacil" text="Fácil: 0%" />
-                <Label fx:id="lblPctMedio" text="Medio: 0%" />
-                <Label fx:id="lblPctDificil" text="Difícil: 0%" />
+                
+                <VBox spacing="5">
+                    <Label fx:id="lblPctFacil" text="Fácil: 0%" />
+                    <ProgressBar fx:id="barFacil" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
+                                 style="-fx-accent: #4CAF50;" />
+                </VBox>
+                
+                <VBox spacing="5">
+                    <Label fx:id="lblPctMedio" text="Medio: 0%" />
+                    <ProgressBar fx:id="barMedio" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
+                                 style="-fx-accent: #FF9800;" />
+                </VBox>
+                
+                <VBox spacing="5">
+                    <Label fx:id="lblPctDificil" text="Difícil: 0%" />
+                    <ProgressBar fx:id="barDificil" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
+                                 style="-fx-accent: #F44336;" />
+                </VBox>
             </VBox>
 
             <Button text="Volver" onAction="#handleVolver" maxWidth="Infinity" 
-                    style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10;"/>
+                    style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-background-radius: 5;"/>
         </VBox>
     </children>
 </VBox>

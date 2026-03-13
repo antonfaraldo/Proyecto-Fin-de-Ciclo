@@ -8,10 +8,30 @@ import dam.proyectofinal.afm.model.Usuario;
 public class UsuarioDAOImpl  implements UsuarioDAO{
 	// Lista que simula una dabatabase (esto es temporal)
 	private static List<Usuario> usuariosMemoria = new ArrayList<>();
+	
+	// TEMPORAL
+	// Se fuerza la existencia del admin 
+	public UsuarioDAOImpl() {
+		if (usuariosMemoria.isEmpty()) {
+			Usuario adminMaestro = new Usuario();
+			adminMaestro.setEmail("admin@minemanager.com");
+			adminMaestro.setNickname("admin");
+			adminMaestro.setPassword("1234");
+			
+			usuariosMemoria.add(adminMaestro);
+			System.out.println("SISTEMA: Admin Maestro inicializado.");
+		}
+	}
 
 	@Override
 	public boolean registrar(Usuario usuario) {
 		// TODO Auto-generated method stub
+		// TEMPORAL
+		// Se impide que alguien se registre con el admin
+		if (usuario.getNickname().trim().equalsIgnoreCase("admin")) {
+			return false;
+		}
+		
 		if (existeEmail(usuario.getEmail()))
 		return false;
 		

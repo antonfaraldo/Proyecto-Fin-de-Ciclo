@@ -1,6 +1,7 @@
 package dam.proyectofinal.afm.controller;
 
 import dam.proyectofinal.afm.model.Nivel;
+import dam.proyectofinal.afm.model.Usuario;
 import dam.proyectofinal.afm.util.AppShell;
 import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
@@ -56,5 +57,13 @@ public class MenuController {
 	@FXML
 	private void handleIrAdmin() {
 	    AppShell.getInstance().loadView(View.ADMIN);
+	}
+	@FXML
+	private void handleVerEstadisticas() {
+		EstadisticasController controller = (EstadisticasController) AppShell.getInstance().loadView(View.ESTADISTICAS);
+		Usuario usuarioActual = AppShell.getInstance().getUsuario();
+		if (controller != null && usuarioActual != null) {
+			controller.cargarDatos(usuarioActual);
+		}
 	}
 }

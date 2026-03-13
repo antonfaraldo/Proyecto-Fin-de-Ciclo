@@ -59,4 +59,20 @@ public class AdminController {
     private void handleVolver() {
         AppShell.getInstance().loadView(View.MENU);
     }
+	
+	@FXML
+	private void handleVerEstadisticasUsuario() {
+		// Se obtiene el usuario seleccionado
+		Usuario seleccionado = tablaUsuarios.getSelectionModel().getSelectedItem();
+		
+		if (seleccionado != null) {
+			// Se carga la vista
+			EstadisticasController controller = (EstadisticasController) AppShell.getInstance().loadView(View.ESTADISTICAS);
+			if (controller != null) {
+				controller.cargarDatos(seleccionado);
+			}
+		} else {
+			mostrarAlerta("Selección necesario", "Por favor, selecciona un usuario de la tabla para ver sus estadísticas");
+		}
+	}
 }

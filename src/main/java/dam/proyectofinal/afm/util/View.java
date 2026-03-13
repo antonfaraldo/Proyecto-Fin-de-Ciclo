@@ -7,7 +7,8 @@ public enum View {
 	RANKING("/fxml/ranking-view.fxml"),
 	LOGROS("/fxml/logros-view.fxml"),
 	PERSONALIZAR("/fxml/personalizarnivel-view.fxml"),
-	ADMIN("/fxml/admin-view.fxml");
+	ADMIN("/fxml/admin-view.fxml"),
+	ESTADISTICAS("/fxml/estadisticas-view.fxml");
 	
 	private final String fxmlPath;
 

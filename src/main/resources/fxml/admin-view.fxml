@@ -49,6 +49,7 @@
             <HBox alignment="CENTER_RIGHT" spacing="15.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#handleVolver" prefHeight="35.0" prefWidth="120.0" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-weight: bold;" text="Volver al Menú" />
+                  <Button mnemonicParsing="false" onAction="#handleVerEstadisticasUsuario" prefHeight="35.0" prefWidth="150.0"  style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;" text="Ver Estadísticas" />
                   <Button mnemonicParsing="false" onAction="#handleEliminar" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;" text="Eliminar Usuario" />
                </children>
                <VBox.margin>

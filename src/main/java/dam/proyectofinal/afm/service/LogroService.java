@@ -13,6 +13,7 @@ import javafx.scene.control.Alert.AlertType;
 public class LogroService {
 	private static int partidasGanadasTotales = 0;
 	private LogroDAO logroDAO = new LogroDAOImpl();
+	private static int contadorVictoriasMedioSinBanderas = 0;
 	// El metodo analiza l partida una vez terminada y compruea si se ha desbloqueado algun logro 
 	public void comprobarLogros (Usuario usuario, Partida partida) {
 		if (!partida.isVictoria()) return; // SI pierde la partida no hay logros
@@ -47,6 +48,14 @@ public class LogroService {
 		// Ganar sin usar banderas
 		if (partida.getNumBanderasUsadas() == 0) {
 			verificarYRegistrarLogro(usuario, "Estratega Preciso");
+		}
+		if (partida.getDificultad().getNivel() == Nivel.MEDIO && partida.getNumBanderasUsadas() == 0) {
+			contadorVictoriasMedioSinBanderas++;
+			System.out.println("Progreso Purista: " + contadorVictoriasMedioSinBanderas + "/3");
+			
+			if (contadorVictoriasMedioSinBanderas >= 3) {
+				verificarYRegistrarLogro(usuario, "Purista del Medio");
+			}
 		}
 	}
 

@@ -1,6 +1,6 @@
 package dam.proyectofinal.afm.controller;
 
-import dam.proyectofinal.afm.dao.PartidaDAOImpl;
+import dam.proyectofinal.afm.dao.PartidaDAOImpl; 
 import dam.proyectofinal.afm.model.Nivel;
 import dam.proyectofinal.afm.model.Partida;
 import dam.proyectofinal.afm.util.AppShell;
@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import dam.proyectofinal.afm.dao.PartidaDAO;
@@ -54,7 +55,9 @@ public class RankingController {
 		// TODO Auto-generated method stub
 		colUser.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getUsuario().getNickname()));
 		colTime.setCellValueFactory(new PropertyValueFactory<>("tiempoSegundos"));
-		colDate.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getFechaHora().toString()));
+		colDate.setCellValueFactory(data -> { DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+		return new SimpleStringProperty(data.getValue().getFechaHora().format(formato));
+				});
 	}
 
 	private void configurarTabla(TableView<Partida> table, Nivel nivel) {

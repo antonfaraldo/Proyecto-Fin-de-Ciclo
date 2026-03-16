@@ -1,5 +1,6 @@
 package dam.proyectofinal.afm.controller;
 
+import java.util.Observable;
 import java.util.Optional;
 
 import dam.proyectofinal.afm.dao.UsuarioDAO;
@@ -7,11 +8,16 @@ import dam.proyectofinal.afm.dao.UsuarioDAOImpl;
 import dam.proyectofinal.afm.model.Usuario;
 import dam.proyectofinal.afm.util.AppShell;
 import dam.proyectofinal.afm.util.View;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class AdminController {
@@ -19,8 +25,12 @@ public class AdminController {
     @FXML private TableColumn<Usuario, String> colNickname;
     @FXML private TableColumn<Usuario, String> colEmail;
     @FXML private TableColumn<Usuario, String> colFecha;
+    @FXML private TextField txtFiltro;
     
     private UsuarioDAO  usuarioDAO = new UsuarioDAOImpl();
+    
+    // Lista maestra con todos los usuarios
+    private ObservableList<Usuario> listaMaestra = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
@@ -30,11 +40,42 @@ public class AdminController {
     	colFecha.setCellValueFactory(new PropertyValueFactory<>("fechaRegistro"));
     	
     	cargarUsuarios();
+    	configurarFiltro();
     }
+
+	private void configurarFiltro() {
+		// TODO Auto-generated method stub
+		FilteredList<Usuario> filteredData = new FilteredList<>(listaMaestra, p -> true);
+		
+		// Se añade un listener
+		txtFiltro.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(usuario -> {
+				// Filtro vacio, se muestran todos los usuarios
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+				String lowerCaseFilter = newValue.toLowerCase();
+				
+				// Se comprueba si el nickname contiene el texto buscado
+				if (usuario.getNickname().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				}
+				return false; // No coincide
+			});
+		});
+		
+		SortedList<Usuario> sortedData = new SortedList<>(filteredData);
+		sortedData.comparatorProperty().bind(tablaUsuarios.comparatorProperty());
+		// Se actualizan los items de la tabla 
+		tablaUsuarios.setItems(sortedData);
+	}
 
 	private void cargarUsuarios() {
 		// TODO Auto-generated method stub
-		tablaUsuarios.getItems().setAll(usuarioDAO.obtenerTodos());
+		// Se obtienen los usuarios y se guardan en la lista
+		listaMaestra.setAll(usuarioDAO.obtenerTodos());
+		// Se pasa toda la lista a la tabla
+		tablaUsuarios.setItems(listaMaestra);
 	}
 	
 	@FXML

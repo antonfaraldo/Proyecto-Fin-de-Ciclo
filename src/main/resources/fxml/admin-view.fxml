@@ -5,11 +5,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="700.0" spacing="20.0" style="-fx-background-color: #f4f7f6;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.AdminController">
+<VBox alignment="TOP_CENTER" prefHeight="550.0" prefWidth="750.0" spacing="20.0" style="-fx-background-color: #f4f7f6;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.AdminController">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="80.0" style="-fx-background-color: #2c3e50;">
          <children>
@@ -29,11 +30,20 @@
             <Insets bottom="20.0" left="30.0" right="30.0" top="10.0" />
          </padding>
          <children>
-            <Label text="Gestión de Usuarios Registrados" textFill="#7f8c8d">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+               <children>
+                  <Label text="Gestión de Usuarios Registrados" textFill="#7f8c8d">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="txtFiltro" prefHeight="30.0" prefWidth="250.0" promptText="🔍 Buscar por nickname..." style="-fx-background-radius: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 15; -fx-padding: 0 15 0 15;" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
             
             <TableView fx:id="tablaUsuarios" prefHeight="300.0" style="-fx-background-radius: 5; -fx-border-radius: 5;">
               <columns>
@@ -48,9 +58,9 @@
 
             <HBox alignment="CENTER_RIGHT" spacing="15.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#handleVolver" prefHeight="35.0" prefWidth="120.0" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-weight: bold;" text="Volver al Menú" />
-                  <Button mnemonicParsing="false" onAction="#handleVerEstadisticasUsuario" prefHeight="35.0" prefWidth="150.0"  style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;" text="Ver Estadísticas" />
-                  <Button mnemonicParsing="false" onAction="#handleEliminar" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;" text="Eliminar Usuario" />
+                  <Button mnemonicParsing="false" onAction="#handleVolver" prefHeight="35.0" prefWidth="120.0" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="Volver al Menú" />
+                  <Button mnemonicParsing="false" onAction="#handleVerEstadisticasUsuario" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="Ver Estadísticas" />
+                  <Button mnemonicParsing="false" onAction="#handleEliminar" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="Eliminar Usuario" />
                </children>
                <VBox.margin>
                   <Insets top="10.0" />

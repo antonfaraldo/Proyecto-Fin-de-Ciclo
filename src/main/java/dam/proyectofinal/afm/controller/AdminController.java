@@ -1,5 +1,7 @@
 package dam.proyectofinal.afm.controller;
 
+import java.util.Optional;
+
 import dam.proyectofinal.afm.dao.UsuarioDAO;
 import dam.proyectofinal.afm.dao.UsuarioDAOImpl;
 import dam.proyectofinal.afm.model.Usuario;
@@ -7,6 +9,7 @@ import dam.proyectofinal.afm.util.AppShell;
 import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -43,8 +46,24 @@ public class AdminController {
 				mostrarAlerta("Error", "No puedes eliminar la cuenta de administrador principal.");
                 return;
 			}
-			usuarioDAO.eliminar(seleccionado.getNickname());
-			cargarUsuarios(); // refrescar la tabla
+			// Alerta de confirmación
+			Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+			confirmacion.setTitle("Confirmar eliminación");
+			confirmacion.setHeaderText("¿Estás seguro de que deseas eliminar al usuario?");
+			confirmacion.setContentText("Está acción borrará a " + seleccionado.getNickname() + " de forma permanente.");
+			
+			Optional<ButtonType> resultado = confirmacion.showAndWait();
+			if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+				// Si el usuario pulsa aceptar
+				usuarioDAO.eliminar(seleccionado.getNickname());
+				cargarUsuarios(); // refrescar la tabla
+				System.out.println("Usuario eliminado: " + seleccionado.getNickname());
+			} else {
+				// Si pulsa cancelar o cierra la ventana
+				System.out.println("Eliminación cancelada");
+			}	
+		} else {
+			mostrarAlerta("Selección necesaria", "Por favor, selecciona un usuario de la tabla para eliminarlo.");
 		}
 		}
 

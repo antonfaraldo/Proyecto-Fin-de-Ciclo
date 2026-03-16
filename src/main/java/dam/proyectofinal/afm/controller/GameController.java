@@ -1,9 +1,12 @@
 package dam.proyectofinal.afm.controller;
 
-import dam.proyectofinal.afm.dao.PartidaDAOImpl; 
+import dam.proyectofinal.afm.dao.PartidaDAOImpl;  
 
 import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
+import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -20,6 +23,7 @@ import javafx.scene.input.MouseButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
@@ -33,7 +37,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -309,6 +316,10 @@ public class GameController {
         if (victoria) {
         	lblEstadoFinal.setText("¡VICTORIA!");
             lblEstadoFinal.setStyle("-fx-text-fill: #2ecc71;");
+            // Animación confeti
+            lanzarConfeti();
+            animarPanelFinal();
+            
             guardarResultado(true);
 
             LogroService logroService = new LogroService();
@@ -318,7 +329,6 @@ public class GameController {
             p.setVictoria(true);
             p.setNumBanderasUsadas(banderasColocadas);
             logroService.comprobarLogros(AppShell.getInstance().getUsuario(), p);
-            animarPanelFinal();
             vboxFinal.setVisible(true);
             gridTablero.setOpacity(0.4);
         } else {
@@ -340,15 +350,22 @@ public class GameController {
 
 	private void animarPanelFinal() {
 		// TODO Auto-generated method stub
-		vboxFinal.setScaleX(0);
-		vboxFinal.setScaleY(0);
+		vboxFinal.setOpacity(0);
+		vboxFinal.setScaleX(0.5);
+		vboxFinal.setScaleY(0.5);
 		vboxFinal.setVisible(true);
 		
-		ScaleTransition st = new ScaleTransition(Duration.millis(500), vboxFinal);
-		st.setToX(1);
-	    st.setToY(1);
-	    st.setDelay(Duration.millis(200)); // Espera un poco a que termine la sacudida si perdiste
-	    st.play();
+		FadeTransition fade = new FadeTransition(Duration.millis(600), vboxFinal);
+	    fade.setToValue(1.0);
+		
+		ScaleTransition st = new ScaleTransition(Duration.millis(600), vboxFinal);
+		st.setToX(1.0);
+	    st.setToY(1.0);
+	    st.setInterpolator(Interpolator.EASE_OUT); // Efecto de frenado
+	    
+	    ParallelTransition pt = new ParallelTransition(fade, st);
+	    pt.setDelay(Duration.millis(200));
+	    pt.play();
 	}
 
 	private void ejecutarChording(int fila, int col, Button botonPulsado) {
@@ -675,6 +692,37 @@ public class GameController {
 					}
 				}
 			}
+		}
+	}
+	private void lanzarConfeti() {
+		Pane root = (Pane) gridTablero.getScene().getRoot();
+		Random random = new Random();
+		Color[] colores = {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN, Color.PURPLE, Color.ORANGE, Color.PINK};
+		
+		for (int i = 0; i < 50; i++) {
+			Circle p = new Circle(random.nextInt(5, 10), colores[random.nextInt(colores.length)]);
+			
+			// Posición inicial
+			p.setCenterX(random.nextInt((int) root.getWidth()));
+			p.setCenterY(-20);
+			root.getChildren().add(p);
+			
+			// Animación de caída
+			TranslateTransition fall = new TranslateTransition(Duration.seconds(random.nextDouble() * 2 + 1), p);
+			fall.setToY(root.getHeight() + 40 );
+			fall.setByX(random.nextInt(100) - 50); // Movimiento lateral
+			
+			// Animación de rotación
+			ScaleTransition scale = new ScaleTransition(Duration.seconds(0.5), p);
+			scale.setToX(0.1);
+	        scale.setCycleCount(Animation.INDEFINITE);
+	        scale.setAutoReverse(true);
+	        
+	        // Quitar el confeti
+	        fall.setOnFinished(e -> root.getChildren().remove(p));
+	        
+	        fall.play();
+	        scale.play();
 		}
 	}
 }

@@ -29,7 +29,7 @@ public class LoginController {
 	
 	@FXML
 	private void handleLogin() {
-		String nickname = loginNicknameField.getText();
+		String nickname = loginNicknameField.getText().trim(); // Con el trim se limpian espacios accidentales delante o detrás
 		String password = loginPasswordField.getText();
 		
 		Usuario usuario = usuarioDAO.login(nickname, password);
@@ -45,8 +45,8 @@ public class LoginController {
 	}
 	@FXML
 	private void handleRegister() {
-		String nickname = registerNicknameField.getText();
-		String email = registerEmailField.getText();
+		String nickname = registerNicknameField.getText().trim();
+		String email = registerEmailField.getText().trim();
 		String password = registerPasswordField.getText();
 		
 		if (nickname.isEmpty() || email.isEmpty() || password.isEmpty()) {

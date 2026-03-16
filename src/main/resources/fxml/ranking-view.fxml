@@ -5,11 +5,25 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0" prefWidth="600.0" prefHeight="500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.RankingController">
+<VBox alignment="CENTER" spacing="20.0" prefWidth="650.0" prefHeight="550.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.RankingController">
    <children>
-      <Label text="RANKING GLOBAL (TOP 5)">
+      <Label text="RANKING GLOBAL">
          <font><Font name="System Bold" size="24.0" /></font>
       </Label>
+
+      <HBox spacing="15.0" alignment="CENTER">
+         <children>
+            <Label text="Filtrar por:" />
+            <TextField fx:id="txtBusqueda" promptText="🔍 Nombre del jugador..." prefWidth="180.0" 
+                       style="-fx-background-radius: 15; -fx-padding: 5 10 5 10;" />
+            
+            <ComboBox fx:id="comboPeriodo" prefWidth="150.0" promptText="Seleccionar periodo" 
+                      style="-fx-background-radius: 15;" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin>
+      </HBox>
 
       <TabPane fx:id="tabPaneRanking" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <tabs>
@@ -20,6 +34,9 @@
                     <TableColumn fx:id="colTiempoFacil" text="Tiempo (s)" prefWidth="100" />
                     <TableColumn fx:id="colFechaFacil" text="Fecha" prefWidth="200" />
                  </columns>
+                 <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                 </columnResizePolicy>
               </TableView>
           </Tab>
           <Tab text="MEDIO">
@@ -29,6 +46,9 @@
                     <TableColumn fx:id="colTiempoMedio" text="Tiempo (s)" prefWidth="100" />
                     <TableColumn fx:id="colFechaMedio" text="Fecha" prefWidth="200" />
                  </columns>
+                 <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                 </columnResizePolicy>
               </TableView>
           </Tab>
           <Tab text="DIFÍCIL">
@@ -38,13 +58,21 @@
                     <TableColumn fx:id="colTiempoDificil" text="Tiempo (s)" prefWidth="100" />
                     <TableColumn fx:id="colFechaDificil" text="Fecha" prefWidth="200" />
                  </columns>
+                 <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                 </columnResizePolicy>
               </TableView>
           </Tab>
         </tabs>
       </TabPane>
 
-      <Button text="Volver al Menú" onAction="#handleVolver" prefWidth="150" />
-      <Button text="📥 Importar Rankings" onAction="#handleImportarCSV" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;" />
+      <HBox spacing="15.0" alignment="CENTER">
+         <children>
+            <Button text="Volver al Menú" onAction="#handleVolver" prefWidth="150" />
+            <Button text="📥 Importar Rankings" onAction="#handleImportarCSV" 
+                    style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" />
+         </children>
+      </HBox>
    </children>
    <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
 </VBox>

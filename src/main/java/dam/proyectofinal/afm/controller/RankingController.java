@@ -7,13 +7,21 @@ import dam.proyectofinal.afm.util.AppShell;
 import dam.proyectofinal.afm.util.CSVManager;
 import dam.proyectofinal.afm.util.View;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -25,6 +33,9 @@ public class RankingController {
 	@FXML private TableView<Partida> tableFacil;
 	@FXML private TableView<Partida> tableMedio;
 	@FXML private TableView<Partida> tableDificil;
+	
+	@FXML private TextField txtBusqueda;
+	@FXML private ComboBox<String> comboPeriodo;
 	
 	// Columnas Facil
 	 @FXML private 	TableColumn<Partida, String> colUserFacil, colFechaFacil;
@@ -38,6 +49,11 @@ public class RankingController {
 	 @FXML private TableColumn<Partida, String> colUserDificil, colFechaDificil;
 	 @FXML private TableColumn<Partida, Integer> colTiempoDificil;
 	
+	 // Listas maestras
+	 private ObservableList<Partida> datosFacil = FXCollections.observableArrayList();
+	 private ObservableList<Partida> datosMedio = FXCollections.observableArrayList();
+	 private ObservableList<Partida> datosDificil = FXCollections.observableArrayList();
+	 
 	@FXML
 	public void initialize() {
 		// Vinculamos las columnas
@@ -45,10 +61,52 @@ public class RankingController {
 		vincularColumnas(colUserMedio, colTiempoMedio, colFechaMedio);
 		vincularColumnas(colUserDificil, colTiempoDificil, colFechaDificil);
 		
-		// Cargamos los datos en la tabla
-		configurarTabla(tableFacil, Nivel.FACIL);
-		configurarTabla(tableMedio, Nivel.MEDIO);
-		configurarTabla(tableDificil, Nivel.DIFICIL);
+		// Se configura el combovox
+		comboPeriodo.setItems(FXCollections.observableArrayList("Todos", "Último Mes", "Hoy"));
+		comboPeriodo.setValue("Todos");
+		
+		// Se cargan los datos desde el DAO
+		datosFacil.setAll(partidaDao.obtenerRankingTop(Nivel.FACIL, 10));
+	    datosMedio.setAll(partidaDao.obtenerRankingTop(Nivel.MEDIO, 10));
+	    datosDificil.setAll(partidaDao.obtenerRankingTop(Nivel.DIFICIL, 10));
+	    
+	    // Aplicar el sistema de filtrado a cada tabla
+	    aplicarLogicaDeFiltrado(tableFacil, datosFacil);
+	    aplicarLogicaDeFiltrado(tableMedio, datosMedio);
+	    aplicarLogicaDeFiltrado(tableDificil, datosDificil);
+		
+	}
+
+	private void aplicarLogicaDeFiltrado(TableView<Partida> tabla, ObservableList<Partida> listaMaestra) {
+		// TODO Auto-generated method stub
+		FilteredList<Partida> filtrados = new FilteredList<>(listaMaestra, p -> true);
+		
+		// Listener 
+		ChangeListener<Object> refrescarFiltro = (obs, oldV, newV) -> {
+			filtrados.setPredicate(partida -> {
+				// Filtro por nombre
+				String texto = txtBusqueda.getText().toLowerCase();
+	            boolean cumpleNombre = texto.isEmpty() || partida.getUsuario().getNickname().toLowerCase().contains(texto);
+	            // Filtro por Fecha
+	            boolean cumpleFecha = true;
+	            LocalDateTime ahora = LocalDateTime.now();
+	            String seleccion = comboPeriodo.getValue();
+	            
+	            if ("Último Mes".equals(seleccion)) {
+	                cumpleFecha = partida.getFechaHora().isAfter(ahora.minusMonths(1));
+	            } else if ("Hoy".equals(seleccion)) {
+	                cumpleFecha = partida.getFechaHora().toLocalDate().isEqual(ahora.toLocalDate());
+	            }
+
+	            return cumpleNombre && cumpleFecha;
+			});
+		};
+		txtBusqueda.textProperty().addListener(refrescarFiltro);
+	    comboPeriodo.valueProperty().addListener(refrescarFiltro);
+	    
+	    SortedList<Partida> ordenados = new SortedList<>(filtrados);
+	    ordenados.comparatorProperty().bind(tabla.comparatorProperty());
+	    tabla.setItems(ordenados);
 	}
 
 	private void vincularColumnas(TableColumn<Partida, String> colUser,TableColumn<Partida, Integer> colTime, TableColumn<Partida, String> colDate) {

@@ -46,13 +46,19 @@ public class LoginController {
 	@FXML
 	private void handleRegister() {
 		String nickname = registerNicknameField.getText().trim();
-		String email = registerEmailField.getText().trim();
+		String email = registerEmailField.getText().trim().toLowerCase(); // se convierte a minusculas
 		String password = registerPasswordField.getText();
 		
 		if (nickname.isEmpty() || email.isEmpty() || password.isEmpty()) {
 			feedbackLabel.setText("Por favor, rellena todos los campos");
 			feedbackLabel.setStyle("-fx-text-fill: red;");
 			return;
+		}
+		// Validacion de correo
+		if (!email.contains("@") || !email.contains(".")) {
+			feedbackLabel.setText("El formato del email no es válido");
+	        feedbackLabel.setStyle("-fx-text-fill: #e74c3c;");
+	        return;
 		}
 		
 		Usuario nuevoUsuario = new Usuario();
@@ -64,6 +70,12 @@ public class LoginController {
 		if (usuarioDAO.registrar(nuevoUsuario)) {
 			feedbackLabel.setStyle("-fx-text-fill: green;");
 			feedbackLabel.setText("Registro con éxito. Ya puedes iniciar sesión");
+			
+			// Se limpian los campos después del registro
+			registerNicknameField.clear();
+	        registerEmailField.clear();
+	        registerPasswordField.clear();
+	        
 			authTabPane.getSelectionModel().select(0);
 		} else {
 			feedbackLabel.setStyle("-fx-text-fill: red;");

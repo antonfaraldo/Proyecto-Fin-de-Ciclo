@@ -19,6 +19,7 @@ import dam.proyectofinal.afm.util.AppShell;
 import dam.proyectofinal.afm.util.CSVManager;
 import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import java.util.Random;
 
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.util.Duration;
 
 import dam.proyectofinal.afm.dao.PartidaDAO;
@@ -39,6 +41,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -65,6 +68,7 @@ public class GameController {
 	@FXML private VBox vboxFinal;
 	@FXML private Label lblEstadoFinal;
 	@FXML private Label lblDetallesFinal;
+	@FXML private BorderPane mainContainer;
 	
 	public void inicializarJuego(Tablero tablero) {
 		this.tablero = tablero;
@@ -90,16 +94,20 @@ public class GameController {
 						final int colActual = c;
 						
 						btn.setOnMouseEntered(e -> {
-							Casilla casillaLogica = tablero.getCeldas()[filaActual][colActual];
-							if (!casillaLogica.isRevelada() && !casillaLogica.isMarcada() && !pausado && !juegoTerminado ) {
-								btn.setStyle("-fx-background-color: #d1d8e0; -fx-cursor: hand; " +
-					                     "-fx-border-color: #ecf0f1 #7f8c8d #7f8c8d #ecf0f1; -fx-border-width: 2px;");
+							if (filaActual < tablero.getFilas() && colActual < tablero.getColumnas()) {
+								Casilla casillaLogica = tablero.getCeldas()[filaActual][colActual];
+								if (!casillaLogica.isRevelada() && !casillaLogica.isMarcada() && !pausado && !juegoTerminado ) {
+									btn.setStyle("-fx-background-color: #d1d8e0; -fx-cursor: hand; " +
+						                     "-fx-border-color: #ecf0f1 #7f8c8d #7f8c8d #ecf0f1; -fx-border-width: 2px;");
+								}
 							}
 						});
 						btn.setOnMouseExited(e -> {
-							// Al salir se restaura el fondo original
-							Casilla casillaLogica = tablero.getCeldas()[filaActual][colActual];
-							actualizarBotonCasilla(btn, casillaLogica);
+							if (filaActual < tablero.getFilas() && colActual < tablero.getColumnas()) {
+								// Al salir se restaura el fondo original
+								Casilla casillaLogica = tablero.getCeldas()[filaActual][colActual];
+								actualizarBotonCasilla(btn, casillaLogica);
+							}
 						});
 						
 						
@@ -135,7 +143,7 @@ public class GameController {
 						actualizarBotonCasilla(btn, tablero.getCeldas()[f][c]);
 					}
 				}
-		
+		gridTablero.setDisable(false);
 	}
 	private void marcarBandera(int f, int c, Button btn) {
 		// TODO Auto-generated method stub
@@ -218,7 +226,12 @@ public class GameController {
 			gridTablero.setDisable(false);
 		}
 		
-		// Extraer datos según el nievel
+		if (gridTablero != null) {
+			gridTablero.setDisable(true);
+			gridTablero.getChildren().clear();
+		}
+		
+		// Extraer datos según el nivel
 		int filas, columnas, minas;
 		switch (nivelSeleccionado) {
 	    case FACIL: 
@@ -231,7 +244,11 @@ public class GameController {
 	        filas = 16; columnas = 30; minas = 99;
 	        break;
 	    case PERSONALIZADO:
-	    return;
+	    	// Solo asignamos valores por defecto para evitar errores, se sobreescribirán en el método específico
+	        filas = (tablero != null) ? tablero.getFilas() : 8;
+	        columnas = (tablero != null) ? tablero.getColumnas() : 8;
+	        minas = (tablero != null) ? tablero.getDificultad().getNumMinas() : 10;
+	        break;
 	    default:
 	        filas = 8; columnas = 8; minas = 10;
 	}
@@ -254,6 +271,9 @@ public class GameController {
 				stage.setMaximized(false);
 				AppShell.getInstance().ajustarVentana();
 			}
+			
+			// Atajos del teclado
+			configurarAtajosTeclado();
 		});
 		// Cargar Record Actual
 		try {
@@ -601,6 +621,7 @@ public class GameController {
 		
 		javafx.application.Platform.runLater(() -> {
 			AppShell.getInstance().ajustarVentana();
+			configurarAtajosTeclado();
 		});
 	}
 	private void revelarMinasAnimado() {
@@ -724,5 +745,33 @@ public class GameController {
 	        fall.play();
 	        scale.play();
 		}
+	}
+	public void configurarAtajosTeclado() {
+		// El contenedor puede recibir el teclado
+		mainContainer.setFocusTraversable(true);
+		
+		mainContainer.setOnKeyPressed(event -> {
+			// SI el juego ha terminado, solo se puede reinicar
+			if (juegoTerminado) {
+				if (event.getCode() == KeyCode.R) {
+					resetJuego(null);
+				}
+				return;
+			}
+			switch (event.getCode()) {
+			case R:
+				resetJuego(null);
+				break;
+			case P:
+				handlePausa();
+				break;
+			case ESCAPE:
+				volverAlMenu();
+				break;
+				default:
+					break;
+			}
+		});
+		Platform.runLater(() -> mainContainer.requestFocus());
 	}
 }

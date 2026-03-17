@@ -268,24 +268,31 @@ public class GameController {
 			if (nivelSeleccionado == Nivel.DIFICIL) {
 				stage.setMaximized(true);
 			} else {
-				stage.setMaximized(false);
-				AppShell.getInstance().ajustarVentana();
+				if (!stage.isMaximized()) {
+		            AppShell.getInstance().ajustarVentana();
+				}
 			}
 			
 			// Atajos del teclado
 			configurarAtajosTeclado();
 		});
 		// Cargar Record Actual
-		try {
-			List<Partida> mejores = partidaDAO.obtenerRankingTop(nivelSeleccionado, 1);
-			if (!mejores.isEmpty()) {
-				recordActual = mejores.get(0).getTiempoSegundos();
-				lblMejorTiempo.setText("Récord: " + recordActual + "s");
-				lblMejorTiempo.setStyle("-fx-text-fill: white;");
-			} else {
+		try { 
+			if (nivelSeleccionado == Nivel.PERSONALIZADO) {
 				recordActual = -1;
-				lblMejorTiempo.setText("Récord: --");
-				lblMejorTiempo.setStyle("-fx-text-fill: #FFD700;"); // Color para que resalte mejor 
+				lblMejorTiempo.setText("Personalizado");
+	            lblMejorTiempo.setStyle("-fx-text-fill: #bdc3c7;");
+			} else {
+				List<Partida> mejores = partidaDAO.obtenerRankingTop(nivelSeleccionado, 1);
+				if (!mejores.isEmpty()) {
+					recordActual = mejores.get(0).getTiempoSegundos();
+					lblMejorTiempo.setText("Récord: " + recordActual + "s");
+					lblMejorTiempo.setStyle("-fx-text-fill: white;");
+				} else {
+					recordActual = -1;
+					lblMejorTiempo.setText("Récord: --");
+					lblMejorTiempo.setStyle("-fx-text-fill: #FFD700;"); // Color para que resalte mejor 
+				}
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -527,6 +534,11 @@ public class GameController {
 	                lblMejorTiempo.setStyle("-fx-text-fill: #FF4444;");
 				}
 			}
+			// Si el nivel es Personlizado, se mantiene el texto neutro
+			else if (tablero.getDificultad().getNivel() == Nivel.PERSONALIZADO) {
+				lblMejorTiempo.setText("Personalizado");
+	            lblMejorTiempo.setStyle("-fx-text-fill: #bdc3c7;");
+			}
 		}));
 		cronometro.setCycleCount(Animation.INDEFINITE);
 		cronometro.play();
@@ -620,7 +632,10 @@ public class GameController {
 		generarBotones(filas, columnas);
 		
 		javafx.application.Platform.runLater(() -> {
-			AppShell.getInstance().ajustarVentana();
+			Stage stage = (Stage) gridTablero.getScene().getWindow();
+			if (!stage.isMaximized()) {
+				AppShell.getInstance().ajustarVentana();
+			}
 			configurarAtajosTeclado();
 		});
 	}

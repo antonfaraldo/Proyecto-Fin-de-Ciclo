@@ -10,6 +10,9 @@ public class Usuario {
 	private String password;
 	private String email;
 	private LocalDate fechaRegistro;
+	public boolean isEsAdmin() {
+		return "admin".equalsIgnoreCase(this.nickname);
+	}
 	
 	public int getIdUsuario() {
 		return idUsuario;

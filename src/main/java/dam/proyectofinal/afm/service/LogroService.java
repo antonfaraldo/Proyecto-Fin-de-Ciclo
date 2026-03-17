@@ -1,7 +1,11 @@
 package dam.proyectofinal.afm.service;
 
+import java.util.List;
+
 import dam.proyectofinal.afm.dao.LogroDAO;
 import dam.proyectofinal.afm.dao.LogroDAOImpl;
+import dam.proyectofinal.afm.dao.PartidaDAO;
+import dam.proyectofinal.afm.dao.PartidaDAOImpl;
 import dam.proyectofinal.afm.model.Logro;
 import dam.proyectofinal.afm.model.Nivel;
 import dam.proyectofinal.afm.model.Partida;
@@ -39,11 +43,6 @@ public class LogroService {
 		if (partida.getDificultad().getNivel() == Nivel.PERSONALIZADO ) {
 			verificarYRegistrarLogro(usuario, "Arquitecto");
 		}
-		// Logros Acumulativos
-		if (partidasGanadasTotales == 5) {
-			verificarYRegistrarLogro(usuario, "Desactivador Novato");
-		}
-		
 		// Logros de desafio
 		// Ganar sin usar banderas
 		if (partida.getNumBanderasUsadas() == 0) {
@@ -56,6 +55,31 @@ public class LogroService {
 			if (contadorVictoriasMedioSinBanderas >= 3) {
 				verificarYRegistrarLogro(usuario, "Purista del Medio");
 			}
+		}
+		// Logros Evolutivos
+		comprobarNivelesEvolutivos(usuario);
+	}
+
+	private void comprobarNivelesEvolutivos(Usuario usuario) {
+		// TODO Auto-generated method stub
+		PartidaDAO partidaDAO = new PartidaDAOImpl();
+		// Se obtienen todas las partidas para contar las victorias
+		List<Partida> historial = partidaDAO.listarPorUsuario(usuario);
+		// Se cuentan las victorias totales 
+		long victoriasTotales = historial.stream().filter(Partida::isVictoria).count();
+		
+		// Verificación de Rangos acumulativos
+		if (victoriasTotales >= 5) {
+			verificarYRegistrarLogro(usuario, "Desactivador Novato");
+		}
+		if (victoriasTotales >= 10 ) {
+			verificarYRegistrarLogro(usuario, "Novato del Hierro");
+		}
+		if (victoriasTotales >= 50) {
+			verificarYRegistrarLogro(usuario, "Experto de Plata");
+		}
+		if (victoriasTotales >= 100) {
+			verificarYRegistrarLogro(usuario, "Maestro de Oro");
 		}
 	}
 

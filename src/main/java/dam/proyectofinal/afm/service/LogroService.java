@@ -10,9 +10,12 @@ import dam.proyectofinal.afm.model.Logro;
 import dam.proyectofinal.afm.model.Nivel;
 import dam.proyectofinal.afm.model.Partida;
 import dam.proyectofinal.afm.model.Usuario;
+import dam.proyectofinal.afm.util.AppShell;
+import dam.proyectofinal.afm.util.Toast;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
 
 public class LogroService {
 	private static int partidasGanadasTotales = 0;
@@ -111,11 +114,19 @@ public class LogroService {
 		
 		// Notificación visual
 		Platform.runLater(() -> {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("¡Logro Desbloqueado!");
-			alert.setHeaderText(null);
-			alert.setContentText("🏆 ¡Felicidades, " + usuario.getNickname() + "!\nHas desbloqueado el logro: " + nombreLogro);
-			alert.showAndWait();
+				Stage stagePrincipal = AppShell.getInstance().getPrimaryStage();
+				
+				if (stagePrincipal != null) {
+					// Se llama a la clase Toast
+					Toast.show(stagePrincipal, "¡LOGRO DESBLOQUEADO!", "Felicidades " + usuario.getNickname() + ", has ganado: " + nombreLogro);
+				} else {
+				// Si falla el Toast se muestra un alert 
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("¡Logro Desbloqueado!");
+				alert.setHeaderText(null);
+				alert.setContentText("🏆 ¡Felicidades, " + usuario.getNickname() + "!\nHas desbloqueado el logro: " + nombreLogro);
+				alert.showAndWait();
+			}
 		});
 	}
 }

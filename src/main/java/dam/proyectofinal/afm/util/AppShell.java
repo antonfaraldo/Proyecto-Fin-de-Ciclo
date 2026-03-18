@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class AppShell {
@@ -31,8 +32,8 @@ public class AppShell {
 	
 	public void init(Stage stage) {
 		this.primaryStage = stage;
-		// Se ajusta el tamaño (temporal)
-		Scene scene = new Scene(new Pane(), 800, 600);
+		// Se ajusta el tamaño
+		Scene scene = new Scene(new StackPane(), 800, 600);
 		stage.setScene(scene);
 		stage.setTitle("Mine Manager Pro");
 		stage.show();

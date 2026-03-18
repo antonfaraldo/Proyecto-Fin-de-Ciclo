@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="25.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.LoginController" style="-fx-background-color: #f4f4f4;">
+<VBox alignment="CENTER" spacing="25.0" prefWidth="550.0" maxWidth="550.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.LoginController" style="-fx-background-color: #f4f4f4;">
    <children>
       <VBox alignment="CENTER" spacing="5.0">
          <children>

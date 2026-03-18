@@ -59,6 +59,11 @@ public class LogroService {
 				verificarYRegistrarLogro(usuario, "Purista del Medio");
 			}
 		}
+		// Difícil y sin banderas
+		if (partida.getDificultad().getNivel() == Nivel.DIFICIL && partida.getNumBanderasUsadas() == 0) {
+			verificarYRegistrarLogro(usuario, "Maestro del Cálculo");
+		}
+		
 		// Logros Evolutivos
 		comprobarNivelesEvolutivos(usuario);
 	}
@@ -83,6 +88,12 @@ public class LogroService {
 		}
 		if (victoriasTotales >= 100) {
 			verificarYRegistrarLogro(usuario, "Maestro de Oro");
+		}
+		if (victoriasTotales >= 200) {
+			verificarYRegistrarLogro(usuario, "Veterano de Guerra");
+		}
+		if (victoriasTotales >= 500) {
+			verificarYRegistrarLogro(usuario, "Leyenda de las Minas");
 		}
 	}
 

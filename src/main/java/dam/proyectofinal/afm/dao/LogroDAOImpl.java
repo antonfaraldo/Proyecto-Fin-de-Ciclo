@@ -29,6 +29,9 @@ public class LogroDAOImpl  implements LogroDAO {
 		todos.add(new Logro(9, "Novato del Hierro", "Acumula un total de 10 victorias", 0, false));
 		todos.add(new Logro(10, "Experto de Plata", "Acumula un total de 50 victorias", 0, false));
 		todos.add(new Logro(11, "Maestro de Oro", "Acumula un total de 100 victorias", 0, false));
+		todos.add(new Logro(12, "Veterano de Guerra", "Acumula un total de 200 victorias.", 0, false));
+	    todos.add(new Logro(13, "Leyenda de las Minas", "Acumula un total de 500 victorias.", 0, false));
+	    todos.add(new Logro(14, "Maestro del Cálculo", "Gana en nivel DIFÍCIL sin colocar ninguna bandera.", 0, false));
 		
         return todos;
     }

@@ -9,6 +9,7 @@ import dam.proyectofinal.afm.model.Usuario;
 import dam.proyectofinal.afm.util.AppShell;
 import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -45,43 +46,53 @@ public class LogrosController {
 	}
 	private VBox crearTarjetaLogro(Logro logro) {
 		// TODO Auto-generated method stub
-		VBox vbox = new VBox(10);
+		VBox vbox = new VBox(12);
 		vbox.setAlignment(Pos.CENTER);
-		vbox.setPrefSize(150, 150);
-		
-		// Estilo básico de la tarjeta
-		String estiloBase = "-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);";
-        vbox.setStyle(estiloBase);
+		// vbox.setPrefSize(150, 150);
+        
+        // 	El texto no toca los bordes
+        vbox.setPadding(new Insets(15));
 		
         ImageView iconView = new ImageView();
-        iconView.setFitWidth(50);
-        iconView.setFitHeight(50);
+        iconView.setFitWidth(55);
+        iconView.setFitHeight(55);
         iconView.setPreserveRatio(true);
+        
         
         try {
         	String rutaImagen;
         if(logro.isDesbloqueado()) {
         	rutaImagen = "/images/LogroDesbloqueado.png"; // Estrella significa desbloqueado
-        	vbox.setOpacity(1.0); // Visible
+        	// Tarjeta blanca para conseguidos
+			vbox.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); -fx-border-color: #f1c40f; -fx-border-radius: 10; -fx-border-width: 1;");
+        	iconView.setOpacity(1.0); // Visible
         } else {
         	rutaImagen = "/images/LogroBloqueado.png"; // Candado para bloqueado
-            vbox.setOpacity(0.6); // Transparente
+        	// Tarjeta grisácea para bloqueados
+			vbox.setStyle("-fx-background-color: #ececec; -fx-background-radius: 10; -fx-border-color: #ccc; -fx-border-radius: 10; -fx-border-width: 1;");
+            iconView.setOpacity(0.3); // Transparente
         }
         iconView.setImage(new Image(getClass().getResourceAsStream(rutaImagen)));
         } catch (Exception e) {
 			// TODO: handle exception
         	System.out.println("No se pudo cargar la imagen del logro: " + e.getMessage());
+        	// Que se muestren los emojis si falla la imagen
+        	Label lblFallback = new Label(logro.isDesbloqueado() ? "⭐" : "🔒");
+            lblFallback.setStyle("-fx-font-size: 30px;");
+            iconView.setVisible(false);
 		}
         
-        Label name = new Label(logro.getNombre());
+        Label name = new Label(logro.getNombre().toUpperCase());
         name.setStyle("-fx-font-weight: bold; -fx-text-alignment: center;");
         name.setWrapText(true);
+        name.setMaxWidth(130);
 
         Label desc = new Label(logro.getDescripcion());
         desc.setStyle("-fx-font-size: 11px; -fx-text-fill: #777; -fx-text-alignment: center;");
         desc.setWrapText(true);
+        desc.setMaxWidth(130);
 
-        vbox.getChildren().addAll(iconView, name, desc);
+        vbox.getChildren().addAll(name, iconView, desc);
         
 		return vbox;
 	}

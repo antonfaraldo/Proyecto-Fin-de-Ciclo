@@ -1,6 +1,6 @@
 package dam.proyectofinal.afm.controller;
 
-import dam.proyectofinal.afm.dao.PartidaDAOImpl; 
+import dam.proyectofinal.afm.dao.PartidaDAOImpl;  
 import dam.proyectofinal.afm.model.Nivel;
 import dam.proyectofinal.afm.model.Partida;
 import dam.proyectofinal.afm.util.AppShell;
@@ -21,6 +21,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -71,24 +72,32 @@ public class RankingController {
 		// Se configura el combovox
 		if (comboPeriodo.getItems().isEmpty()) { // Se evitan duplicados tras importar
 			comboPeriodo.setItems(FXCollections.observableArrayList("Todos", "Último Mes", "Hoy"));
-			comboPeriodo.setValue("Todos");
 		}
-		
-		// Se cargan los datos desde el DAO
-		datosFacil.setAll(partidaDao.obtenerRankingTop(Nivel.FACIL, 10));
-	    datosMedio.setAll(partidaDao.obtenerRankingTop(Nivel.MEDIO, 10));
-	    datosDificil.setAll(partidaDao.obtenerRankingTop(Nivel.DIFICIL, 10));
-	    datosContra.setAll(partidaDao.obtenerRankingTop(Nivel.CONTRARRELOJ, 10));
-	    
+
 	    // Aplicar el sistema de filtrado a cada tabla
 	    aplicarLogicaDeFiltrado(tableFacil, datosFacil);
 	    aplicarLogicaDeFiltrado(tableMedio, datosMedio);
 	    aplicarLogicaDeFiltrado(tableDificil, datosDificil);
 	    aplicarLogicaDeFiltrado(tableContrarreloj, datosContra);
 	    
+		// Se resetean filtros visuales para evitaer errores
+		txtBusqueda.clear();
+		comboPeriodo.setValue("Todos");
+  
+		// Refrescar datos
+		refrescarDatosRanking();
+	    
 	    // Personalizar nombre de columna para Contrarreloj
 	    colTiempoContra.setText("Segundos Sobrantes");
 		
+	}
+
+	private void refrescarDatosRanking() {
+		// TODO Auto-generated method stub
+		datosFacil.setAll(partidaDao.obtenerRankingTop(Nivel.FACIL, 10));
+	    datosMedio.setAll(partidaDao.obtenerRankingTop(Nivel.MEDIO, 10));
+	    datosDificil.setAll(partidaDao.obtenerRankingTop(Nivel.DIFICIL, 10));
+	    datosContra.setAll(partidaDao.obtenerRankingTop(Nivel.CONTRARRELOJ, 10));
 	}
 
 	private void aplicarLogicaDeFiltrado(TableView<Partida> tabla, ObservableList<Partida> listaMaestra) {
@@ -97,26 +106,30 @@ public class RankingController {
 		
 		// Listener 
 		ChangeListener<Object> refrescarFiltro = (obs, oldV, newV) -> {
+			// Se obtiene la fecha de hoy fuera del bucle de filtrado
+			LocalDate fechaHoy = LocalDate.now();
+			String seleccion = comboPeriodo.getValue();
+			String texto = txtBusqueda.getText() == null ? "" : txtBusqueda.getText().toLowerCase();
+			
 			filtrados.setPredicate(partida -> {
 				// Filtro por nombre
-				String texto = txtBusqueda.getText().toLowerCase();
 	            boolean cumpleNombre = texto.isEmpty() || partida.getUsuario().getNickname().toLowerCase().contains(texto);
+	            
 	            // Filtro por Fecha
 	            boolean cumpleFecha = true;
-	            LocalDateTime ahora = LocalDateTime.now();
-	            String seleccion = comboPeriodo.getValue();
-	            
-	            if ("Último Mes".equals(seleccion)) {
-	                cumpleFecha = partida.getFechaHora().isAfter(ahora.minusMonths(1));
+	            if (partida.getFechaHora() == null) return false; 
+	            if("Último Mes".equals(seleccion)) {
+	            	cumpleFecha = partida.getFechaHora().isAfter(LocalDateTime.now().minusMonths(1));
 	            } else if ("Hoy".equals(seleccion)) {
-	                cumpleFecha = partida.getFechaHora().toLocalDate().isEqual(ahora.toLocalDate());
+	            	cumpleFecha = partida.getFechaHora().toLocalDate().equals(fechaHoy);
 	            }
-
 	            return cumpleNombre && cumpleFecha;
 			});
 		};
 		txtBusqueda.textProperty().addListener(refrescarFiltro);
 	    comboPeriodo.valueProperty().addListener(refrescarFiltro);
+	    
+	    refrescarFiltro.changed(null, null, null);
 	    
 	    SortedList<Partida> ordenados = new SortedList<>(filtrados);
 	    ordenados.comparatorProperty().bind(tabla.comparatorProperty());

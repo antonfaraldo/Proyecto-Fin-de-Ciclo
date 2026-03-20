@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0" prefWidth="650.0" prefHeight="550.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.RankingController">
+<VBox alignment="CENTER" spacing="20.0" prefWidth="700.0" prefHeight="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.RankingController">
    <children>
       <Label text="RANKING GLOBAL">
          <font><Font name="System Bold" size="24.0" /></font>
@@ -63,14 +63,28 @@
                  </columnResizePolicy>
               </TableView>
           </Tab>
+          
+          <Tab text="⏱ CONTRARRELOJ">
+              <TableView fx:id="tableContrarreloj">
+                 <columns>
+                    <TableColumn fx:id="colUserContra" text="Usuario" prefWidth="150" />
+                    <TableColumn fx:id="colTiempoContra" text="Sobrante (s)" prefWidth="100" />
+                    <TableColumn fx:id="colFechaContra" text="Fecha" prefWidth="200" />
+                 </columns>
+                 <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                 </columnResizePolicy>
+              </TableView>
+          </Tab>
         </tabs>
       </TabPane>
 
       <HBox spacing="15.0" alignment="CENTER">
          <children>
-            <Button text="Volver al Menú" onAction="#handleVolver" prefWidth="150" />
+            <Button text="Volver al Menú" onAction="#handleVolver" prefWidth="150" 
+                    style="-fx-background-radius: 5; -fx-cursor: hand;"/>
             <Button text="📥 Importar Rankings" onAction="#handleImportarCSV" 
-                    style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" />
+                    style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 5;" />
          </children>
       </HBox>
    </children>

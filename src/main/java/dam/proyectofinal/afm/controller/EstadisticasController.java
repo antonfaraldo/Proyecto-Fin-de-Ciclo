@@ -14,9 +14,10 @@ import javafx.scene.control.ProgressBar;
 
 public class EstadisticasController {
 	@FXML private Label lblTitulo, lblRatioTotal, lblTiempoTotal, lblNivelFavorito;
-	@FXML private Label lblPctFacil, lblPctMedio, lblPctDificil;
-	@FXML private ProgressBar barFacil, barMedio, barDificil;
+	@FXML private Label lblPctFacil, lblPctMedio, lblPctDificil, lblPctContra;
+	@FXML private ProgressBar barFacil, barMedio, barDificil, barContra;
 	@FXML private Button btnAdminPanel;
+	
 	
 	private PartidaDAOImpl partidaDAO = new PartidaDAOImpl();
 	private Usuario usuarioMostrado;
@@ -59,6 +60,11 @@ public class EstadisticasController {
         double pDificil = pcts.get(Nivel.DIFICIL);
         lblPctDificil.setText(String.format("Nivel Difícil: %.1f%%", pDificil));
         barDificil.setProgress(pDificil / 100.0);
+        
+        // Modo Contrarreloj
+        double pContra = pcts.getOrDefault(Nivel.CONTRARRELOJ, 0.0);
+        lblPctContra.setText(String.format("Modo Contrarreloj: %.1f%%", pContra));
+        barContra.setProgress(pContra / 100.0);
 		
 		
 	}

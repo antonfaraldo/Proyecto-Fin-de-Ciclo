@@ -358,7 +358,14 @@ public class GameController {
 	private void finalizarPartida(boolean victoria) {
 		// TODO Auto-generated method stub
 		juegoTerminado = true;
-        cronometro.stop();
+		if (cronometro != null) {
+			cronometro.stop();
+		}
+		if (animationTimer != null) {
+			animationTimer.stop();
+		}
+        
+        
         // Se bloque el tablero inmediatamente
         gridTablero.setDisable(true);
         
@@ -570,6 +577,18 @@ public class GameController {
 						// Se actualiza la etiqueta
 						lblTiempo.setText(String.format("Tiempo: %.1f s", tiempoContrarreloj));
 						
+						// Lógica de record contrarreloj
+						if (recordActual != -1) {
+							int diferencia = (int)tiempoContrarreloj - recordActual;
+							if (diferencia >= 0) {
+								lblMejorTiempo.setText("Récord: " + recordActual + "s (+" + diferencia + ")");
+								lblMejorTiempo.setStyle("-fx-text-fill: #00FF00;");
+							} else {
+								lblMejorTiempo.setText("Récord: " + recordActual + "s (" + diferencia + ")");
+								lblMejorTiempo.setStyle("-fx-text-fill: #FF4444;");
+							}
+						}
+						
 						if (tiempoContrarreloj <= 0) {
 							stop();
 							finalizarPartida(false); // Derrota por tiempo
@@ -580,41 +599,50 @@ public class GameController {
 				}
 			};
 			animationTimer.start();
-		}
+		} else {
 		
-		cronometro = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-			segundosTranscurridos++;
-			int minutos = segundosTranscurridos / 60;
-			int segundos = segundosTranscurridos % 60;
-			lblTiempo.setText(String.format("Tiempo: %02d:%02d", minutos, segundos));
-			
-			// Comparamos con el record
-			if (recordActual != -1) {
-				int diferencia = recordActual - segundosTranscurridos;
-				if (diferencia >= 0) {
-					// Por debajo del record, GANANDO
-					lblMejorTiempo.setText("Récord: " + recordActual + "s (-" + diferencia + ")");
-					lblMejorTiempo.setStyle("-fx-text-fill: #00FF00;");
-				} else {
-					// Perdiendo
-					lblMejorTiempo.setText("Récord: " + recordActual + "s (+" + Math.abs(diferencia) + ")");
-	                lblMejorTiempo.setStyle("-fx-text-fill: #FF4444;");
+			cronometro = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+				segundosTranscurridos++;
+				int minutos = segundosTranscurridos / 60;
+				int segundos = segundosTranscurridos % 60;
+				lblTiempo.setText(String.format("Tiempo: %02d:%02d", minutos, segundos));
+				
+				// Comparamos con el record
+				if (recordActual != -1) {
+					int diferencia = recordActual - segundosTranscurridos;
+					if (diferencia >= 0) {
+						// Por debajo del record, GANANDO
+						lblMejorTiempo.setText("Récord: " + recordActual + "s (-" + diferencia + ")");
+						lblMejorTiempo.setStyle("-fx-text-fill: #00FF00;");
+					} else {
+						// Perdiendo
+						lblMejorTiempo.setText("Récord: " + recordActual + "s (+" + Math.abs(diferencia) + ")");
+		                lblMejorTiempo.setStyle("-fx-text-fill: #FF4444;");
+					}
 				}
-			}
-			// Si el nivel es Personlizado, se mantiene el texto neutro
-			else if (tablero.getDificultad().getNivel() == Nivel.PERSONALIZADO) {
-				lblMejorTiempo.setText("Personalizado");
-	            lblMejorTiempo.setStyle("-fx-text-fill: #bdc3c7;");
-			}
-		}));
-		cronometro.setCycleCount(Animation.INDEFINITE);
-		cronometro.play();
+				// Si el nivel es Personlizado, se mantiene el texto neutro
+				else if (tablero.getDificultad().getNivel() == Nivel.PERSONALIZADO) {
+					lblMejorTiempo.setText("Personalizado");
+		            lblMejorTiempo.setStyle("-fx-text-fill: #bdc3c7;");
+				}
+			}));
+			cronometro.setCycleCount(Animation.INDEFINITE);
+			cronometro.play();
+		}
 	}
 	private void guardarResultado(boolean victoria) {
 		Partida p = new Partida();
 		p.setUsuario(AppShell.getInstance().getUsuario());
 		p.setVictoria(victoria);
-		p.setTiempoSegundos(segundosTranscurridos);
+		
+		// Si es contrarreloj se guardan los segundos sobrantes
+		if (tablero.getDificultad().getNivel() == Nivel.CONTRARRELOJ) {
+			// Se redondea a entero
+			p.setTiempoSegundos((int) tiempoContrarreloj);
+		} else {
+			p.setTiempoSegundos(segundosTranscurridos);
+		}
+		
 		p.setFechaHora(java.time.LocalDateTime.now());
 		p.setDificultad(tablero.getDificultad());
 		p.setNumBanderasUsadas(banderasColocadas);

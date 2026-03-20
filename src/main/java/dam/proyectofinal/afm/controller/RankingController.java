@@ -33,6 +33,7 @@ public class RankingController {
 	@FXML private TableView<Partida> tableFacil;
 	@FXML private TableView<Partida> tableMedio;
 	@FXML private TableView<Partida> tableDificil;
+	@FXML private TableView<Partida> tableContrarreloj;
 	
 	@FXML private TextField txtBusqueda;
 	@FXML private ComboBox<String> comboPeriodo;
@@ -48,11 +49,16 @@ public class RankingController {
 	 // Columnas Dificil
 	 @FXML private TableColumn<Partida, String> colUserDificil, colFechaDificil;
 	 @FXML private TableColumn<Partida, Integer> colTiempoDificil;
+	 
+	// Columnas Contrarreloj
+	 @FXML private TableColumn<Partida, String> colUserContra, colFechaContra;
+	 @FXML private TableColumn<Partida, Integer> colTiempoContra;
 	
 	 // Listas maestras
 	 private ObservableList<Partida> datosFacil = FXCollections.observableArrayList();
 	 private ObservableList<Partida> datosMedio = FXCollections.observableArrayList();
 	 private ObservableList<Partida> datosDificil = FXCollections.observableArrayList();
+	 private ObservableList<Partida> datosContra = FXCollections.observableArrayList();
 	 
 	@FXML
 	public void initialize() {
@@ -60,20 +66,28 @@ public class RankingController {
 		vincularColumnas(colUserFacil, colTiempoFacil, colFechaFacil);
 		vincularColumnas(colUserMedio, colTiempoMedio, colFechaMedio);
 		vincularColumnas(colUserDificil, colTiempoDificil, colFechaDificil);
+		vincularColumnas(colUserContra, colTiempoContra, colFechaContra);
 		
 		// Se configura el combovox
-		comboPeriodo.setItems(FXCollections.observableArrayList("Todos", "Último Mes", "Hoy"));
-		comboPeriodo.setValue("Todos");
+		if (comboPeriodo.getItems().isEmpty()) { // Se evitan duplicados tras importar
+			comboPeriodo.setItems(FXCollections.observableArrayList("Todos", "Último Mes", "Hoy"));
+			comboPeriodo.setValue("Todos");
+		}
 		
 		// Se cargan los datos desde el DAO
 		datosFacil.setAll(partidaDao.obtenerRankingTop(Nivel.FACIL, 10));
 	    datosMedio.setAll(partidaDao.obtenerRankingTop(Nivel.MEDIO, 10));
 	    datosDificil.setAll(partidaDao.obtenerRankingTop(Nivel.DIFICIL, 10));
+	    datosContra.setAll(partidaDao.obtenerRankingTop(Nivel.CONTRARRELOJ, 10));
 	    
 	    // Aplicar el sistema de filtrado a cada tabla
 	    aplicarLogicaDeFiltrado(tableFacil, datosFacil);
 	    aplicarLogicaDeFiltrado(tableMedio, datosMedio);
 	    aplicarLogicaDeFiltrado(tableDificil, datosDificil);
+	    aplicarLogicaDeFiltrado(tableContrarreloj, datosContra);
+	    
+	    // Personalizar nombre de columna para Contrarreloj
+	    colTiempoContra.setText("Segundos Sobrantes");
 		
 	}
 

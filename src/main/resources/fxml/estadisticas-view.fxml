@@ -4,7 +4,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" spacing="20.0" prefWidth="500.0" prefHeight="650.0" 
+<VBox alignment="TOP_CENTER" spacing="20.0" prefWidth="500.0" prefHeight="720.0" 
       style="-fx-background-color: #ecf0f1;" xmlns:fx="http://javafx.com/fxml/1" 
       fx:controller="dam.proyectofinal.afm.controller.EstadisticasController">
     <children>
@@ -51,6 +51,14 @@
                             <Label fx:id="lblPctDificil" text="Difícil: 0%" />
                             <ProgressBar fx:id="barDificil" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
                                          style="-fx-accent: #F44336;" />
+                        </children>
+                    </VBox>
+
+                    <VBox spacing="5">
+                        <children>
+                            <Label fx:id="lblPctContra" text="Modo Contrarreloj: 0%" />
+                            <ProgressBar fx:id="barContra" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
+                                         style="-fx-accent: #9b59b6;" />
                         </children>
                     </VBox>
                 </children>

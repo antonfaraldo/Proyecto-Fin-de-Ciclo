@@ -51,7 +51,7 @@ public class PartidaDAOImpl implements PartidaDAO{
 		
 		// Porcentaje de victorias por nivel
 		Map<Nivel, Double> porcentajesPorNivel = new HashMap<>();
-		for (Nivel n : new Nivel[] {Nivel.FACIL, Nivel.MEDIO, Nivel.DIFICIL}) {
+		for (Nivel n : new Nivel[] {Nivel.FACIL, Nivel.MEDIO, Nivel.DIFICIL, Nivel.CONTRARRELOJ}) {
 			long totalN = partidasValidas.stream().filter(p -> p.getDificultad().getNivel() == n).count();
 			long vicN = partidasValidas.stream().filter(p -> p.getDificultad().getNivel() == n && p.isVictoria()).count();
 			porcentajesPorNivel.put(n, totalN > 0 ? (double) vicN / totalN * 100 : 0.0);
@@ -94,7 +94,13 @@ public class PartidaDAOImpl implements PartidaDAO{
 		return historialPartidas.stream()
 				.filter(Partida::isVictoria) // Solo las ganadas
 				.filter(p -> p.getDificultad().getNivel() == nivel)
-				.sorted((p1, p2) -> Integer.compare(p1.getTiempoSegundos(), p2.getTiempoSegundos()))
+				.sorted((p1, p2) -> {
+					// Si es contrarreloj, el emjro es el que tiene mayor tiempo
+					if (nivel == Nivel.CONTRARRELOJ) {
+						return Integer.compare(p2.getTiempoSegundos(), p1.getTiempoSegundos());
+					}
+					return Integer.compare(p1.getTiempoSegundos(), p2.getTiempoSegundos());
+				})
 				.limit(limite)
 				.collect(Collectors.toList());
 	}

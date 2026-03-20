@@ -433,6 +433,7 @@ public class GameController {
 		if (banderasAlrededor == minasIndicadas) {
 			System.out.println("Ejecutando Chording en (" + fila + ", " + col + ")");
 			boolean minaTocada = false;
+			int casillasAbiertas = 0; // Contador para el tiempo extra en el modo contrarreloj
 			
 			for (int i = fila - 1; i <= fila + 1; i++) {
 				for (int j = col - 1; j <= col + 1; j++) {
@@ -442,6 +443,7 @@ public class GameController {
 						// Solo se revela si no está marcada y no está ya revelada
 						if (!vecina.isMarcada() && !vecina.isRevelada()) {
 							tablero.revelarCasilla(i, j);
+							casillasAbiertas++; 
 							if (vecina.isEsMina()) {
 								minaTocada = true;
 							}
@@ -451,6 +453,15 @@ public class GameController {
 			}
 			// Se actualiza la interfaz
 			refrescarTablero();
+			
+			// Se suma tiempo en el modo contrarreloj
+			if (tablero.getDificultad().getNivel() == Nivel.CONTRARRELOJ && casillasAbiertas > 0 && !minaTocada) {
+				tiempoContrarreloj += casillasAbiertas; // Se suma 1s por cada casilla revelada 
+				
+				// Destello verde
+				lblTiempo.setStyle("-fx-text-fill: #27ae60; -fx-font-weight: bold;");
+				new Timeline(new KeyFrame(Duration.millis(300), e -> lblTiempo.setStyle(""))).play();
+			}
 			
 			// Se comprueba 
 			if (minaTocada) {

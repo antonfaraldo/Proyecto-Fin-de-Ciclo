@@ -1,5 +1,6 @@
 package dam.proyectofinal.afm.controller;
 
+import dam.proyectofinal.afm.model.Dificultad;
 import dam.proyectofinal.afm.model.Nivel;
 import dam.proyectofinal.afm.model.Usuario;
 import dam.proyectofinal.afm.util.AppShell;
@@ -65,5 +66,13 @@ public class MenuController {
 		if (controller != null && usuarioActual != null) {
 			controller.cargarDatos(usuarioActual);
 		}
+	}
+	@FXML
+	private void handleJugarContrarreloj() {
+		Dificultad contrarreloj = new Dificultad(0, Nivel.CONTRARRELOJ, 12, 12, 20);
+		
+		// Se carga la vista
+		GameController controller = (GameController) AppShell.getInstance().loadView(View.GAME);
+		controller.prepararPartida(Nivel.CONTRARRELOJ);
 	}
 }

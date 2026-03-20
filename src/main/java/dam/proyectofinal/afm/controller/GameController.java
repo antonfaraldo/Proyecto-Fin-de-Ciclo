@@ -3,6 +3,7 @@ package dam.proyectofinal.afm.controller;
 import dam.proyectofinal.afm.dao.PartidaDAOImpl;  
 
 import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -69,6 +70,9 @@ public class GameController {
 	@FXML private Label lblEstadoFinal;
 	@FXML private Label lblDetallesFinal;
 	@FXML private BorderPane mainContainer;
+	private double tiempoContrarreloj = 60.0;
+	private AnimationTimer animationTimer;
+	private long lastUpdate = 0;
 	
 	public void inicializarJuego(Tablero tablero) {
 		this.tablero = tablero;
@@ -249,6 +253,9 @@ public class GameController {
 	        columnas = (tablero != null) ? tablero.getColumnas() : 8;
 	        minas = (tablero != null) ? tablero.getDificultad().getNumMinas() : 10;
 	        break;
+	    case CONTRARRELOJ:
+	    	filas = 12; columnas = 12; minas = 20;
+	    	break;
 	    default:
 	        filas = 8; columnas = 8; minas = 10;
 	}
@@ -329,8 +336,18 @@ public class GameController {
 		
 		if (casilla.isEsMina()) {
 			finalizarPartida(false);
-		} else if (tablero.verificarVictoria()) {
-			finalizarPartida(true);
+		} else {
+			// Modo Contrarreloj
+			if (tablero.getDificultad().getNivel() == Nivel.CONTRARRELOJ) {
+				tiempoContrarreloj += 1.0; // Se suma 1 segundo por cada casilla revelada
+				
+				// Destello visual verde 
+				lblTiempo.setStyle("-fx-text-fill: #27ae60; -fx-font-weight: bold;");
+				new Timeline(new KeyFrame(Duration.millis(300), e -> lblTiempo.setStyle(""))).play();
+			}
+			if (tablero.verificarVictoria()) {
+				finalizarPartida(true);
+			}
 		}
 	}
 	private void finalizarPartida(boolean victoria) {
@@ -512,8 +529,42 @@ public class GameController {
 		if (cronometro != null) {
 			cronometro.stop();
 		}
+		
+		// Para el modo contrarreloj
+		if (animationTimer != null) animationTimer.stop();
+		
 		segundosTranscurridos = 0;
-		lblTiempo.setText("Tiempo: 0s");
+		lastUpdate = 0;
+		// lblTiempo.setText("Tiempo: 0s");
+		
+		// Se verifica si el nivel es contrarreloj
+		if (tablero.getDificultad().getNivel() == Nivel.CONTRARRELOJ) {
+			tiempoContrarreloj = 60.0; // Es el tiempo inicial
+			lblTiempo.setText(String.format("Tiempo: %.1f s", tiempoContrarreloj));
+			
+			animationTimer = new AnimationTimer() {
+				
+				@Override
+				public void handle(long now) {
+					// TODO Auto-generated method stub
+					if (lastUpdate > 0 && !pausado && !juegoTerminado) {
+						double elapsedSeconds = (now - lastUpdate) / 1_000_000_000.0;
+						tiempoContrarreloj -= elapsedSeconds;
+						
+						// Se actualiza la etiqueta
+						lblTiempo.setText(String.format("Tiempo: %.1f s", tiempoContrarreloj));
+						
+						if (tiempoContrarreloj <= 0) {
+							stop();
+							finalizarPartida(false); // Derrota por tiempo
+							lblEstadoFinal.setText("¡TIEMPO AGOTADO!");
+						}
+					}
+					lastUpdate = now;
+				}
+			};
+			animationTimer.start();
+		}
 		
 		cronometro = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
 			segundosTranscurridos++;

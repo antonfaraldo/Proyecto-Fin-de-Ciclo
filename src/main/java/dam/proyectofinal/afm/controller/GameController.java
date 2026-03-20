@@ -198,7 +198,12 @@ public class GameController {
 	public void prepararPartida(Nivel nivelSeleccionado) {
 		// Reseteamos el cronometro
 		if (cronometro != null) cronometro.stop();
+		if (animationTimer != null) animationTimer.stop();
+		
 		segundosTranscurridos = 0;
+		lastUpdate = 0;
+		tiempoContrarreloj = 60.0;
+		
 		juegoIniciado = false;
 		juegoTerminado = false;
 		banderasColocadas = 0;
@@ -649,6 +654,9 @@ public class GameController {
 		if (juegoTerminado && !vboxFinal.isVisible()) {
 			return;
 		}
+		if (animationTimer != null) animationTimer.stop();
+		if (cronometro != null) cronometro.stop();
+		
 		if (tablero != null && tablero.getDificultad() != null) {
 			Dificultad difActual = tablero.getDificultad();
 			

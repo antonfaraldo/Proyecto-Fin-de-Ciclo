@@ -69,8 +69,6 @@ public class MenuController {
 	}
 	@FXML
 	private void handleJugarContrarreloj() {
-		Dificultad contrarreloj = new Dificultad(0, Nivel.CONTRARRELOJ, 12, 12, 20);
-		
 		// Se carga la vista
 		GameController controller = (GameController) AppShell.getInstance().loadView(View.GAME);
 		controller.prepararPartida(Nivel.CONTRARRELOJ);

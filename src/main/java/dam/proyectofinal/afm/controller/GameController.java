@@ -254,7 +254,7 @@ public class GameController {
 	        minas = (tablero != null) ? tablero.getDificultad().getNumMinas() : 10;
 	        break;
 	    case CONTRARRELOJ:
-	    	filas = 12; columnas = 12; minas = 20;
+	    	filas = 16; columnas = 16; minas = 50;
 	    	break;
 	    default:
 	        filas = 8; columnas = 8; minas = 10;
@@ -568,8 +568,8 @@ public class GameController {
 						if (tiempoContrarreloj <= 0) {
 							stop();
 							finalizarPartida(false); // Derrota por tiempo
-							lblEstadoFinal.setText("¡TIEMPO AGOTADO!");
-						}
+							lblEstadoFinal.setText("¡BOOM!");
+							lblDetallesFinal.setText("Tiempo agotado");						}
 					}
 					lastUpdate = now;
 				}

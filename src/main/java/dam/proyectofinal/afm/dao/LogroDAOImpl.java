@@ -32,6 +32,7 @@ public class LogroDAOImpl  implements LogroDAO {
 		todos.add(new Logro(12, "Veterano de Guerra", "Acumula un total de 200 victorias.", 0, false));
 	    todos.add(new Logro(13, "Leyenda de las Minas", "Acumula un total de 500 victorias.", 0, false));
 	    todos.add(new Logro(14, "Maestro del Cálculo", "Gana en nivel DIFÍCIL sin colocar ninguna bandera.", 0, false));
+	    todos.add(new Logro(15, "Superviviente del Tiempo", "Gana tu primera partida en modo Contrarreloj.", 0, false));
 		
         return todos;
     }

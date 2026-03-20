@@ -46,6 +46,10 @@ public class LogroService {
 		if (partida.getDificultad().getNivel() == Nivel.PERSONALIZADO ) {
 			verificarYRegistrarLogro(usuario, "Arquitecto");
 		}
+		// Logro de Contrarreloj
+		if (partida.getDificultad().getNivel() == Nivel.CONTRARRELOJ && partida.isVictoria()) {
+			verificarYRegistrarLogro(usuario, "Superviviente del Tiempo");
+		}
 		// Logros de desafio
 		// Ganar sin usar banderas
 		if (partida.getNumBanderasUsadas() == 0) {

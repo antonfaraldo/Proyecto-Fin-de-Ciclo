@@ -3,8 +3,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Font?>
-
-<VBox alignment="TOP_CENTER" spacing="20.0" prefWidth="500.0" prefHeight="720.0" 
+<?import javafx.scene.chart.PieChart?> <VBox alignment="TOP_CENTER" spacing="20.0" prefWidth="500.0" prefHeight="850.0" 
       style="-fx-background-color: #ecf0f1;" xmlns:fx="http://javafx.com/fxml/1" 
       fx:controller="dam.proyectofinal.afm.controller.EstadisticasController">
     <children>
@@ -23,6 +22,10 @@
                     <Label fx:id="lblRatioTotal" text="Ratio de Victorias: 0%" />
                     <Label fx:id="lblTiempoTotal" text="Tiempo Total Jugado: 0s" />
                     <Label fx:id="lblNivelFavorito" text="Nivel Favorito: Ninguno" />
+                    
+                    <PieChart fx:id="chartNiveles" title="Distribución de Partidas" 
+                              visible="false" managed="false" 
+                              prefWidth="350.0" prefHeight="300.0" />
                 </children>
             </VBox>
 

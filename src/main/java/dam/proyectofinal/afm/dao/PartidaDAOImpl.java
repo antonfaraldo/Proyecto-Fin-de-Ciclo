@@ -41,13 +41,14 @@ public class PartidaDAOImpl implements PartidaDAO{
 		// Tiempo total en segundos 
 		int tiempoTotal = partidasValidas.stream().mapToInt(Partida::getTiempoSegundos).sum();
 		
+		Map<Nivel, Long> conteos = partidasValidas.stream()
+				.collect(Collectors.groupingBy(p -> p.getDificultad().getNivel(), Collectors.counting()));
+		
 		// Nivel favorito
-		Nivel favorito = partidasValidas.stream()
-				.collect(Collectors.groupingBy(p -> p.getDificultad().getNivel(), Collectors.counting()))
-				.entrySet().stream()
-				.max(Map.Entry.comparingByValue())
-				.map(Map.Entry::getKey)
-				.orElse(null);
+		Nivel favorito = conteos.entrySet().stream()
+	            .max(Map.Entry.comparingByValue())
+	            .map(Map.Entry::getKey)
+	            .orElse(null);
 		
 		// Porcentaje de victorias por nivel
 		Map<Nivel, Double> porcentajesPorNivel = new HashMap<>();
@@ -63,6 +64,8 @@ public class PartidaDAOImpl implements PartidaDAO{
 	    stats.put("tiempoTotal", tiempoTotal);
 	    stats.put("favorito", favorito);
 	    stats.put("porcentajesNivel", porcentajesPorNivel);
+	    
+	    stats.put("conteoNiveles", conteos);
 	    
 	    return stats;
 	}

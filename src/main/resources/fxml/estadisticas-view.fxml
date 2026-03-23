@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.chart.PieChart?> <VBox alignment="TOP_CENTER" spacing="20.0" prefWidth="500.0" prefHeight="850.0" 
+<?import javafx.scene.chart.PieChart?>
+
+<VBox alignment="TOP_CENTER" prefWidth="500.0" prefHeight="650.0" 
       style="-fx-background-color: #ecf0f1;" xmlns:fx="http://javafx.com/fxml/1" 
       fx:controller="dam.proyectofinal.afm.controller.EstadisticasController">
     <children>
-        <HBox alignment="CENTER" prefHeight="70.0" style="-fx-background-color: #34495e;">
+        <HBox alignment="CENTER" prefHeight="70.0" minHeight="70.0" style="-fx-background-color: #34495e;">
             <children>
                 <Label fx:id="lblTitulo" text="Estadísticas de Usuario" textFill="WHITE">
                     <font><Font name="System Bold" size="22.0" /></font>
@@ -15,72 +18,78 @@
             </children>
         </HBox>
 
-        <VBox spacing="15.0" style="-fx-padding: 20;">
-            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-                <children>
-                    <Label text="Resumen General" style="-fx-font-weight: bold; -fx-text-fill: #7f8c8d;"/>
-                    <Label fx:id="lblRatioTotal" text="Ratio de Victorias: 0%" />
-                    <Label fx:id="lblTiempoTotal" text="Tiempo Total Jugado: 0s" />
-                    <Label fx:id="lblNivelFavorito" text="Nivel Favorito: Ninguno" />
-                    
-                    <PieChart fx:id="chartNiveles" title="Distribución de Partidas" 
-                              visible="false" managed="false" 
-                              prefWidth="350.0" prefHeight="300.0" />
-                </children>
-            </VBox>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: #ecf0f1;" VBox.vgrow="ALWAYS">
+            <content>
+                <VBox spacing="15.0" style="-fx-padding: 20;">
+                    <children>
+                        <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                            <children>
+                                <Label text="Resumen General" style="-fx-font-weight: bold; -fx-text-fill: #7f8c8d;"/>
+                                <Label fx:id="lblRatioTotal" text="Ratio de Victorias: 0%" />
+                                <Label fx:id="lblTiempoTotal" text="Tiempo Total Jugado: 0s" />
+                                <Label fx:id="lblNivelFavorito" text="Nivel Favorito: Ninguno" />
+                                
+                                <PieChart fx:id="chartNiveles" title="Distribución de Partidas" 
+                                          visible="false" managed="false" 
+                                          prefWidth="350.0" prefHeight="300.0" />
+                            </children>
+                        </VBox>
 
-            <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-                <children>
-                    <Label text="Victorias por Nivel" style="-fx-font-weight: bold; -fx-text-fill: #7f8c8d;"/>
-                    
-                    <VBox spacing="5">
-                        <children>
-                            <Label fx:id="lblPctFacil" text="Fácil: 0%" />
-                            <ProgressBar fx:id="barFacil" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
-                                         style="-fx-accent: #4CAF50;" />
-                        </children>
-                    </VBox>
-                    
-                    <VBox spacing="5">
-                        <children>
-                            <Label fx:id="lblPctMedio" text="Medio: 0%" />
-                            <ProgressBar fx:id="barMedio" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
-                                         style="-fx-accent: #FF9800;" />
-                        </children>
-                    </VBox>
-                    
-                    <VBox spacing="5">
-                        <children>
-                            <Label fx:id="lblPctDificil" text="Difícil: 0%" />
-                            <ProgressBar fx:id="barDificil" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
-                                         style="-fx-accent: #F44336;" />
-                        </children>
-                    </VBox>
+                        <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                            <children>
+                                <Label text="Victorias por Nivel" style="-fx-font-weight: bold; -fx-text-fill: #7f8c8d;"/>
+                                
+                                <VBox spacing="5">
+                                    <children>
+                                        <Label fx:id="lblPctFacil" text="Fácil: 0%" />
+                                        <ProgressBar fx:id="barFacil" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
+                                                     style="-fx-accent: #4CAF50;" />
+                                    </children>
+                                </VBox>
+                                
+                                <VBox spacing="5">
+                                    <children>
+                                        <Label fx:id="lblPctMedio" text="Medio: 0%" />
+                                        <ProgressBar fx:id="barMedio" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
+                                                     style="-fx-accent: #FF9800;" />
+                                    </children>
+                                </VBox>
+                                
+                                <VBox spacing="5">
+                                    <children>
+                                        <Label fx:id="lblPctDificil" text="Difícil: 0%" />
+                                        <ProgressBar fx:id="barDificil" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
+                                                     style="-fx-accent: #F44336;" />
+                                    </children>
+                                </VBox>
 
-                    <VBox spacing="5">
-                        <children>
-                            <Label fx:id="lblPctContra" text="Modo Contrarreloj: 0%" />
-                            <ProgressBar fx:id="barContra" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
-                                         style="-fx-accent: #9b59b6;" />
-                        </children>
-                    </VBox>
-                </children>
-            </VBox>
+                                <VBox spacing="5">
+                                    <children>
+                                        <Label fx:id="lblPctContra" text="Modo Contrarreloj: 0%" />
+                                        <ProgressBar fx:id="barContra" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
+                                                     style="-fx-accent: #9b59b6;" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
 
-            <HBox spacing="15.0" alignment="CENTER">
-                <children>
-                    <Button text="🏠 Menú Principal" onAction="#handleVolverMenu" 
-                            HBox.hgrow="ALWAYS" maxWidth="Infinity" 
-                            style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-background-radius: 5; -fx-cursor: hand;"/>
-                    
-                    <Button fx:id="btnAdminPanel" text="⚙️ Panel Admin" onAction="#handleIrAdmin" 
-                            HBox.hgrow="ALWAYS" maxWidth="Infinity" visible="false" managed="false"
-                            style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-background-radius: 5; -fx-cursor: hand;"/>
-                </children>
-                <VBox.margin>
-                    <Insets top="10.0" />
-                </VBox.margin>
-            </HBox>
-        </VBox>
+                        <HBox spacing="15.0" alignment="CENTER">
+                            <children>
+                                <Button text="🏠 Menú Principal" onAction="#handleVolverMenu" 
+                                        HBox.hgrow="ALWAYS" maxWidth="Infinity" 
+                                        style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                                
+                                <Button fx:id="btnAdminPanel" text="⚙️ Panel Admin" onAction="#handleIrAdmin" 
+                                        HBox.hgrow="ALWAYS" maxWidth="Infinity" visible="false" managed="false"
+                                        style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="10.0" />
+                            </VBox.margin>
+                        </HBox>
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
     </children>
 </VBox>

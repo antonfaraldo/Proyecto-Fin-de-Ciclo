@@ -7,6 +7,7 @@ import dam.proyectofinal.afm.model.Nivel;
 import dam.proyectofinal.afm.model.Usuario;
 import dam.proyectofinal.afm.util.AppShell;
 import dam.proyectofinal.afm.util.View;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -80,7 +81,12 @@ public class EstadisticasController {
         lblPctContra.setText(String.format("Modo Contrarreloj: %.1f%%", pContra));
         barContra.setProgress(pContra / 100.0);
 		
-		
+		// SI el usuario es admin se ajusta la ventana
+        if (esAdmin) {
+        	Platform.runLater(() ->
+        	AppShell.getInstance().ajustarVentana()
+        	);
+        }
 	}
 	private void actualizarGraficoPie(Map<Nivel, Long> conteos) {
 		// TODO Auto-generated method stub

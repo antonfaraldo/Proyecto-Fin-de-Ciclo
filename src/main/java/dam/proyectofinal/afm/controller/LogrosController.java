@@ -83,14 +83,20 @@ public class LogrosController {
 		}
         
         Label name = new Label(logro.getNombre().toUpperCase());
-        name.setStyle("-fx-font-weight: bold; -fx-text-alignment: center;");
+        name.setStyle("-fx-font-weight: bold; -fx-text-alignment: center;-fx-text-fill: black;");
         name.setWrapText(true);
+        name.setPrefHeight(40); 
+        name.setMaxHeight(40);
         name.setMaxWidth(130);
+        name.setAlignment(Pos.CENTER);
 
         Label desc = new Label(logro.getDescripcion());
         desc.setStyle("-fx-font-size: 11px; -fx-text-fill: #777; -fx-text-alignment: center;");
         desc.setWrapText(true);
+        desc.setPrefHeight(45);
+        desc.setMaxHeight(45);
         desc.setMaxWidth(130);
+        desc.setAlignment(Pos.TOP_CENTER);
 
         vbox.getChildren().addAll(name, iconView, desc);
         

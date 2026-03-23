@@ -659,14 +659,26 @@ public class GameController {
 		pausado = !pausado;
 		
 		if (pausado) {
-			cronometro.pause();
+			// Pausar los 2 relojes 
+			if (tablero.getDificultad().getNivel() == Nivel.CONTRARRELOJ) {
+				if (animationTimer != null) animationTimer.stop();
+			} else {
+				if (cronometro != null) cronometro.pause();
+			}
+			
 			vboxPausa.setVisible(true); // Muestra el aviso y la capa negra
 			gridTablero.setVisible(false); // Oculta las minas
 			gridTablero.setOpacity(0.2);
 			gridTablero.setDisable(true); // Bloqueamos los clics 
 			btnPausa.setText("▶ Reanudar");
 		} else {
-			cronometro.play();
+			// Reaunudar los 2 relojes
+			if (tablero.getDificultad().getNivel() == Nivel.CONTRARRELOJ) {
+	            if (animationTimer != null) animationTimer.start();
+	        } else {
+	            if (cronometro != null) cronometro.play();
+	        }
+			
 			vboxPausa.setVisible(false);
 			gridTablero.setOpacity(1.0);
 			gridTablero.setDisable(false);

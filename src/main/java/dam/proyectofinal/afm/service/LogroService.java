@@ -77,8 +77,17 @@ public class LogroService {
 		PartidaDAO partidaDAO = new PartidaDAOImpl();
 		// Se obtienen todas las partidas para contar las victorias
 		List<Partida> historial = partidaDAO.listarPorUsuario(usuario);
+		
 		// Se cuentan las victorias totales 
 		long victoriasTotales = historial.stream().filter(Partida::isVictoria).count();
+		
+		// Victorias especificas en Dificil
+		long victoriasDificil = historial.stream().filter(p -> p.isVictoria() && p.getDificultad().getNivel() == Nivel.DIFICIL)
+				.count();
+		
+		if (victoriasDificil >= 50) {
+			verificarYRegistrarLogro(usuario, "Leyenda del Abismo");
+		}
 		
 		// Verificación de Rangos acumulativos
 		if (victoriasTotales >= 5) {

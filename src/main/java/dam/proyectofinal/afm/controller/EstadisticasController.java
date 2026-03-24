@@ -11,6 +11,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -101,6 +102,60 @@ public class EstadisticasController {
 	        }
 	    }
 		chartNiveles.setData(pieData);
+		
+		// Se asignan colores fijos
+		for (PieChart.Data data : chartNiveles.getData()) {
+			Node node = data.getNode();
+			
+			String nombreNivelRaw = data.getName().split(" ")[0];
+			String colorHex = "#bdc3c7"; // Por defecto gris
+			
+			try {
+				Nivel nivel = Nivel.valueOf(nombreNivelRaw);
+				
+				// Se asignan el color según el Nivel
+				switch (nivel) {
+	                case FACIL:
+	                	colorHex = "#4CAF50"; // Verde
+	                    break;
+	                case MEDIO:
+	                	colorHex = "#FF9800"; // Amarillo/Naranja
+	                    break;
+	                case DIFICIL:
+	                	colorHex = "#F44336"; // Rojo
+	                    break;
+	                case CONTRARRELOJ:
+	                	colorHex = "#9b59b6"; // Morado
+	                    break;
+				} 
+				// Se aplica el color a la porción
+				if (node != null) {
+	                node.setStyle("-fx-pie-color: " + colorHex + ";");
+	            }
+				// Color de la leyenda
+				final String finalColor = colorHex;
+				final String nombreData = data.getName();
+				
+	            Platform.runLater(() -> {
+	            	// Se buscan todos los items
+	                for (Node item : chartNiveles.lookupAll(".chart-legend-item")) {
+	                    if (item instanceof Label) {
+	                        Label labelLeyenda = (Label) item;
+	                        // Si el texto coincide, se pinta su símbolo
+	                        if (labelLeyenda.getText().equals(nombreData)) {
+	                        	Node simbolo = labelLeyenda.getGraphic();
+	                        	if (simbolo != null) {
+	                        		simbolo.setStyle("-fx-background-color: " + finalColor + ";");
+	                        	}
+	                        }
+	                    }
+	                }
+	            });
+			} catch (IllegalArgumentException e) {
+				// TODO: handle exception
+				
+			}
+		}
 	}
 	@FXML 
 	private void handleVolverMenu() {

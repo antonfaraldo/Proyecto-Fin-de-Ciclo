@@ -14,11 +14,14 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Duration;
 
 public class AdminController {
 	@FXML private TableView<Usuario> tablaUsuarios;
@@ -26,6 +29,10 @@ public class AdminController {
     @FXML private TableColumn<Usuario, String> colEmail;
     @FXML private TableColumn<Usuario, String> colFecha;
     @FXML private TextField txtFiltro;
+    
+    @FXML private Button btnEliminar; 
+    @FXML private Button btnVerStats;
+    @FXML private Button btnVolver;
     
     private UsuarioDAO  usuarioDAO = new UsuarioDAOImpl();
     
@@ -39,9 +46,34 @@ public class AdminController {
     	colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
     	colFecha.setCellValueFactory(new PropertyValueFactory<>("fechaRegistro"));
     	
+    	configurarTooltips();
+    	
     	cargarUsuarios();
     	configurarFiltro();
     }
+
+	private void configurarTooltips() {
+		// TODO Auto-generated method stub
+		// ToolTIp para el buscador
+		Tooltip tipFiltro = new Tooltip("Escribe un nickname para filtrar la lista en tiempo real");
+        tipFiltro.setShowDelay(Duration.millis(300));
+        txtFiltro.setTooltip(tipFiltro);
+        
+        // Tooltip para los botones
+        if (btnEliminar != null) {
+        	Tooltip tipEliminar = new Tooltip("Borra permanentemente al usuario seleccionado");
+        	tipEliminar.setShowDelay(Duration.millis(300));
+        	btnEliminar.setTooltip(tipEliminar);
+        }
+        if (btnVerStats != null) {
+            Tooltip tipStats = new Tooltip("Abre el panel detallado de estadísticas del usuario");
+            tipStats.setShowDelay(Duration.millis(300));
+            btnVerStats.setTooltip(tipStats);
+        }
+        if (btnVolver != null) {
+            btnVolver.setTooltip(new Tooltip("Regresar al menú principal"));
+        }
+	}
 
 	private void configurarFiltro() {
 		// TODO Auto-generated method stub

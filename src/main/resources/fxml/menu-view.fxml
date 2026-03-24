@@ -3,10 +3,11 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0" prefWidth="450.0" maxWidth="450.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.MenuController">
+<VBox alignment="CENTER" maxWidth="450.0" prefWidth="450.0" spacing="20.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.MenuController">
    <children>
       <Label fx:id="lblBienvenida" text="¡Bienvenido!">
          <font>
@@ -14,28 +15,35 @@
          </font>
       </Label>
       
-      <VBox spacing="10.0" alignment="CENTER" style="-fx-border-color: #ddd; -fx-padding: 20; -fx-border-radius: 10; -fx-background-color: #f9f9f9;">
+      <VBox alignment="CENTER" spacing="10.0" style="-fx-border-color: #ddd; -fx-padding: 20; -fx-border-radius: 10; -fx-background-color: #f9f9f9;">
          <children>
             <Label text="SELECCIONAR DIFICULTAD">
                <font>
                   <Font name="System Italic" size="14.0" />
                </font>
             </Label>
-            <Button maxWidth="Infinity" text="MODO FÁCIL" onAction="#handleJugarFacil" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
-            <Button maxWidth="Infinity" text="MODO MEDIO" onAction="#handleJugarMedio" style="-fx-background-color: #FF9800; -fx-text-fill: white;" />
-            <Button maxWidth="Infinity" text="MODO DIFÍCIL" onAction="#handleJugarDificil" style="-fx-background-color: #F44336; -fx-text-fill: white;" />
-            <Button maxWidth="Infinity" text="Personalizado" onAction="#handlePersonalizar" style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold;" />   
-            <Button maxWidth="Infinity" text="MODO CONTRARRELOJ" onAction="#handleJugarContrarreloj" style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-weight: bold;" />
+            <Button maxWidth="Infinity" onAction="#handleJugarFacil" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="MODO FÁCIL" />
+            <Button maxWidth="Infinity" onAction="#handleJugarMedio" style="-fx-background-color: #FF9800; -fx-text-fill: white;" text="MODO MEDIO" />
+            <Button maxWidth="Infinity" onAction="#handleJugarDificil" style="-fx-background-color: #F44336; -fx-text-fill: white;" text="MODO DIFÍCIL" />
+            <Button maxWidth="Infinity" onAction="#handlePersonalizar" style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold;" text="Personalizado" />
+            
+            <HBox alignment="CENTER" spacing="10.0">
+               <children>
+                  <Button maxWidth="Infinity" onAction="#handleJugarContrarreloj" style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-weight: bold;" text="MODO CONTRARRELOJ" HBox.hgrow="ALWAYS" />
+                  
+                  <Button fx:id="btnInfoContra" mnemonicParsing="false" onAction="#handleAbrirGuiaWeb" prefHeight="25.0" prefWidth="25.0" style="-fx-background-radius: 15; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: help;" text="i" />
+               </children>
+            </HBox>
          </children>
       </VBox>
 
-      <VBox spacing="10.0" prefWidth="200.0">
+      <VBox prefWidth="200.0" spacing="10.0">
          <children>
-            <Button maxWidth="Infinity" text="🏆 Ver mis Logros" onAction="#handleVerLogros" />
-            <Button maxWidth="Infinity" text="📊 Ranking Global" onAction="#handleVerRanking" />
-            <Button maxWidth="Infinity" text="📈 Mis Estadísticas" onAction="#handleVerEstadisticas" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;" />
-            <Button maxWidth="Infinity" fx:id="btnAdmin" text="Panel Admin" onAction="#handleIrAdmin" />
-            <Button maxWidth="Infinity" text="🚪 Cerrar Sesión" onAction="#handleCerrarSesion" style="-fx-border-color: red; -fx-text-fill: red; -fx-background-color: transparent;" />
+            <Button maxWidth="Infinity" onAction="#handleVerLogros" text="🏆 Ver mis Logros" />
+            <Button maxWidth="Infinity" onAction="#handleVerRanking" text="📊 Ranking Global" />
+            <Button maxWidth="Infinity" onAction="#handleVerEstadisticas" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;" text="📈 Mis Estadísticas" />
+            <Button fx:id="btnAdmin" maxWidth="Infinity" onAction="#handleIrAdmin" text="Panel Admin" />
+            <Button maxWidth="Infinity" onAction="#handleCerrarSesion" style="-fx-border-color: red; -fx-text-fill: red; -fx-background-color: transparent;" text="🚪 Cerrar Sesión" />
          </children>
          <padding>
             <Insets left="50.0" right="50.0" />

@@ -26,6 +26,8 @@ public class App extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
+		AppShell.getInstance().setHostServices(this.getHostServices());
+		
 		AppShell.getInstance().init(primaryStage);
 		// Cargamos la primera vista
 		AppShell.getInstance().loadView(View.LOGIN);

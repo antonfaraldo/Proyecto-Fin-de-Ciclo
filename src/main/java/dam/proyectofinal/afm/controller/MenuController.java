@@ -8,10 +8,14 @@ import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.util.Duration;
 
 public class MenuController {
 	@FXML private Label lblBienvenida;
 	@FXML private Button btnAdmin;
+	@FXML private Button btnInfoContra;
+	
 	@FXML
 	public void initialize() {
 		if (AppShell.getInstance().getUsuario() != null) {
@@ -22,8 +26,40 @@ public class MenuController {
 		boolean esAdmin = AppShell.getInstance().getUsuario().getNickname().equalsIgnoreCase("admin");
 		btnAdmin.setVisible(esAdmin);
 		btnAdmin.setManaged(esAdmin);
+		
+		configurarToolTipInfo();
 	}
 	
+	private void configurarToolTipInfo() {
+		// TODO Auto-generated method stub 
+		Tooltip tip = new Tooltip(
+				"MODO CONTRARRELOJ:\n" +
+						"• Tienes un tiempo límite que baja.\n" +
+						"• Revelar casillas te da segundos extra.\n" +
+						"• ¡Haz clic para leer la guía completa online!"
+				);  
+		// Aparece rápido y dura bastante para que de tiempo a leer
+		tip.setShowDelay(Duration.millis(300));
+		tip.setShowDuration(Duration.seconds(10));
+		
+		if (btnInfoContra != null) {
+			btnInfoContra.setTooltip(tip);
+		}
+	}
+	
+	@FXML
+	private void handleAbrirGuiaWeb() {
+		// URL provisional
+		String url = "https://github.com/antonfaraldo/proyecto-fin-de-ciclo"; 
+		
+		// Abrir el navegador predeterminado del sistema
+		if (AppShell.getInstance().getHostServices() != null) {
+			AppShell.getInstance().getHostServices().showDocument(url);
+		} else {
+			System.out.println("Enlace a la guía: " + url);
+		}
+	}
+
 	@FXML private void handleJugarFacil() { iniciarJuego(Nivel.FACIL);}
 	@FXML private void handleJugarMedio() {iniciarJuego(Nivel.MEDIO);}
 	@FXML private void handleJugarDificil() {iniciarJuego(Nivel.DIFICIL);}

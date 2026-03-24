@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dam.proyectofinal.afm.model.Usuario;
+import javafx.application.HostServices;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,6 +19,7 @@ public class AppShell {
 	private static AppShell instance;
 	private Stage primaryStage;
 	private Map<View, Object> controllers = new HashMap<>();
+	private HostServices hostServices; 
 	
 	private Usuario usuario;
 	
@@ -30,6 +32,14 @@ public class AppShell {
 		return instance;
 	}
 	
+	public HostServices getHostServices() {
+		return hostServices;
+	}
+
+	public void setHostServices(HostServices hostServices) {
+		this.hostServices = hostServices;
+	}
+
 	public void init(Stage stage) {
 		this.primaryStage = stage;
 		// Se ajusta el tamaño

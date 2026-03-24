@@ -24,7 +24,7 @@ public class LogroDAOImpl  implements LogroDAO {
 		todos.add(new Logro(4, "Campo de Minas Superado", "Gana una partida en nivel MEDIO.", 0, false));
 		todos.add(new Logro(5, "Desactivador Novato", "Acumula un total de 5 victorias.", 0, false));
 		todos.add(new Logro(6, "Estratega Preciso", "Gana una partida sin colocar ni una sola bandera.", 0, false));
-		todos.add(new Logro(7, "Arquitecto", "Juega una partida en un nivel personalizado.", 0, false));
+		todos.add(new Logro(7, "Arquitecto", "Gana una partida en un nivel personalizado.", 0, false));
 		todos.add(new Logro(8, "Purista del Medio", "Gana 3 partidas en nivel MEDIO sin usar ni una sola bandera.", 0, false));
 		todos.add(new Logro(9, "Novato del Hierro", "Acumula un total de 10 victorias", 0, false));
 		todos.add(new Logro(10, "Experto de Plata", "Acumula un total de 50 victorias", 0, false));

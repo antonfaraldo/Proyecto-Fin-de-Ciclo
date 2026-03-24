@@ -127,6 +127,9 @@ public class EstadisticasController {
 	                case CONTRARRELOJ:
 	                	colorHex = "#9b59b6"; // Morado
 	                    break;
+	                case PERSONALIZADO:
+	                	colorHex = "#3498db"; // Azul
+	                	break;
 				} 
 				// Se aplica el color a la porción
 				if (node != null) {

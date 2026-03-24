@@ -28,8 +28,8 @@ public class PartidaDAOImpl implements PartidaDAO{
 	}
 	public Map<String, Object> obtenerEstadisticasCompletas(Usuario usuario) {
 		List<Partida> partidas = listarPorUsuario(usuario);
-		// Se filtra para ignorar el nivel personalizado
-		List<Partida> partidasValidas = partidas.stream().filter(p -> p.getDificultad().getNivel() != Nivel.PERSONALIZADO).collect(Collectors.toList());
+		// Se usan todas las partidas para el favorito
+		List<Partida> partidasValidas = partidas;
 		
 		Map<String, Object> stats = new HashMap<>();
 		

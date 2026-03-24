@@ -365,6 +365,10 @@ public class GameController {
 			animationTimer.stop();
 		}
         
+		// Se sincorniza el tiempo para el panel final en el modo contrarreloj
+		if (tablero.getDificultad().getNivel() == Nivel.CONTRARRELOJ) {
+			segundosTranscurridos = (int) tiempoContrarreloj;
+		}
         
         // Se bloque el tablero inmediatamente
         gridTablero.setDisable(true);

@@ -94,10 +94,10 @@ public class RankingController {
 
 	private void refrescarDatosRanking() {
 		// TODO Auto-generated method stub
-		datosFacil.setAll(partidaDao.obtenerRankingTop(Nivel.FACIL, 10));
-	    datosMedio.setAll(partidaDao.obtenerRankingTop(Nivel.MEDIO, 10));
-	    datosDificil.setAll(partidaDao.obtenerRankingTop(Nivel.DIFICIL, 10));
-	    datosContra.setAll(partidaDao.obtenerRankingTop(Nivel.CONTRARRELOJ, 10));
+		datosFacil.setAll(partidaDao.obtenerRankingTop(Nivel.FACIL, 0));
+	    datosMedio.setAll(partidaDao.obtenerRankingTop(Nivel.MEDIO, 0));
+	    datosDificil.setAll(partidaDao.obtenerRankingTop(Nivel.DIFICIL, 0));
+	    datosContra.setAll(partidaDao.obtenerRankingTop(Nivel.CONTRARRELOJ, 0));
 	}
 
 	private void aplicarLogicaDeFiltrado(TableView<Partida> tabla, ObservableList<Partida> listaMaestra) {
@@ -118,6 +118,7 @@ public class RankingController {
 	            // Filtro por Fecha
 	            boolean cumpleFecha = true;
 	            if (partida.getFechaHora() == null) return false; 
+	            
 	            if("Último Mes".equals(seleccion)) {
 	            	cumpleFecha = partida.getFechaHora().isAfter(LocalDateTime.now().minusMonths(1));
 	            } else if ("Hoy".equals(seleccion)) {
@@ -126,6 +127,7 @@ public class RankingController {
 	            return cumpleNombre && cumpleFecha;
 			});
 		};
+		
 		txtBusqueda.textProperty().addListener(refrescarFiltro);
 	    comboPeriodo.valueProperty().addListener(refrescarFiltro);
 	    
@@ -133,6 +135,7 @@ public class RankingController {
 	    
 	    SortedList<Partida> ordenados = new SortedList<>(filtrados);
 	    ordenados.comparatorProperty().bind(tabla.comparatorProperty());
+	    
 	    tabla.setItems(ordenados);
 	}
 

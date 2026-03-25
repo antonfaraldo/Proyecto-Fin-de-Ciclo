@@ -98,14 +98,13 @@ public class PartidaDAOImpl implements PartidaDAO{
 				.filter(Partida::isVictoria) // Solo las ganadas
 				.filter(p -> p.getDificultad().getNivel() == nivel)
 				.sorted((p1, p2) -> {
-					// Si es contrarreloj, el emjro es el que tiene mayor tiempo
+					// Si es contrarreloj, el numero es el que tiene mayor tiempo
 					if (nivel == Nivel.CONTRARRELOJ) {
 						return Integer.compare(p2.getTiempoSegundos(), p1.getTiempoSegundos());
 					}
 					return Integer.compare(p1.getTiempoSegundos(), p2.getTiempoSegundos());
 				})
-				.limit(limite)
-				.collect(Collectors.toList());
+				.collect(Collectors.toList()); // Se devuelve la lista completa ordenada 
 	}
 
 }

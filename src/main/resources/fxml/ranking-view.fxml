@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0" prefWidth="700.0" prefHeight="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.RankingController">
+<VBox alignment="CENTER" spacing="20.0" prefWidth="750.0" prefHeight="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.RankingController">
    <children>
       <Label text="RANKING GLOBAL">
          <font><Font name="System Bold" size="24.0" /></font>
@@ -19,6 +19,8 @@
             
             <ComboBox fx:id="comboPeriodo" prefWidth="150.0" promptText="Seleccionar periodo" 
                       style="-fx-background-radius: 15;" />
+
+            <CheckBox fx:id="checkTop10" text="Solo Top 10" selected="true" style="-fx-cursor: hand;" />
          </children>
          <VBox.margin>
             <Insets bottom="5.0" />

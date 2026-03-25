@@ -1,6 +1,6 @@
 package dam.proyectofinal.afm.controller;
 
-import dam.proyectofinal.afm.dao.PartidaDAOImpl;  
+import dam.proyectofinal.afm.dao.PartidaDAOImpl;   
 import dam.proyectofinal.afm.model.Nivel;
 import dam.proyectofinal.afm.model.Partida;
 import dam.proyectofinal.afm.util.AppShell;
@@ -9,10 +9,12 @@ import dam.proyectofinal.afm.util.View;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -36,6 +38,7 @@ public class RankingController {
 	@FXML private TableView<Partida> tableDificil;
 	@FXML private TableView<Partida> tableContrarreloj;
 	
+	@FXML private CheckBox checkTop10; 	
 	@FXML private TextField txtBusqueda;
 	@FXML private ComboBox<String> comboPeriodo;
 	
@@ -73,6 +76,11 @@ public class RankingController {
 		if (comboPeriodo.getItems().isEmpty()) { // Se evitan duplicados tras importar
 			comboPeriodo.setItems(FXCollections.observableArrayList("Todos", "Último Mes", "Hoy"));
 		}
+		
+		// Listener para el Top 10
+		checkTop10.selectedProperty().addListener((obs, oldV, newV) -> {
+			txtBusqueda.setText(txtBusqueda.getText());
+		});
 
 	    // Aplicar el sistema de filtrado a cada tabla
 	    aplicarLogicaDeFiltrado(tableFacil, datosFacil);
@@ -83,6 +91,7 @@ public class RankingController {
 		// Se resetean filtros visuales para evitaer errores
 		txtBusqueda.clear();
 		comboPeriodo.setValue("Todos");
+		checkTop10.setSelected(true); // Valor por defecto al entrar 
   
 		// Refrescar datos
 		refrescarDatosRanking();
@@ -136,7 +145,23 @@ public class RankingController {
 	    SortedList<Partida> ordenados = new SortedList<>(filtrados);
 	    ordenados.comparatorProperty().bind(tabla.comparatorProperty());
 	    
-	    tabla.setItems(ordenados);
+	    // Se actualiza la tabla según el checkbox
+	    Runnable actualizarVistaRecortada = () -> {
+	    	if (checkTop10.isSelected()) {
+	    		// Para tener solo el top 10 se sublista la lista filtrada y se ordena
+	    		int limite = Math.min(ordenados.size(), 10);
+	    		tabla.setItems(FXCollections.observableArrayList(ordenados.subList(0, limite)));
+	    	} else {
+	    		// Se muestran todas las partidas
+	    		tabla.setItems(ordenados);
+	    	}
+	    };
+	    
+	    ordenados.addListener((ListChangeListener<? super Partida>) c -> actualizarVistaRecortada.run());
+	    checkTop10.selectedProperty().addListener((o, ov, nv) -> actualizarVistaRecortada.run());
+	    
+	    // Se ejecuta por primera vez
+	    actualizarVistaRecortada.run();
 	}
 
 	private void vincularColumnas(TableColumn<Partida, String> colUser,TableColumn<Partida, Integer> colTime, TableColumn<Partida, String> colDate) {

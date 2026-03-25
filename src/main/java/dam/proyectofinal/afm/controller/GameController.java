@@ -207,8 +207,14 @@ public class GameController {
 		juegoIniciado = false;
 		juegoTerminado = false;
 		banderasColocadas = 0;
-		lblTiempo.setText("Tiempo: 0s");
 		
+		lblTiempo.setStyle("");
+		if (nivelSeleccionado == Nivel.CONTRARRELOJ) {
+			lblTiempo.setText("Tiempo: 60.0 s");
+		} else {
+			lblTiempo.setText("Tiempo: 0s");
+		}
+			
 		// Reseteamos el estado de Pausa
 		pausado = false;
 		if (vboxPausa != null) {

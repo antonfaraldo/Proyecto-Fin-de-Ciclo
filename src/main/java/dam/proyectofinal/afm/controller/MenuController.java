@@ -15,6 +15,7 @@ public class MenuController {
 	@FXML private Label lblBienvenida;
 	@FXML private Button btnAdmin;
 	@FXML private Button btnInfoContra;
+	@FXML private Button btnRanking;
 	
 	@FXML
 	public void initialize() {
@@ -27,23 +28,38 @@ public class MenuController {
 		btnAdmin.setVisible(esAdmin);
 		btnAdmin.setManaged(esAdmin);
 		
-		configurarToolTipInfo();
+		configurarToolTips();
 	}
 	
-	private void configurarToolTipInfo() {
+	private void configurarToolTips() {
 		// TODO Auto-generated method stub 
-		Tooltip tip = new Tooltip(
+		// Tooltip para el Modo Contrarreloj
+		Tooltip tipContra = new Tooltip(
 				"MODO CONTRARRELOJ:\n" +
 						"• Tienes un tiempo límite que baja.\n" +
 						"• Revelar casillas te da segundos extra.\n" +
 						"• ¡Haz clic para leer la guía completa online!"
 				);  
 		// Aparece rápido y dura bastante para que de tiempo a leer
-		tip.setShowDelay(Duration.millis(300));
-		tip.setShowDuration(Duration.seconds(10));
+		tipContra.setShowDelay(Duration.millis(300));
+		tipContra.setShowDuration(Duration.seconds(10));
 		
 		if (btnInfoContra != null) {
-			btnInfoContra.setTooltip(tip);
+			btnInfoContra.setTooltip(tipContra);
+		}
+		
+		// Tooltip para el Ranking
+		Tooltip tipRanking = new Tooltip(
+				"RANKING GLOBAL:\n" +
+				"• Consulta los mejores tiempos de la comunidad.\n" +
+				"• Filtra por dificultad o periodos de tiempo (Hoy/Mes).\n" +
+				"• ¡Compite por entrar en el Top 10!"
+				);
+		tipRanking.setShowDelay(Duration.millis(300));
+		tipRanking.setShowDuration(Duration.seconds(10));
+		
+		if (btnRanking != null) {
+			btnRanking.setTooltip(tipRanking);
 		}
 	}
 	

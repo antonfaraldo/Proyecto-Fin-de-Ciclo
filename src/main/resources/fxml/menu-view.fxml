@@ -40,7 +40,7 @@
       <VBox prefWidth="200.0" spacing="10.0">
          <children>
             <Button maxWidth="Infinity" onAction="#handleVerLogros" text="🏆 Ver mis Logros" />
-            <Button maxWidth="Infinity" onAction="#handleVerRanking" text="📊 Ranking Global" />
+            <Button fx:id="btnRanking" maxWidth="Infinity" onAction="#handleVerRanking" text="📊 Ranking Global" />
             <Button maxWidth="Infinity" onAction="#handleVerEstadisticas" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;" text="📈 Mis Estadísticas" />
             <Button fx:id="btnAdmin" maxWidth="Infinity" onAction="#handleIrAdmin" text="Panel Admin" />
             <Button maxWidth="Infinity" onAction="#handleCerrarSesion" style="-fx-border-color: red; -fx-text-fill: red; -fx-background-color: transparent;" text="🚪 Cerrar Sesión" />

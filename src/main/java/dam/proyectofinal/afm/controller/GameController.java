@@ -578,6 +578,21 @@ public class GameController {
 						double elapsedSeconds = (now - lastUpdate) / 1_000_000_000.0;
 						tiempoContrarreloj -= elapsedSeconds;
 						
+						// Cambio de color cuando se acaba el tiempo
+						if (tiempoContrarreloj <= 5.0) {
+							// Parpadeo rapido en los ultimos 5 segundos
+								if ((int)(tiempoContrarreloj * 10) % 2 == 0) {
+									lblTiempo.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
+								} else {
+									lblTiempo.setStyle("-fx-text-fill: transparent; -fx-font-weight: bold;");
+								}
+							} else if (tiempoContrarreloj <= 10.0){
+								// Rojo fijo entre los 10 y los 5 ultimos segundos
+								lblTiempo.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
+							} else {
+								lblTiempo.setStyle("");
+							}
+						
 						// Se actualiza la etiqueta
 						lblTiempo.setText(String.format("Tiempo: %.1f s", tiempoContrarreloj));
 						

@@ -48,7 +48,7 @@ public class UsuarioDAOImpl  implements UsuarioDAO{
 				.findFirst()
 				.orElse(null);	
 	}
-
+	
 	@Override
 	public boolean existeEmail(String email) {
 		// TODO Auto-generated method stub
@@ -64,5 +64,13 @@ public class UsuarioDAOImpl  implements UsuarioDAO{
 	public boolean eliminar(String nickname) {
 	    return usuariosMemoria.removeIf(u -> u.getNickname().equals(nickname));
 	}
-
+	
+	@Override
+	public boolean existeNickname(String nickname) {
+	    // Se obtienen todos los usuarios actuales
+	    List<Usuario> usuarios = obtenerTodos();
+	    // Se busca si alguno coincide (ignorando mayúsculas/minúsculas por seguridad)
+	    return usuarios.stream()
+	                   .anyMatch(u -> u.getNickname().equalsIgnoreCase(nickname));
+	}
 }

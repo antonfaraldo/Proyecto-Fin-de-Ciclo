@@ -105,6 +105,13 @@ public class LoginController {
 	        return;
 		}
 		
+		// Validación de nickanme duplicado
+		if (usuarioDAO.existeNickname(nickname)) {
+			feedbackLabel.setText("El nickname " + nickname + " ya está ocupado");
+			feedbackLabel.setStyle("-fx-text-fill: #e74c3c;");
+	        return;
+		}
+		
 		Usuario nuevoUsuario = new Usuario();
 		nuevoUsuario.setNickname(nickname);
 		nuevoUsuario.setEmail(email);

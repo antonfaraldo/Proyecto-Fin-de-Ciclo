@@ -9,6 +9,7 @@ import dam.proyectofinal.afm.model.Usuario;
 import dam.proyectofinal.afm.util.AppShell;
 import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TabPane;
@@ -20,17 +21,60 @@ public class LoginController {
 	@FXML private TextField registerEmailField;
 	
 	@FXML private PasswordField loginPasswordField;
+	@FXML private TextField loginPasswordVisibleField; 
+	@FXML private Button btnMostrarPassword;
+	
 	@FXML private PasswordField registerPasswordField;
+	@FXML private TextField registerPasswordVisibleField; 
+	@FXML private Button btnMostrarRegisterPassword;
 	
 	@FXML private Label feedbackLabel;
 	@FXML private TabPane authTabPane;
 	
+	private boolean isPasswordVisible = false;
+	private boolean isRegisterPasswordVisible = false;
+	
 	private UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
+	
+	@FXML
+	private void togglePasswordVisibility() {
+		isPasswordVisible = !isPasswordVisible;
+		
+		if (isPasswordVisible) {
+			// Se sincroniza el texto y se muestra el campo visible
+			loginPasswordVisibleField.setText(loginPasswordField.getText());
+			loginPasswordVisibleField.setVisible(true);
+			loginPasswordField.setVisible(false);
+			btnMostrarPassword.setText("🔒");
+		} else {
+			// Sincronizar texto y ocultar la contraseña
+			loginPasswordField.setText(loginPasswordVisibleField.getText());
+			loginPasswordField.setVisible(true);
+			loginPasswordVisibleField.setVisible(false);
+			btnMostrarPassword.setText("👁");
+		}
+	}
+	@FXML
+	private void toggleRegisterPasswordVisibility() {
+		isRegisterPasswordVisible = !isRegisterPasswordVisible;
+		
+		if (isRegisterPasswordVisible) {
+			registerPasswordVisibleField.setText(registerPasswordField.getText());
+			registerPasswordVisibleField.setVisible(true);
+			registerPasswordField.setVisible(false);
+			btnMostrarRegisterPassword.setText("🔒");
+		} else {
+			registerPasswordField.setText(registerPasswordVisibleField.getText());
+			registerPasswordField.setVisible(true);
+			registerPasswordVisibleField.setVisible(false);
+			btnMostrarRegisterPassword.setText("👁");
+		}
+	}
 	
 	@FXML
 	private void handleLogin() {
 		String nickname = loginNicknameField.getText().trim(); // Con el trim se limpian espacios accidentales delante o detrás
-		String password = loginPasswordField.getText();
+		String password = isPasswordVisible ? loginPasswordVisibleField.getText() : loginPasswordField.getText();
 		
 		Usuario usuario = usuarioDAO.login(nickname, password);
 		
@@ -47,7 +91,7 @@ public class LoginController {
 	private void handleRegister() {
 		String nickname = registerNicknameField.getText().trim();
 		String email = registerEmailField.getText().trim().toLowerCase(); // se convierte a minusculas
-		String password = registerPasswordField.getText();
+		String password = isRegisterPasswordVisible ? registerPasswordVisibleField.getText() : registerPasswordField.getText();
 		
 		if (nickname.isEmpty() || email.isEmpty() || password.isEmpty()) {
 			feedbackLabel.setText("Por favor, rellena todos los campos");
@@ -83,5 +127,8 @@ public class LoginController {
 		}
 	}
 	
-	
+	@FXML
+	private void handleRecuperarPassword() {
+		// Por implementar aun
+	}
 }

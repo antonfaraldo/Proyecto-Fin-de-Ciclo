@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Tab?>
@@ -9,10 +10,12 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="25.0" prefWidth="550.0" maxWidth="550.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.LoginController" style="-fx-background-color: #f4f4f4;">
+<VBox alignment="CENTER" maxWidth="550.0" prefWidth="550.0" spacing="25.0" style="-fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.LoginController">
    <children>
       <VBox alignment="CENTER" spacing="5.0">
          <children>
@@ -29,47 +32,82 @@
          </children>
       </VBox>
       
-      <TabPane fx:id="authTabPane" prefWidth="480.0" prefHeight="310.0" tabClosingPolicy="UNAVAILABLE" 
-               style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); -fx-tab-header-background: white;">
+      <TabPane fx:id="authTabPane" prefHeight="350.0" prefWidth="480.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); -fx-tab-header-background: white;" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Iniciar Sesión">
             <content>
               <VBox alignment="CENTER" spacing="15.0">
                      <children>
-                        <TextField fx:id="loginNicknameField" promptText="Nickname" prefHeight="40.0" style="-fx-background-radius: 5;" />
-                        <PasswordField fx:id="loginPasswordField" promptText="Contraseña" prefHeight="40.0" style="-fx-background-radius: 5;" />
-                        <Button maxWidth="Infinity" prefHeight="45.0" onAction="#handleLogin" style="-fx-background-color: #2196F3; -fx-background-radius: 5; -fx-cursor: hand;" text="ENTRAR" textFill="WHITE">
+                        <TextField fx:id="loginNicknameField" prefHeight="40.0" promptText="Nickname" style="-fx-background-radius: 5;" />
+                        
+                        <HBox alignment="CENTER_LEFT" spacing="5.0" style="-fx-border-color: #ccc; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color: white;">
+                           <children>
+                              <StackPane HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <TextField fx:id="loginPasswordVisibleField" prefHeight="38.0" promptText="Contraseña" style="-fx-background-color: transparent;" visible="false" />
+                                    <PasswordField fx:id="loginPasswordField" prefHeight="38.0" promptText="Contraseña" style="-fx-background-color: transparent;" />
+                                 </children>
+                              </StackPane>
+                              <Button fx:id="btnMostrarPassword" onAction="#togglePasswordVisibility" style="-fx-background-color: transparent; -fx-cursor: hand;" text="👁" />
+                           </children>
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                        </HBox>
+
+                        <Button maxWidth="Infinity" onAction="#handleLogin" prefHeight="45.0" style="-fx-background-color: #2196F3; -fx-background-radius: 5; -fx-cursor: hand;" text="ENTRAR" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Button>
+
+                        <Hyperlink onAction="#handleRecuperarPassword" text="¿Olvidaste tu contraseña?" textFill="#7f8c8d">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Hyperlink>
                      </children>
                      <padding>
-                        <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
+                        <Insets bottom="20.0" left="40.0" right="40.0" top="30.0" />
                      </padding>
                   </VBox>
             </content>
           </Tab>
           
-          <Tab text="Registro">
-            <content>
-              <VBox alignment="CENTER" spacing="15.0">
-                     <children>
-                        <TextField fx:id="registerEmailField" promptText="Email" prefHeight="40.0" style="-fx-background-radius: 5;" />
-                        <TextField fx:id="registerNicknameField" promptText="Nickname" prefHeight="40.0" style="-fx-background-radius: 5;" />
-                        <PasswordField fx:id="registerPasswordField" promptText="Contraseña" prefHeight="40.0" style="-fx-background-radius: 5;" />
-                        <Button maxWidth="Infinity" prefHeight="45.0" onAction="#handleRegister" style="-fx-background-color: #4CAF50; -fx-background-radius: 5; -fx-cursor: hand;" text="CREAR CUENTA" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Button>
-                     </children>
-                     <padding>
-                        <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
-                     </padding>
-                  </VBox>
-            </content>
-          </Tab>
+	      <Tab text="Registro">
+			    <content>
+			        <VBox alignment="CENTER" spacing="15.0">
+			            <children>
+			                <TextField fx:id="registerEmailField" prefHeight="40.0" promptText="Email" style="-fx-background-radius: 5;" />
+			                <TextField fx:id="registerNicknameField" prefHeight="40.0" promptText="Nickname" style="-fx-background-radius: 5;" />
+			                
+			                <HBox alignment="CENTER_LEFT" spacing="5.0" style="-fx-border-color: #ccc; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color: white;">
+			                    <children>
+			                        <StackPane HBox.hgrow="ALWAYS">
+			                            <children>
+			                                <TextField fx:id="registerPasswordVisibleField" prefHeight="38.0" promptText="Contraseña" style="-fx-background-color: transparent;" visible="false" />
+			                                <PasswordField fx:id="registerPasswordField" prefHeight="38.0" promptText="Contraseña" style="-fx-background-color: transparent;" />
+			                            </children>
+			                        </StackPane>
+			                        <Button fx:id="btnMostrarRegisterPassword" onAction="#toggleRegisterPasswordVisibility" style="-fx-background-color: transparent; -fx-cursor: hand;" text="👁" />
+			                    </children>
+			                    <padding>
+			                        <Insets right="5.0" />
+			                    </padding>
+			                </HBox>
+			
+			                <Button maxWidth="Infinity" onAction="#handleRegister" prefHeight="45.0" style="-fx-background-color: #4CAF50; -fx-background-radius: 5; -fx-cursor: hand;" text="CREAR CUENTA" textFill="WHITE">
+			                    <font>
+			                        <Font name="System Bold" size="14.0" />
+			                    </font>
+			                </Button>
+			            </children>
+			            <padding>
+			                <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
+			            </padding>
+			        </VBox>
+			    </content>
+			</Tab>
         </tabs>
       </TabPane>
       

@@ -62,7 +62,7 @@ public class LogrosController {
         try {
         	String rutaImagen;
         if(logro.isDesbloqueado()) {
-        	rutaImagen = "/images/LogroDesbloqueado.png"; // Estrella significa desbloqueado
+        	rutaImagen = "/images/LogroDesbloqueado (1).png"; // Estrella significa desbloqueado
         	// Tarjeta blanca para conseguidos
 			vbox.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); -fx-border-color: #f1c40f; -fx-border-radius: 10; -fx-border-width: 1;");
         	iconView.setOpacity(1.0); // Visible

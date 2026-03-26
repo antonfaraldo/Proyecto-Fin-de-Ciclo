@@ -67,7 +67,7 @@ public class LogrosController {
 			vbox.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); -fx-border-color: #f1c40f; -fx-border-radius: 10; -fx-border-width: 1;");
         	iconView.setOpacity(1.0); // Visible
         } else {
-        	rutaImagen = "/images/LogroBloqueado.png"; // Candado para bloqueado
+        	rutaImagen = "/images/LogroBloqueadoSinFondo.png"; // Candado para bloqueado
         	// Tarjeta grisácea para bloqueados
 			vbox.setStyle("-fx-background-color: #ececec; -fx-background-radius: 10; -fx-border-color: #ccc; -fx-border-radius: 10; -fx-border-width: 1;");
             iconView.setOpacity(0.3); // Transparente

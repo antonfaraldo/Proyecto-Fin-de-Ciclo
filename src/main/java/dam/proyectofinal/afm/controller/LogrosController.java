@@ -70,7 +70,7 @@ public class LogrosController {
         	rutaImagen = "/images/LogroBloqueadoSinFondo.png"; // Candado para bloqueado
         	// Tarjeta grisácea para bloqueados
 			vbox.setStyle("-fx-background-color: #ececec; -fx-background-radius: 10; -fx-border-color: #ccc; -fx-border-radius: 10; -fx-border-width: 1;");
-            iconView.setOpacity(0.3); // Transparente
+            iconView.setOpacity(0.8); 
         }
         iconView.setImage(new Image(getClass().getResourceAsStream(rutaImagen)));
         } catch (Exception e) {

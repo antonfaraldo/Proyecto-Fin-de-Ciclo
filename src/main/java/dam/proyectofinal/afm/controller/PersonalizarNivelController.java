@@ -21,6 +21,7 @@ public class PersonalizarNivelController {
 	@FXML private Spinner<Integer> spinMinas;
 	
 	@FXML private Label lblInfoMinas;
+	@FXML private Label lblSugerenciaMinas;
 	
 	@FXML public void initialize() {
 		// Configuramos los limites del nivel
@@ -34,8 +35,16 @@ public class PersonalizarNivelController {
         configurarValidacionNumerica(spinMinas);
         
         // Se añade un Listener a filas y columnas para actualizar el aviso
-        spinFilas.valueProperty().addListener((obs, oldVal, newVal) -> actualizarAvisoMinas());
-        spinColumnas.valueProperty().addListener((obs, oldVal, newVal) -> actualizarAvisoMinas());
+        spinFilas.valueProperty().addListener((obs, oldVal, newVal) -> { 
+        	if (newVal != null) {
+        			actualizarAvisoMinas();
+        		}
+        	});
+        spinColumnas.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                actualizarAvisoMinas();
+            }
+        });
         
         // Listener para el spinner de minas
         spinMinas.valueProperty().addListener((obs, oldVal, newVal) -> {
@@ -59,13 +68,24 @@ public class PersonalizarNivelController {
 		// Se calcula el 80%
 		int max = (int) ((filas * columnas) * 0.5);
 		
+		// Se calcula el 20% que es la sugerencia estandar 
+		int sugerencia = (int) ((filas * columnas) * 0.2);
+		
 		// Se actualiza el limite del spinner en tiempo real
 		SpinnerValueFactory.IntegerSpinnerValueFactory factory = 
 				(SpinnerValueFactory.IntegerSpinnerValueFactory) spinMinas.getValueFactory();
-		factory.setMax(max);
+		
+		if (factory != null) {
+	        factory.setMax(max);
+	        // Evitamos que el valor actual quede por encima del nuevo máximo
+	        if (spinMinas.getValue() != null && spinMinas.getValue() > max) {
+	            factory.setValue(max);
+	        }
+	    }
 		
 		// Se actualiza el texto de Label
 		lblInfoMinas.setText("Límite de seguridad: Máximo " + max + " minas (50% del tablero)");
+		lblSugerenciaMinas.setText("Recomendado (estándar 20%): " + sugerencia + " minas");
 	}
 
 	private void configurarValidacionNumerica(Spinner<Integer> spinner) {

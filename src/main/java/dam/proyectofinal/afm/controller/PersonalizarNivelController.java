@@ -26,7 +26,7 @@ public class PersonalizarNivelController {
 		// Configuramos los limites del nivel
 		spinFilas.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 30, 10));
 		spinColumnas.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 50, 10));
-        spinMinas.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 500, 15));
+        spinMinas.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 750, 15));
         
         // Validación para evitar letras
         configurarValidacionNumerica(spinFilas);
@@ -39,7 +39,7 @@ public class PersonalizarNivelController {
         
         // Listener para el spinner de minas
         spinMinas.valueProperty().addListener((obs, oldVal, newVal) -> {
-        	int maxPermitido = (int) ((spinFilas.getValue() * spinColumnas.getValue()) * 0.8);
+        	int maxPermitido = (int) ((spinFilas.getValue() * spinColumnas.getValue()) * 0.5);
         	if (newVal > maxPermitido) {
         		lblInfoMinas.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
         	} else {
@@ -57,10 +57,15 @@ public class PersonalizarNivelController {
 		int columnas = spinColumnas.getValue();
 		
 		// Se calcula el 80%
-		int max = (int) ((filas * columnas) * 0.8);
+		int max = (int) ((filas * columnas) * 0.5);
+		
+		// Se actualiza el limite del spinner en tiempo real
+		SpinnerValueFactory.IntegerSpinnerValueFactory factory = 
+				(SpinnerValueFactory.IntegerSpinnerValueFactory) spinMinas.getValueFactory();
+		factory.setMax(max);
 		
 		// Se actualiza el texto de Label
-		lblInfoMinas.setText("Límite de seguridad: Máximo " + max + " minas (80% del tablero)");
+		lblInfoMinas.setText("Límite de seguridad: Máximo " + max + " minas (50% del tablero)");
 	}
 
 	private void configurarValidacionNumerica(Spinner<Integer> spinner) {
@@ -95,8 +100,8 @@ public class PersonalizarNivelController {
 			int c = spinColumnas.getValue();
 			int m = spinMinas.getValue();
 			
-			// Calculamos el límite de seguridad (las minas no pueden ser más del 80% del tablero)
-			int maxMinasPermitidas = (int) ((f * c) * 0.8);
+			// Calculamos el límite de seguridad (las minas no pueden ser más del 50% del tablero)
+			int maxMinasPermitidas = (int) ((f * c) * 0.5);
 			
 			// Validacion de seguridad
 			if (m > maxMinasPermitidas) {

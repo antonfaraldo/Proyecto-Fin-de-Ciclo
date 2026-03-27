@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -36,6 +37,14 @@
                         <Spinner fx:id="spinMinas" editable="true" maxWidth="Infinity" GridPane.rowIndex="2" GridPane.columnIndex="1" prefHeight="40.0" />
                     </children>
                 </GridPane>
+                
+                <VBox alignment="CENTER" spacing="5.0">
+                    <children>
+                        <Label fx:id="lblInfoMinas" text="Límite de seguridad: Máximo 80 minas (80% del tablero)" 
+                               wrapText="true" textAlignment="CENTER" style="-fx-text-fill: #7f8c8d; -fx-font-size: 12px; -fx-font-style: italic;" />
+                        <Label text="Rango: 5-30 filas / 5-50 columnas" style="-fx-text-fill: #bdc3c7; -fx-font-size: 10px;" />
+                    </children>
+                </VBox>
                 
                 <Separator prefWidth="200.0" />
                 

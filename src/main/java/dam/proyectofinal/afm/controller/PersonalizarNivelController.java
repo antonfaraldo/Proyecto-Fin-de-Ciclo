@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
@@ -18,6 +19,8 @@ public class PersonalizarNivelController {
 	@FXML private Spinner<Integer> spinFilas;
 	@FXML private Spinner<Integer> spinColumnas;
 	@FXML private Spinner<Integer> spinMinas;
+	
+	@FXML private Label lblInfoMinas;
 	
 	@FXML public void initialize() {
 		// Configuramos los limites del nivel
@@ -29,8 +32,37 @@ public class PersonalizarNivelController {
         configurarValidacionNumerica(spinFilas);
         configurarValidacionNumerica(spinColumnas);
         configurarValidacionNumerica(spinMinas);
+        
+        // Se añade un Listener a filas y columnas para actualizar el aviso
+        spinFilas.valueProperty().addListener((obs, oldVal, newVal) -> actualizarAvisoMinas());
+        spinColumnas.valueProperty().addListener((obs, oldVal, newVal) -> actualizarAvisoMinas());
+        
+        // Listener para el spinner de minas
+        spinMinas.valueProperty().addListener((obs, oldVal, newVal) -> {
+        	int maxPermitido = (int) ((spinFilas.getValue() * spinColumnas.getValue()) * 0.8);
+        	if (newVal > maxPermitido) {
+        		lblInfoMinas.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+        	} else {
+        		lblInfoMinas.setStyle("-fx-text-fill: #7f8c8d; -fx-font-weight: normal;");
+        	}
+        });
+        
+        actualizarAvisoMinas();
 	}
 	
+	private void actualizarAvisoMinas() {
+		// TODO Auto-generated method stub
+		// Se obtienen los valores actuales de los Spinners
+		int filas = spinFilas.getValue();
+		int columnas = spinColumnas.getValue();
+		
+		// Se calcula el 80%
+		int max = (int) ((filas * columnas) * 0.8);
+		
+		// Se actualiza el texto de Label
+		lblInfoMinas.setText("Límite de seguridad: Máximo " + max + " minas (80% del tablero)");
+	}
+
 	private void configurarValidacionNumerica(Spinner<Integer> spinner) {
 		// TODO Auto-generated method stub
 		spinner.setEditable(true); // Se permite editar los valores

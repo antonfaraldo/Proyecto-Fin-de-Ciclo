@@ -34,7 +34,7 @@ public class LogroDAOImpl  implements LogroDAO {
 	    todos.add(new Logro(14, "Maestro del Cálculo", "Gana en nivel DIFÍCIL sin colocar ninguna bandera.", 0, false));
 	    todos.add(new Logro(15, "Superviviente del Tiempo", "Gana tu primera partida en modo Contrarreloj.", 0, false));
 	    todos.add(new Logro(16, "Leyenda del Abismo", "Gana 50 partidas en modo DIFICIL.", 0, false));
-	    todos.add(new Logro(17, "Instinto Ciego", "Gana una partida en modo Contrarreloj sin colocar ni una sola bandera.", 0, false));
+	    todos.add(new Logro(17, "Instinto Ciego", "Gana una partida en modo Contrarreloj sin banderas.", 0, false));
 		
         return todos;
     }

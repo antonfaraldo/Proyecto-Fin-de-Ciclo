@@ -63,6 +63,11 @@ public class LogroService {
 				verificarYRegistrarLogro(usuario, "Purista del Medio");
 			}
 		}
+		// Contrarreloj y sin banderas
+		if (partida.getDificultad().getNivel() == Nivel.CONTRARRELOJ && partida.isVictoria() && partida.getNumBanderasUsadas() == 0) {
+			verificarYRegistrarLogro(usuario, "Instinto Ciego");
+		}
+		
 		// Difícil y sin banderas
 		if (partida.getDificultad().getNivel() == Nivel.DIFICIL && partida.getNumBanderasUsadas() == 0) {
 			verificarYRegistrarLogro(usuario, "Maestro del Cálculo");

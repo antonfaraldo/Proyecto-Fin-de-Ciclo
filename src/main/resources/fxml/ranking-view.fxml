@@ -78,6 +78,31 @@
                  </columnResizePolicy>
               </TableView>
           </Tab>
+
+          <Tab fx:id="tabViciados" text="📊 LOS MÁS VICIADOS">
+              <VBox spacing="10.0">
+                 <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                 <children>
+                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                       <children>
+                          <Label text="Filtrar por Nivel:" />
+                          <ComboBox fx:id="comboNivelViciados" prefWidth="150.0" promptText="Todos los niveles" 
+                                    style="-fx-background-radius: 10;" />
+                          <Label text="(Suma total de tiempo jugado)" style="-fx-text-fill: gray; -fx-font-style: italic;" />
+                       </children>
+                    </HBox>
+                    <TableView fx:id="tableViciados" VBox.vgrow="ALWAYS">
+                       <columns>
+                          <TableColumn fx:id="colUserViciado" text="Usuario" prefWidth="250" />
+                          <TableColumn fx:id="colTiempoViciado" text="Tiempo Total Acumulado (s)" prefWidth="250" />
+                       </columns>
+                       <columnResizePolicy>
+                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                       </columnResizePolicy>
+                    </TableView>
+                 </children>
+              </VBox>
+          </Tab>
         </tabs>
       </TabPane>
 

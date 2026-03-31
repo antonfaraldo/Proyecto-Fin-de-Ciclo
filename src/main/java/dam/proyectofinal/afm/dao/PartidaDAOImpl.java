@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import dam.proyectofinal.afm.dto.ViciadoDTO;
 import dam.proyectofinal.afm.model.Nivel;
 import dam.proyectofinal.afm.model.Partida;
 import dam.proyectofinal.afm.model.Usuario;
@@ -105,6 +106,19 @@ public class PartidaDAOImpl implements PartidaDAO{
 					return Integer.compare(p1.getTiempoSegundos(), p2.getTiempoSegundos());
 				})
 				.collect(Collectors.toList()); // Se devuelve la lista completa ordenada 
+	}
+	
+	public List<ViciadoDTO> obtenerRankingViciados(Nivel nivelFiltro) {
+		return historialPartidas.stream()
+				.filter(p -> nivelFiltro == null || p.getDificultad().getNivel() == nivelFiltro)
+				.collect(Collectors.groupingBy(
+						p -> p.getUsuario().getNickname(),
+						Collectors.summingInt(Partida::getTiempoSegundos)
+						))
+				.entrySet().stream()
+				.map(entry -> new ViciadoDTO(entry.getKey(), entry.getValue()))
+				.sorted((v1, v2) -> Integer.compare(v2.getTiempoTotal(), v1.getTiempoTotal()))
+				.collect(Collectors.toList());
 	}
 
 }

@@ -1,6 +1,7 @@
 package dam.proyectofinal.afm.controller;
 
-import dam.proyectofinal.afm.dao.PartidaDAOImpl;   
+import dam.proyectofinal.afm.dao.PartidaDAOImpl;
+import dam.proyectofinal.afm.dto.ViciadoDTO;
 import dam.proyectofinal.afm.model.Nivel;
 import dam.proyectofinal.afm.model.Partida;
 import dam.proyectofinal.afm.util.AppShell;
@@ -16,6 +17,8 @@ import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -37,6 +40,13 @@ public class RankingController {
 	@FXML private TableView<Partida> tableMedio;
 	@FXML private TableView<Partida> tableDificil;
 	@FXML private TableView<Partida> tableContrarreloj;
+	
+	@FXML private TabPane tabPaneRanking;
+    @FXML private Tab tabViciados;
+    @FXML private TableView<ViciadoDTO> tableViciados;
+    @FXML private TableColumn<ViciadoDTO, String> colUserViciado;
+    @FXML private TableColumn<ViciadoDTO, Integer> colTiempoViciado;
+    @FXML private ComboBox<Nivel> comboNivelViciados;
 	
 	@FXML private CheckBox checkTop10; 	
 	@FXML private TextField txtBusqueda;
@@ -98,8 +108,35 @@ public class RankingController {
 	    
 	    // Personalizar nombre de columna para Contrarreloj
 	    colTiempoContra.setText("Segundos Sobrantes");
+	    
+	    // Tabla de los jugadores con más minutos jugados restringida al admin
+	    if (!AppShell.getInstance().getUsuario().isEsAdmin()) {
+	    	tabPaneRanking.getTabs().remove(tabViciados);
+	    } else {
+	    	configurarTablaViciados();
+	    }
+	    
 		
 	}
+
+	private void configurarTablaViciados() {
+		// TODO Auto-generated method stub
+		colUserViciado.setCellValueFactory(new PropertyValueFactory<>("nickname"));
+		colTiempoViciado.setCellValueFactory(new PropertyValueFactory<>("tiempoTotal"));
+        
+        // Cargar combo de niveles (incluyendo null para "Todos")
+        ObservableList<Nivel> niveles = FXCollections.observableArrayList(Nivel.FACIL, Nivel.MEDIO, Nivel.DIFICIL, Nivel.CONTRARRELOJ);
+        comboNivelViciados.setItems(niveles);
+        comboNivelViciados.setPromptText("Todos los niveles");
+
+        // Listener para actualizar la tabla al cambiar el combo
+        comboNivelViciados.valueProperty().addListener((obs, oldV, newV) -> {
+            tableViciados.getItems().setAll(((PartidaDAOImpl)partidaDao).obtenerRankingViciados(newV));
+        });
+
+        // Carga inicial
+        tableViciados.getItems().setAll(((PartidaDAOImpl)partidaDao).obtenerRankingViciados(null));
+    }
 
 	private void refrescarDatosRanking() {
 		// TODO Auto-generated method stub

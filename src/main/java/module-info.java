@@ -3,7 +3,6 @@ module MineManagerFX {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
-    requires java.desktop;
     requires jakarta.mail;
 
     // 1. Abrimos los controladores para que JavaFX pueda inyectar los @FXML
@@ -15,6 +14,7 @@ module MineManagerFX {
     
     
     opens dam.proyectofinal.afm.service to jakarta.mail;
+    opens dam.proyectofinal.afm.dto to javafx.base;
 
     // NOTA: He borrado "opens dam.proyectofinal.view" porque al estar
     // los FXML en resources/fxml, no se consideran un paquete de código.

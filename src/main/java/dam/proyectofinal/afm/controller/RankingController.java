@@ -17,6 +17,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -45,7 +46,7 @@ public class RankingController {
     @FXML private Tab tabViciados;
     @FXML private TableView<ViciadoDTO> tableViciados;
     @FXML private TableColumn<ViciadoDTO, String> colUserViciado;
-    @FXML private TableColumn<ViciadoDTO, Integer> colTiempoViciado;
+    @FXML private TableColumn<ViciadoDTO, String> colTiempoViciado;
     @FXML private ComboBox<Nivel> comboNivelViciados;
 	
 	@FXML private CheckBox checkTop10; 	
@@ -122,12 +123,31 @@ public class RankingController {
 	private void configurarTablaViciados() {
 		// TODO Auto-generated method stub
 		colUserViciado.setCellValueFactory(new PropertyValueFactory<>("nickname"));
-		colTiempoViciado.setCellValueFactory(new PropertyValueFactory<>("tiempoTotal"));
+		// Vinculación de timepo formateado
+		colTiempoViciado.setCellValueFactory(data -> {
+			int totalSegundos = data.getValue().getTiempoTotal();
+			int minutos = totalSegundos / 60;
+			int segundos = totalSegundos % 60;
+			
+			String formato = (minutos > 0) ? minutos + "m " + segundos + "s" : segundos + "s";
+	        return new SimpleStringProperty(formato);
+		});
         
-        // Cargar combo de niveles (incluyendo null para "Todos")
-        ObservableList<Nivel> niveles = FXCollections.observableArrayList(Nivel.FACIL, Nivel.MEDIO, Nivel.DIFICIL, Nivel.CONTRARRELOJ);
+        // Cargar combo de niveles
+        ObservableList<Nivel> niveles = FXCollections.observableArrayList();
+        niveles.add(null); // Todos los niveles
+        niveles.addAll(Nivel.FACIL, Nivel.MEDIO, Nivel.DIFICIL, Nivel.CONTRARRELOJ);
+        
         comboNivelViciados.setItems(niveles);
-        comboNivelViciados.setPromptText("Todos los niveles");
+        
+        comboNivelViciados.setCellFactory(lb -> new ListCell<Nivel>() {
+        	@Override
+        	protected void updateItem(Nivel item, boolean empty) {
+        		super.updateItem(item, empty);
+        		setText(empty || item == null? "Todos los niveles" : item.toString());
+        	}
+        });
+        comboNivelViciados.setButtonCell(comboNivelViciados.getCellFactory().call(null));
 
         // Listener para actualizar la tabla al cambiar el combo
         comboNivelViciados.valueProperty().addListener((obs, oldV, newV) -> {

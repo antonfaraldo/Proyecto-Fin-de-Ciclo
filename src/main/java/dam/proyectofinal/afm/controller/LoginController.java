@@ -7,6 +7,7 @@ import dam.proyectofinal.afm.dao.UsuarioDAO;
 import dam.proyectofinal.afm.dao.UsuarioDAOImpl;
 import dam.proyectofinal.afm.model.Usuario;
 import dam.proyectofinal.afm.util.AppShell;
+import dam.proyectofinal.afm.util.FiltroNombre;
 import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -93,11 +94,20 @@ public class LoginController {
 		String email = registerEmailField.getText().trim().toLowerCase(); // se convierte a minusculas
 		String password = isRegisterPasswordVisible ? registerPasswordVisibleField.getText() : registerPasswordField.getText();
 		
+		// Validación de campos vacios
 		if (nickname.isEmpty() || email.isEmpty() || password.isEmpty()) {
 			feedbackLabel.setText("Por favor, rellena todos los campos");
 			feedbackLabel.setStyle("-fx-text-fill: red;");
 			return;
 		}
+		
+		// Filtro de insultos y nombres prohibidos
+		if (!FiltroNombre.esValido(nickname)) {
+			feedbackLabel.setText("Nombre no permitido o contiene insultos.");
+			feedbackLabel.setStyle("-fx-text-fill: #e74c3c;");
+			return;
+		}
+		
 		// Validacion de correo
 		if (!email.contains("@") || !email.contains(".")) {
 			feedbackLabel.setText("El formato del email no es válido");

@@ -3,6 +3,7 @@ package dam.proyectofinal.afm;
 import dam.proyectofinal.afm.model.Dificultad;
 import dam.proyectofinal.afm.model.Tablero;
 import dam.proyectofinal.afm.util.AppShell;
+import dam.proyectofinal.afm.util.FiltroNombre;
 import dam.proyectofinal.afm.util.View;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -26,6 +27,8 @@ public class App extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
+		FiltroNombre.cargarPalabrasDesdeJson();
+		
 		AppShell.getInstance().setHostServices(this.getHostServices());
 		
 		AppShell.getInstance().init(primaryStage);

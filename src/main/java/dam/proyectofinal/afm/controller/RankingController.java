@@ -21,6 +21,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -106,6 +107,12 @@ public class RankingController {
   
 		// Refrescar datos
 		refrescarDatosRanking();
+		
+		// Aplicar estilo dinamico del top 3
+		aplicarEstiloTop3(tableFacil);
+		aplicarEstiloTop3(tableMedio);
+		aplicarEstiloTop3(tableDificil);
+		aplicarEstiloTop3(tableContrarreloj);
 	    
 	    // Personalizar nombre de columna para Contrarreloj
 	    colTiempoContra.setText("Segundos Sobrantes");
@@ -258,5 +265,31 @@ public class RankingController {
 				initialize();
 			}
 		}
+	}
+	
+	private void aplicarEstiloTop3(TableView<Partida> tabla) {
+		tabla.setRowFactory(tv -> new TableRow<Partida>() {
+			@Override
+			protected void updateItem(Partida item, boolean empty) {
+				super.updateItem(item, empty);
+				
+				if (item == null || empty) {
+					setStyle(""); // Se limpia el estilo si la fila esta vacia 
+				} else {
+					// Se obtiene el indice de la fila
+					int index = getIndex();
+					
+					if (index == 0) { // Oro
+						setStyle("-fx-background-color: #FFD700; -fx-font-weight: bold; -fx-text-background-color: black;");
+					} else if (index == 1) { // Plata
+						setStyle("-fx-background-color: #C0C0C0; -fx-font-weight: bold; -fx-text-background-color: black;");
+					} else if (index == 2) { // Bronce
+						setStyle("-fx-background-color: #CD7F32; -fx-font-weight: bold; -fx-text-background-color: black;");
+					} else {
+						setStyle(""); // Estilo normal para el resto
+					}
+				}
+			}
+		});
 	}
 }

@@ -1,6 +1,6 @@
 package dam.proyectofinal.afm.controller;
 
-import dam.proyectofinal.afm.dao.PartidaDAOImpl;  
+import dam.proyectofinal.afm.dao.PartidaDAOImpl;   
 
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
@@ -20,6 +20,8 @@ import dam.proyectofinal.afm.util.AppShell;
 import dam.proyectofinal.afm.util.CSVManager;
 import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
@@ -34,12 +36,15 @@ import javafx.util.Duration;
 
 import dam.proyectofinal.afm.dao.PartidaDAO;
 import dam.proyectofinal.afm.model.Casilla;
+import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.layout.BorderPane;
@@ -73,6 +78,7 @@ public class GameController {
 	private double tiempoContrarreloj = 60.0;
 	private AnimationTimer animationTimer;
 	private long lastUpdate = 0;
+	private final Image imagenBandera = new Image(getClass().getResourceAsStream("/images/BanderaSinFondo.png"));
 	
 	public void inicializarJuego(Tablero tablero) {
 		this.tablero = tablero;
@@ -817,6 +823,14 @@ public class GameController {
 		// TODO Auto-generated method stub
 		btn.setGraphic(null);
 	    btn.setText("");
+	    // Se fuerza el tamaño del boton para que no se mueva nunca 
+	    btn.setMinSize(30, 30);
+	    btn.setMaxSize(30, 30);
+	    btn.setPrefSize(30, 30);
+	    
+	 // Se elimina el espacio interno (padding) que empuja la imagen
+	    btn.setPadding(Insets.EMPTY);
+	    
 	    if (casilla.isRevelada()) {
 	        if (casilla.isEsMina()) {
 	            btn.setText("💣");
@@ -831,11 +845,18 @@ public class GameController {
                         obtenerColorPorNumero(minas));
 	        }
 	    } else if (casilla.isMarcada()) {
-	        btn.setText("🚩");
-	        btn.setStyle("-fx-background-color: #bdc3c7; " +
-                    "-fx-border-color: #ecf0f1 #7f8c8d #7f8c8d #ecf0f1; " +
-                    "-fx-border-width: 2px; " +
-                    "-fx-text-fill: red; -fx-font-weight: bold;");
+	      // Se usa imagen en lugar de un emoji
+	    	ImageView banderaView = crearGraficoBandera();
+	    	
+	    	// Se ajusta al tamaño del boton
+	    	banderaView.setFitWidth(20);
+	    	banderaView.setFitHeight(20);
+	    	
+	    	btn.setGraphic(banderaView);
+	    	btn.setAlignment(Pos.CENTER);
+	    	btn.setStyle("-fx-background-color: #ecf0f1; " + 
+	                    "-fx-border-color: #bdc3c7; " +
+	                    "-fx-border-width: 1px;");
 	    } else {
 	        btn.setStyle("-fx-background-color: #bdc3c7; "
 	        		+                  "-fx-border-color: #ecf0f1 #7f8c8d #7f8c8d #ecf0f1; " 
@@ -923,5 +944,15 @@ public class GameController {
 			}
 		});
 		Platform.runLater(() -> mainContainer.requestFocus());
+	}
+	private ImageView crearGraficoBandera() {
+		ImageView iv = new ImageView(imagenBandera);
+		
+		// Se configura para que no se deforme
+		iv.setPreserveRatio(true);
+		iv.setSmooth(true); // Mejora la calidad visual al escalar
+		iv.setCache(true);
+		iv.setCacheHint(CacheHint.QUALITY);
+		return iv;
 	}
 }

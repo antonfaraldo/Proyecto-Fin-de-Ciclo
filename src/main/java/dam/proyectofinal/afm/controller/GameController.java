@@ -854,9 +854,9 @@ public class GameController {
 	    	
 	    	btn.setGraphic(banderaView);
 	    	btn.setAlignment(Pos.CENTER);
-	    	btn.setStyle("-fx-background-color: #ecf0f1; " + 
-	                    "-fx-border-color: #bdc3c7; " +
-	                    "-fx-border-width: 1px;");
+	    	btn.setStyle("-fx-background-color: #bdc3c7; " +
+	                    "-fx-border-color: #ecf0f1 #7f8c8d #7f8c8d #ecf0f1; " +
+	                    "-fx-border-width: 2px;");
 	    } else {
 	        btn.setStyle("-fx-background-color: #bdc3c7; "
 	        		+                  "-fx-border-color: #ecf0f1 #7f8c8d #7f8c8d #ecf0f1; " 

@@ -79,6 +79,7 @@ public class GameController {
 	private AnimationTimer animationTimer;
 	private long lastUpdate = 0;
 	private final Image imagenBandera = new Image(getClass().getResourceAsStream("/images/BanderaSinFondo.png"));
+	private ImageView banderaCache;
 	
 	public void inicializarJuego(Tablero tablero) {
 		this.tablero = tablero;
@@ -213,6 +214,15 @@ public class GameController {
 		juegoIniciado = false;
 		juegoTerminado = false;
 		banderasColocadas = 0;
+		
+		// Se prepara la configuración de la bandera una sola vez para toda la partida
+		banderaCache = new ImageView(imagenBandera);
+		banderaCache.setFitWidth(20);
+		banderaCache.setFitHeight(20);
+		banderaCache.setPreserveRatio(true);
+	    banderaCache.setSmooth(true); // Calidad alta calculada una sola vez
+	    banderaCache.setCache(true);
+	    banderaCache.setCacheHint(CacheHint.QUALITY);
 		
 		lblTiempo.setStyle("");
 		if (nivelSeleccionado == Nivel.CONTRARRELOJ) {
@@ -846,11 +856,12 @@ public class GameController {
 	        }
 	    } else if (casilla.isMarcada()) {
 	      // Se usa imagen en lugar de un emoji
-	    	ImageView banderaView = crearGraficoBandera();
+	    	ImageView banderaView = new ImageView(imagenBandera);
 	    	
 	    	// Se ajusta al tamaño del boton
 	    	banderaView.setFitWidth(20);
 	    	banderaView.setFitHeight(20);
+	    	banderaView.setPreserveRatio(true);
 	    	
 	    	btn.setGraphic(banderaView);
 	    	btn.setAlignment(Pos.CENTER);

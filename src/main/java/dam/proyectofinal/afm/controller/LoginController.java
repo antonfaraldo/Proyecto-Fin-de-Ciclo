@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 
 public class LoginController {
 	@FXML private TextField loginNicknameField;
@@ -36,6 +37,76 @@ public class LoginController {
 	private boolean isRegisterPasswordVisible = false;
 	
 	private UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
+	
+	@FXML
+	public void initialize() {
+		// Se escuchan las teclas del TabPane para qe afecte a amabas pestañas
+		authTabPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			int selectedIndex = authTabPane.getSelectionModel().getSelectedIndex();
+			
+			switch (event.getCode()) {
+			// Eje Horizontal
+			// Navegacion entre pestañas
+			case RIGHT:
+				// Solo se cambia de pestaña si se esta en el login
+				if (selectedIndex == 0) {
+					authTabPane.getSelectionModel().select(1); // Ir al registro
+					registerNicknameField.requestFocus();
+				}
+				event.consume(); 
+				
+				break;
+				
+			case LEFT:
+				// Solo se cambia a login si el usuario esta en registro
+				if (selectedIndex == 1) {
+					authTabPane.getSelectionModel().select(0); // Ir al login
+					loginNicknameField.requestFocus();
+				}
+				event.consume();
+				
+				break;
+			
+			// Eje Vertical
+			// Navegacion hacia abajo
+			case DOWN:
+				if (selectedIndex == 0) { // Pestaña del login
+					if (loginNicknameField.isFocused()) 
+						loginPasswordField.requestFocus();
+				} else { // Pestaña de registro
+					if (registerEmailField.isFocused())
+						registerNicknameField.requestFocus();
+					else if (registerNicknameField.isFocused())
+						registerPasswordField.requestFocus();	
+				}
+				event.consume(); // Bloquea el cambio de pestaña con flecha abajo				
+				break;
+				
+			// Navegacion hacia arriba 
+			case UP:
+				if (selectedIndex == 0) { // Pestaña del login
+					if (loginPasswordField.isFocused() || loginPasswordVisibleField.isFocused())
+						loginNicknameField.requestFocus();
+				} else { // Pestaña de registro
+					if (registerPasswordField.isFocused() || registerPasswordVisibleField.isFocused())
+						registerNicknameField.requestFocus();
+					else if (registerNicknameField.isFocused())
+						registerEmailField.requestFocus();
+				}
+				event.consume();
+				break;
+				
+			case ENTER:
+				if (selectedIndex == 0) handleLogin();
+				else handleRegister();
+				event.consume();
+				break;
+
+			default:
+				break;
+			}
+		});
+	}
 	
 	@FXML
 	private void togglePasswordVisibility() {

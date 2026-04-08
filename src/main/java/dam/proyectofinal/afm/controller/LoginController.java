@@ -10,6 +10,7 @@ import dam.proyectofinal.afm.util.AppShell;
 import dam.proyectofinal.afm.util.FiltroNombre;
 import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -43,28 +44,38 @@ public class LoginController {
 		// Se escuchan las teclas del TabPane para qe afecte a amabas pestañas
 		authTabPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			int selectedIndex = authTabPane.getSelectionModel().getSelectedIndex();
+			Node focusNode = authTabPane.getScene().getFocusOwner();
 			
 			switch (event.getCode()) {
 			// Eje Horizontal
 			// Navegacion entre pestañas
 			case RIGHT:
-				// Solo se cambia de pestaña si se esta en el login
-				if (selectedIndex == 0) {
-					authTabPane.getSelectionModel().select(1); // Ir al registro
-					registerNicknameField.requestFocus();
+				// Solo se cambia de pestaña si se esta en el login y el foco NO esta en un campo de texto
+				if (focusNode instanceof TextField) {
+					TextField tf = (TextField) focusNode;
+					if (tf.getCaretPosition() == tf.getText().length()) {
+						if (selectedIndex == 0) {
+							authTabPane.getSelectionModel().select(1); // Ir al registro
+							registerNicknameField.requestFocus();
+							event.consume();
+						}
+					}
 				}
-				event.consume(); 
-				
+						
 				break;
 				
 			case LEFT:
-				// Solo se cambia a login si el usuario esta en registro
-				if (selectedIndex == 1) {
-					authTabPane.getSelectionModel().select(0); // Ir al login
-					loginNicknameField.requestFocus();
-				}
-				event.consume();
-				
+				// Solo se cambia a login si el usuario esta en registro y al inicio del texto
+				if (focusNode instanceof TextField) {
+                    TextField tf = (TextField) focusNode;
+                    if (tf.getCaretPosition() == 0) {
+                        if (selectedIndex == 1) {
+                            authTabPane.getSelectionModel().select(0);
+                            loginNicknameField.requestFocus();
+                            event.consume();
+                        }
+                    }
+                }
 				break;
 			
 			// Eje Vertical

@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -34,6 +35,8 @@ public class AdminController {
     @FXML private Button btnVerStats;
     @FXML private Button btnVolver;
     
+    @FXML private Label lblTotalUsuarios;
+    
     private UsuarioDAO  usuarioDAO = new UsuarioDAOImpl();
     
     // Lista maestra con todos los usuarios
@@ -50,6 +53,9 @@ public class AdminController {
     	
     	cargarUsuarios();
     	configurarFiltro();
+    	
+    	int total = usuarioDAO.obtenerTotalUsuarios();
+    	lblTotalUsuarios.setText("Usuarios totales: " + total);
     }
 
 	private void configurarTooltips() {

@@ -12,4 +12,5 @@ public interface UsuarioDAO {
 
 	List<Usuario> obtenerTodos();
 	boolean eliminar(String nickname);
+	int obtenerTotalUsuarios();
 }

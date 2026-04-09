@@ -73,4 +73,9 @@ public class UsuarioDAOImpl  implements UsuarioDAO{
 	    return usuarios.stream()
 	                   .anyMatch(u -> u.getNickname().equalsIgnoreCase(nickname));
 	}
+	
+	@Override
+	public int obtenerTotalUsuarios() {
+		return usuariosMemoria.size(); // Esto se hace asi de manera temporal hasta implementar de forma definitiva la base de datos
+	}
 }

@@ -32,11 +32,20 @@
          <children>
             <HBox alignment="CENTER_LEFT" spacing="20.0">
                <children>
-                  <Label text="Gestión de Usuarios Registrados" textFill="#7f8c8d">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label text="Gestión de Usuarios Registrados" textFill="#7f8c8d">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblTotalUsuarios" text="Usuarios totales: 0" textFill="#2c3e50">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
                   <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                      <children>
                         <TextField fx:id="txtFiltro" prefHeight="30.0" prefWidth="250.0" promptText="🔍 Buscar por nickname..." style="-fx-background-radius: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 15; -fx-padding: 0 15 0 15;" />

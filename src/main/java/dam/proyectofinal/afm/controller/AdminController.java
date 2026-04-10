@@ -156,6 +156,10 @@ public class AdminController {
 				// Si el usuario pulsa aceptar
 				usuarioDAO.eliminar(seleccionado.getNickname());
 				cargarUsuarios(); // refrescar la tabla
+				// Se actualiza el Label con el nuevo total de usuarios
+				int nuevoTotal = usuarioDAO.obtenerTotalUsuarios();
+				lblTotalUsuarios.setText("Usuarios totales: " + nuevoTotal);
+				
 				System.out.println("Usuario eliminado: " + seleccionado.getNickname());
 			} else {
 				// Si pulsa cancelar o cierra la ventana

@@ -61,12 +61,23 @@ public class AdminController {
     		@Override
     		protected void updateItem(LocalDateTime item, boolean empty) {
     			super.updateItem(item, empty);
-    			if (empty || item == null) {
-    				setText("Nunca"); // Si el usuario nunca ha hecho el login
-    			} else {
-    				setText(item.format(formatter));
+    			
+    			// SI la fila esta vacia porque no hay usuario no se pone ningun texto
+    			if (empty) {
+    				setText(null);
+    				setGraphic(null);
+    				}
+    			// SI hay usuario pero el campo es null porque se ha registrado pero nunca ha iniciado sesion
+    			else if (item == null) {
+    				setText("Nunca");
+    				setStyle("-fx-text-fill: #e67e22; -fx-font-style: italic;");
     			}
-    		}
+    			// Se formatea la fecha
+    			else {
+    				setText(item.format(formatter));
+    				setStyle("-fx-text-fill: black; -fx-font-style: normal;");
+    			}
+			}
     	});
     	
     	configurarTooltips();

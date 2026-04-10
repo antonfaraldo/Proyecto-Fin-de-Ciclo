@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyEvent;
 
 public class LoginController {
@@ -34,6 +35,9 @@ public class LoginController {
 	@FXML private Label feedbackLabel;
 	@FXML private TabPane authTabPane;
 	
+	@FXML private Label lblMayusAviso;
+    @FXML private Label lblMayusAvisoReg;
+	
 	private boolean isPasswordVisible = false;
 	private boolean isRegisterPasswordVisible = false;
 	
@@ -46,14 +50,19 @@ public class LoginController {
 			int selectedIndex = authTabPane.getSelectionModel().getSelectedIndex();
 			Node focusNode = authTabPane.getScene().getFocusOwner();
 			
+			// Aviso de que el usuario esta escribiendo en mayusculas
+			TextInputControl tControl = null;
+			if (focusNode instanceof TextInputControl) {
+				tControl = (TextInputControl) focusNode;
+			}
+			
 			switch (event.getCode()) {
 			// Eje Horizontal
 			// Navegacion entre pestañas
 			case RIGHT:
 				// Solo se cambia de pestaña si se esta en el login y el foco NO esta en un campo de texto
-				if (focusNode instanceof TextField) {
-					TextField tf = (TextField) focusNode;
-					if (tf.getCaretPosition() == tf.getText().length()) {
+				if (tControl != null) {
+					if (tControl.getCaretPosition() == tControl.getText().length()) {
 						if (selectedIndex == 0) {
 							authTabPane.getSelectionModel().select(1); // Ir al registro
 							registerNicknameField.requestFocus();
@@ -66,9 +75,8 @@ public class LoginController {
 				
 			case LEFT:
 				// Solo se cambia a login si el usuario esta en registro y al inicio del texto
-				if (focusNode instanceof TextField) {
-                    TextField tf = (TextField) focusNode;
-                    if (tf.getCaretPosition() == 0) {
+				if (tControl != null) {
+                    if (tControl.getCaretPosition() == 0) {
                         if (selectedIndex == 1) {
                             authTabPane.getSelectionModel().select(0);
                             loginNicknameField.requestFocus();
@@ -117,8 +125,44 @@ public class LoginController {
 				break;
 			}
 		});
+		// Inicializar detectores de mayusculas
+		configurarDetectorMayus(loginPasswordField, lblMayusAviso);
+		configurarDetectorMayus(loginPasswordVisibleField, lblMayusAviso);
+        configurarDetectorMayus(registerPasswordField, lblMayusAvisoReg);
+        configurarDetectorMayus(registerPasswordVisibleField, lblMayusAvisoReg);
 	}
 	
+	// Se detecta el estado del bloqueo de mayusculas atraves del estado de la tecla Shift
+	private void configurarDetectorMayus(TextInputControl campo, Label aviso) {
+		// TODO Auto-generated method stub
+		campo.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+			String texto = event.getText();
+			// Se comprueba si se ha pulsado una letra
+			if (texto != null && texto.length() == 1 && Character.isLetter(texto.charAt(0))) {
+				char caracter = texto.charAt(0);
+				boolean esMayuscula = Character.isUpperCase(caracter);
+				boolean shiftPulsado = event.isShiftDown();
+				
+				// Lógica de tecla del Shift para saber si es mayuscula
+				if ((esMayuscula && !shiftPulsado) || (!esMayuscula && shiftPulsado)) {
+					aviso.setVisible(true);
+					aviso.setManaged(true);
+				} else {
+					aviso.setVisible(false);
+					aviso.setManaged(false);
+				}
+			}
+		});
+		
+		// Se oculta el aviso cuando no se esta usando mayusculas
+		campo.focusedProperty().addListener((obs, oldVal, newVal) -> {
+			if (!newVal) {
+				aviso.setVisible(false);
+				aviso.setManaged(false);
+			}
+		});
+	}
+
 	@FXML
 	private void togglePasswordVisibility() {
 		isPasswordVisible = !isPasswordVisible;

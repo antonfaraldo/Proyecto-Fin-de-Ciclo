@@ -38,15 +38,16 @@
                     </children>
                 </GridPane>
                 
-                <VBox alignment="CENTER" spacing="5.0">
+                <VBox alignment="CENTER" spacing="8.0">
                     <children>
                         <Label fx:id="lblInfoMinas" text="Límite de seguridad: Máximo 80 minas (80% del tablero)" 
-                               wrapText="true" textAlignment="CENTER" style="-fx-text-fill: #7f8c8d; -fx-font-size: 12px; -fx-font-style: italic;" />
+                               wrapText="true" textAlignment="CENTER" style="-fx-text-fill: #34495e; -fx-font-size: 12px; -fx-font-style: italic;" />
                         
                         <Label fx:id="lblSugerenciaMinas" text="Recomendado (estándar 20%): 20 minas" 
                                wrapText="true" textAlignment="CENTER" style="-fx-text-fill: #27ae60; -fx-font-size: 11px; -fx-font-weight: bold;" />
                                
-                        <Label text="Rango: 5-30 filas / 5-50 columnas" style="-fx-text-fill: #bdc3c7; -fx-font-size: 10px;" />
+                        <Label text="ℹ Rango permitido: 5-30 filas / 5-50 columnas" 
+                               style="-fx-text-fill: #7f8c8d; -fx-font-size: 11px; -fx-font-weight: normal;" />
                     </children>
                 </VBox>
                 

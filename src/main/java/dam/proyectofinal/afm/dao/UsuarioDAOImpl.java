@@ -1,6 +1,8 @@
 package dam.proyectofinal.afm.dao;
 
 import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import dam.proyectofinal.afm.model.Usuario;
@@ -43,10 +45,18 @@ public class UsuarioDAOImpl  implements UsuarioDAO{
 	@Override
 	public Usuario login(String nickname, String password) {
 		// TODO Auto-generated method stub
-		return usuariosMemoria.stream()
+		Usuario usuario = usuariosMemoria.stream()
 				.filter(u -> u.getNickname().equals(nickname) && u.getPassword().equals(password))
 				.findFirst()
 				.orElse(null);	
+		
+		// Si las credencilaes son validas se guarda el acceso
+		if (usuario != null) {
+			usuario.setFechaUltimoAcceso(LocalDateTime.now());
+			System.out.println("DEBUG: " + nickname + " logueado. Acceso registrado.");
+		}
+		
+		return usuario;
 	}
 	
 	@Override

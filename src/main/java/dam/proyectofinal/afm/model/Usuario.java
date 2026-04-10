@@ -1,6 +1,7 @@
 package dam.proyectofinal.afm.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,17 @@ public class Usuario {
 	private String password;
 	private String email;
 	private LocalDate fechaRegistro;
+	private LocalDateTime fechaUltimoAcceso;
+	
+	
+	public LocalDateTime getFechaUltimoAcceso() {
+		return fechaUltimoAcceso;
+	}
+
+	public void setFechaUltimoAcceso(LocalDateTime fechaUltimoAcceso) {
+		this.fechaUltimoAcceso = fechaUltimoAcceso;
+	}
+
 	public boolean isEsAdmin() {
 		return "admin".equalsIgnoreCase(this.nickname);
 	}

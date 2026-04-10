@@ -1,5 +1,7 @@
 package dam.proyectofinal.afm.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Observable;
 import java.util.Optional;
 
@@ -17,6 +19,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -29,6 +32,7 @@ public class AdminController {
     @FXML private TableColumn<Usuario, String> colNickname;
     @FXML private TableColumn<Usuario, String> colEmail;
     @FXML private TableColumn<Usuario, String> colFecha;
+    @FXML private TableColumn<Usuario, LocalDateTime> colUltimoAcceso;
     @FXML private TextField txtFiltro;
     
     @FXML private Button btnEliminar; 
@@ -48,6 +52,22 @@ public class AdminController {
     	colNickname.setCellValueFactory(new PropertyValueFactory<>("nickname"));
     	colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
     	colFecha.setCellValueFactory(new PropertyValueFactory<>("fechaRegistro"));
+    	colUltimoAcceso.setCellValueFactory(new PropertyValueFactory<>("fechaUltimoAcceso"));
+    	
+    	// Se formatea la fecha
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    	
+    	colUltimoAcceso.setCellFactory(column -> new TableCell<Usuario, LocalDateTime>() {
+    		@Override
+    		protected void updateItem(LocalDateTime item, boolean empty) {
+    			super.updateItem(item, empty);
+    			if (empty || item == null) {
+    				setText("Nunca"); // Si el usuario nunca ha hecho el login
+    			} else {
+    				setText(item.format(formatter));
+    			}
+    		}
+    	});
     	
     	configurarTooltips();
     	

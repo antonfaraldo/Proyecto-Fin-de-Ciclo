@@ -124,6 +124,8 @@ public class RankingController {
 	    	configurarTablaViciados();
 	    }
 	    
+	    // Desactivar la ordenacion de la tabla de viciados
+	    tableViciados.setSortPolicy(tv -> null);
 		
 	}
 

@@ -93,8 +93,8 @@
                     </HBox>
                     <TableView fx:id="tableViciados" VBox.vgrow="ALWAYS">
                        <columns>
-                          <TableColumn fx:id="colUserViciado" text="Usuario" prefWidth="250" />
-                          <TableColumn fx:id="colTiempoViciado" text="Tiempo Total Acumulado (s)" prefWidth="250" />
+                          <TableColumn fx:id="colUserViciado" text="Usuario" prefWidth="250" sortable="false" />
+                          <TableColumn fx:id="colTiempoViciado" text="Tiempo Total Acumulado (s)" prefWidth="250" sortable="false" />
                        </columns>
                        <columnResizePolicy>
                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

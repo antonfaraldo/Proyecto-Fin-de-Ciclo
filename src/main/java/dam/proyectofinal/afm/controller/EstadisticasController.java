@@ -21,6 +21,7 @@ public class EstadisticasController {
 	@FXML private Label lblTitulo, lblRatioTotal, lblTiempoTotal, lblNivelFavorito;
 	@FXML private Label lblPctFacil, lblPctMedio, lblPctDificil, lblPctContra;
 	@FXML private ProgressBar barFacil, barMedio, barDificil, barContra;
+	@FXML private Label lblGanadasFacil, lblGanadasMedio, lblGanadasDificil, lblGanadasContra;
 	@FXML private Button btnAdminPanel;
 	@FXML private PieChart chartNiveles;
 	
@@ -56,6 +57,8 @@ public class EstadisticasController {
 		
 		Map<Nivel, Double> pcts = (Map<Nivel, Double>) stats.get("porcentajesNivel");
 		Map<Nivel, Long> conteos = (Map<Nivel, Long>) stats.get("conteoNiveles");
+		// Se extrae el mapa de victorias por nivel
+		Map<Nivel, Long> victorias = (Map<Nivel, Long>) stats.get("victoriasNivel");
 		
 		// Si es admin se cargan los datos en el PieChart
 		if (esAdmin && conteos != null) {
@@ -66,21 +69,33 @@ public class EstadisticasController {
         double pFacil = pcts.get(Nivel.FACIL);
         lblPctFacil.setText(String.format("Nivel Fácil: %.1f%%", pFacil));
         barFacil.setProgress(pFacil / 100.0);
+        // Se actualiza el conteo de ganadas
+        long gFacil = (victorias != null) ? victorias.getOrDefault(Nivel.FACIL, 0L) : 0L;
+        lblGanadasFacil.setText(gFacil + " ganadas");
         
         // Nivel Medio
         double pMedio = pcts.get(Nivel.MEDIO);
         lblPctMedio.setText(String.format("Nivel Medio: %.1f%%", pMedio));
         barMedio.setProgress(pMedio / 100.0);
         
+        long gMedio = (victorias != null) ? victorias.getOrDefault(Nivel.MEDIO, 0L) : 0L;
+        lblGanadasMedio.setText(gMedio + " ganadas");
+        
         // Nivel Difícil
         double pDificil = pcts.get(Nivel.DIFICIL);
         lblPctDificil.setText(String.format("Nivel Difícil: %.1f%%", pDificil));
         barDificil.setProgress(pDificil / 100.0);
         
+        long gDificil = (victorias != null) ? victorias.getOrDefault(Nivel.DIFICIL, 0L) : 0L;
+        lblGanadasDificil.setText(gDificil + " ganadas");
+        
         // Modo Contrarreloj
         double pContra = pcts.getOrDefault(Nivel.CONTRARRELOJ, 0.0);
         lblPctContra.setText(String.format("Modo Contrarreloj: %.1f%%", pContra));
         barContra.setProgress(pContra / 100.0);
+        
+        long gContra = (victorias != null) ? victorias.getOrDefault(Nivel.CONTRARRELOJ, 0L) : 0L;
+        lblGanadasContra.setText(gContra + " ganadas");
 		
 		// SI el usuario es admin se ajusta la ventana
         if (esAdmin) {

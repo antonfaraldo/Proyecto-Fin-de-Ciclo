@@ -45,6 +45,11 @@ public class PartidaDAOImpl implements PartidaDAO{
 		Map<Nivel, Long> conteos = partidasValidas.stream()
 				.collect(Collectors.groupingBy(p -> p.getDificultad().getNivel(), Collectors.counting()));
 		
+		// Conteo de victorias por nivel
+		Map<Nivel, Long> victoriasPorNivel = partidasValidas.stream()
+				.filter(Partida::isVictoria)
+				.collect(Collectors.groupingBy(p -> p.getDificultad().getNivel(), Collectors.counting()));
+		
 		// Nivel favorito
 		Nivel favorito = conteos.entrySet().stream()
 	            .max(Map.Entry.comparingByValue())
@@ -67,6 +72,7 @@ public class PartidaDAOImpl implements PartidaDAO{
 	    stats.put("porcentajesNivel", porcentajesPorNivel);
 	    
 	    stats.put("conteoNiveles", conteos);
+	    stats.put("victoriasNivel", victoriasPorNivel);
 	    
 	    return stats;
 	}

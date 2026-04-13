@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.chart.PieChart?>
 
-<VBox alignment="TOP_CENTER" prefWidth="500.0" prefHeight="650.0" 
+<VBox alignment="TOP_CENTER" prefWidth="550.0" prefHeight="650.0" 
       style="-fx-background-color: #ecf0f1;" xmlns:fx="http://javafx.com/fxml/1" 
       fx:controller="dam.proyectofinal.afm.controller.EstadisticasController">
     <children>
@@ -42,32 +42,40 @@
                                 <VBox spacing="5">
                                     <children>
                                         <Label fx:id="lblPctFacil" text="Fácil: 0%" />
-                                        <ProgressBar fx:id="barFacil" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
-                                                     style="-fx-accent: #4CAF50;" />
+                                        <HBox spacing="10" alignment="CENTER_LEFT">
+                                            <ProgressBar fx:id="barFacil" progress="0.0" HBox.hgrow="ALWAYS" maxWidth="Infinity" prefHeight="15.0" style="-fx-accent: #4CAF50;" />
+                                            <Label fx:id="lblGanadasFacil" text="0 ganadas" minWidth="80" style="-fx-font-weight: bold; -fx-text-fill: #27ae60;" />
+                                        </HBox>
                                     </children>
                                 </VBox>
                                 
                                 <VBox spacing="5">
                                     <children>
                                         <Label fx:id="lblPctMedio" text="Medio: 0%" />
-                                        <ProgressBar fx:id="barMedio" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
-                                                     style="-fx-accent: #FF9800;" />
+                                        <HBox spacing="10" alignment="CENTER_LEFT">
+                                            <ProgressBar fx:id="barMedio" progress="0.0" HBox.hgrow="ALWAYS" maxWidth="Infinity" prefHeight="15.0" style="-fx-accent: #FF9800;" />
+                                            <Label fx:id="lblGanadasMedio" text="0 ganadas" minWidth="80" style="-fx-font-weight: bold; -fx-text-fill: #27ae60;" />
+                                        </HBox>
                                     </children>
                                 </VBox>
                                 
                                 <VBox spacing="5">
                                     <children>
                                         <Label fx:id="lblPctDificil" text="Difícil: 0%" />
-                                        <ProgressBar fx:id="barDificil" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
-                                                     style="-fx-accent: #F44336;" />
+                                        <HBox spacing="10" alignment="CENTER_LEFT">
+                                            <ProgressBar fx:id="barDificil" progress="0.0" HBox.hgrow="ALWAYS" maxWidth="Infinity" prefHeight="15.0" style="-fx-accent: #F44336;" />
+                                            <Label fx:id="lblGanadasDificil" text="0 ganadas" minWidth="80" style="-fx-font-weight: bold; -fx-text-fill: #27ae60;" />
+                                        </HBox>
                                     </children>
                                 </VBox>
 
                                 <VBox spacing="5">
                                     <children>
                                         <Label fx:id="lblPctContra" text="Modo Contrarreloj: 0%" />
-                                        <ProgressBar fx:id="barContra" progress="0.0" maxWidth="Infinity" prefHeight="15.0" 
-                                                     style="-fx-accent: #9b59b6;" />
+                                        <HBox spacing="10" alignment="CENTER_LEFT">
+                                            <ProgressBar fx:id="barContra" progress="0.0" HBox.hgrow="ALWAYS" maxWidth="Infinity" prefHeight="15.0" style="-fx-accent: #9b59b6;" />
+                                            <Label fx:id="lblGanadasContra" text="0 ganadas" minWidth="80" style="-fx-font-weight: bold; -fx-text-fill: #27ae60;" />
+                                        </HBox>
                                     </children>
                                 </VBox>
                             </children>

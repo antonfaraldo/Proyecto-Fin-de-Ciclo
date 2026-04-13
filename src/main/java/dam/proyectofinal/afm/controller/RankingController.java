@@ -135,10 +135,20 @@ public class RankingController {
 		// Vinculación de timepo formateado
 		colTiempoViciado.setCellValueFactory(data -> {
 			int totalSegundos = data.getValue().getTiempoTotal();
-			int minutos = totalSegundos / 60;
-			int segundos = totalSegundos % 60;
 			
-			String formato = (minutos > 0) ? minutos + "m " + segundos + "s" : segundos + "s";
+			String formato;
+			if (totalSegundos < 60) {
+				formato = totalSegundos + "s";
+			} else if (totalSegundos < 3600) {
+				int minutos = totalSegundos / 60;
+				int segundos = totalSegundos % 60;
+				formato = minutos + "m " + segundos + "s";
+			} else {
+				int horas = totalSegundos / 3600;
+				int minutos = (totalSegundos % 3600) / 60;
+				int segundos = totalSegundos % 60;
+				formato = horas + "h " + minutos + "m " + segundos + "s";
+			}
 	        return new SimpleStringProperty(formato);
 		});
         

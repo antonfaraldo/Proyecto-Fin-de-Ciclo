@@ -22,12 +22,13 @@ public class PersonalizarNivelController {
 	
 	@FXML private Label lblInfoMinas;
 	@FXML private Label lblSugerenciaMinas;
+	@FXML private Label lblAvisoMinas;
 	
 	@FXML public void initialize() {
 		// Configuramos los limites del nivel
 		spinFilas.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 30, 10));
 		spinColumnas.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 50, 10));
-        spinMinas.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 750, 15));
+        spinMinas.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(2, 750, 15));
         
         // Validación para evitar letras
         configurarValidacionNumerica(spinFilas);
@@ -64,8 +65,12 @@ public class PersonalizarNivelController {
 		// Se obtienen los valores actuales de los Spinners
 		int filas = spinFilas.getValue();
 		int columnas = spinColumnas.getValue();
+		int totalCasillas = filas * columnas;
 		
-		// Se calcula el 80%
+		// Se calcula el minimo de minas que son 2 o el 2% del tablero
+		int min = Math.max(2, (int) (totalCasillas * 0.02));
+		
+		// Se calcula el 50%
 		int max = (int) ((filas * columnas) * 0.5);
 		
 		// Se calcula el 20% que es la sugerencia estandar 
@@ -76,15 +81,19 @@ public class PersonalizarNivelController {
 				(SpinnerValueFactory.IntegerSpinnerValueFactory) spinMinas.getValueFactory();
 		
 		if (factory != null) {
+			factory.setMin(min);
 	        factory.setMax(max);
-	        // Evitamos que el valor actual quede por encima del nuevo máximo
-	        if (spinMinas.getValue() != null && spinMinas.getValue() > max) {
-	            factory.setValue(max);
+	        
+	        // Evitamos que el valor actual quede por fuera de los limites
+	        if (spinMinas.getValue() != null) {
+	            if (spinMinas.getValue() > max) factory.setValue(max);
+	            if (spinMinas.getValue() < min) factory.setValue(min);
 	        }
 	    }
 		
 		// Se actualiza el texto de Label
 		lblInfoMinas.setText("Límite de seguridad: Máximo " + max + " minas (50% del tablero)");
+		lblAvisoMinas.setText("Rango permitido: " + min + " - " + max + " minas");
 		lblSugerenciaMinas.setText("Recomendado (estándar 20%): " + sugerencia + " minas");
 	}
 

@@ -92,8 +92,8 @@ public class PersonalizarNivelController {
 	    }
 		
 		// Se actualiza el texto de Label
+		lblAvisoMinas.setText("Mínimo de minas: " + min + " (2% del tablero)");
 		lblInfoMinas.setText("Límite de seguridad: Máximo " + max + " minas (50% del tablero)");
-		lblAvisoMinas.setText("Rango permitido: " + min + " - " + max + " minas");
 		lblSugerenciaMinas.setText("Recomendado (estándar 20%): " + sugerencia + " minas");
 	}
 

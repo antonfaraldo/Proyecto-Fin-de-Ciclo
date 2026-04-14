@@ -40,10 +40,10 @@
                 
                 <VBox alignment="CENTER" spacing="8.0">
                     <children>
-                        <Label fx:id="lblInfoMinas" text="Límite de seguridad: Máximo 80 minas (80% del tablero)" 
+                        <Label fx:id="lblInfoMinas" text="Máximo de minas: 50 (50% del tablero)" 
                                wrapText="true" textAlignment="CENTER" style="-fx-text-fill: #34495e; -fx-font-size: 12px; -fx-font-style: italic;" />
                         
-                        <Label fx:id="lblAvisoMinas" text="Rango permitido: 2 - 80 minas" 
+                        <Label fx:id="lblAvisoMinas" text="Mínimo de minas: 2 (2% del tablero)" 
                                wrapText="true" textAlignment="CENTER" style="-fx-text-fill: #7f8c8d; -fx-font-size: 12px; -fx-font-style: italic;" />
 
                         <Label fx:id="lblSugerenciaMinas" text="Recomendado (estándar 20%): 20 minas" 

@@ -14,6 +14,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.layout.VBox;
 
 public class PersonalizarNivelController {
 	@FXML private Spinner<Integer> spinFilas;
@@ -23,6 +24,8 @@ public class PersonalizarNivelController {
 	@FXML private Label lblInfoMinas;
 	@FXML private Label lblSugerenciaMinas;
 	@FXML private Label lblAvisoMinas;
+	
+	@FXML private VBox paneAlerta;
 	
 	@FXML public void initialize() {
 		// Configuramos los limites del nivel
@@ -115,31 +118,23 @@ public class PersonalizarNivelController {
 
 	@FXML 
 	private void handleJugar() {
-		// Alerta de Información
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		alert.setTitle("Nivel Personalizada");
-		alert.setHeaderText("Aviso de Ranking");
-		alert.setContentText("Has seleccionado un nivel personalizado. Ten en cuenta que estas partidas NO se guardarán en el ranking global.\n\n¿Deseas continuar?");
+		paneAlerta.setVisible(true);
+	}
+	
+	@FXML 
+	private void ocultarAlerta() {
+		paneAlerta.setVisible(false);
+	}
+	
+	@FXML 
+	private void confirmarJugar() {
+		int f = spinFilas.getValue();
+		int c = spinColumnas.getValue();
+		int m = spinMinas.getValue();
 		
-		Optional<ButtonType> result = alert.showAndWait();
-		if (result.isPresent() && result.get() == ButtonType.OK) {
-		
-			// Se obtienen los valores seleccionados por el usuario
-			int f = spinFilas.getValue();
-			int c = spinColumnas.getValue();
-			int m = spinMinas.getValue();
-			
-			// Calculamos el límite de seguridad (las minas no pueden ser más del 50% del tablero)
-			int maxMinasPermitidas = (int) ((f * c) * 0.5);
-			
-			// Validacion de seguridad
-			if (m > maxMinasPermitidas) {
-				m = maxMinasPermitidas;
-			}
-			// Se carga la vista
-			GameController game = (GameController) AppShell.getInstance().loadView(View.GAME);
-	        game.prepararPartidaPersonalizada(f, c, m);
-		}
+		// Se carga la vista
+		GameController game = (GameController) AppShell.getInstance().loadView(View.GAME);
+		game.prepararPartidaPersonalizada(f, c, m);
 	}
 	
 	@FXML

@@ -80,6 +80,7 @@ public class GameController {
 	private long lastUpdate = 0;
 	private final Image imagenBandera = new Image(getClass().getResourceAsStream("/images/BanderaSinFondo.png"));
 	private ImageView banderaCache;
+	@FXML private VBox paneAvisoResolucion;
 	
 	public void inicializarJuego(Tablero tablero) {
 		this.tablero = tablero;
@@ -768,7 +769,7 @@ public class GameController {
 		// TODO Auto-generated method stub
 		// Alerta Preventiva
 		if (columnas > 20 || filas > 15) {
-			mostrarAlerta("Recomendación de pantalla", "Has diseñado un tablero grande. Se recomienda jugar en pantalla completa para ver todas las casillas.");
+			paneAvisoResolucion.setVisible(true);
 		}
 		
 		prepararPartida(Nivel.PERSONALIZADO);
@@ -782,7 +783,7 @@ public class GameController {
 		
 		generarBotones(filas, columnas);
 		
-		javafx.application.Platform.runLater(() -> {
+		Platform.runLater(() -> {
 			Stage stage = (Stage) gridTablero.getScene().getWindow();
 			if (!stage.isMaximized()) {
 				AppShell.getInstance().ajustarVentana();
@@ -965,5 +966,10 @@ public class GameController {
 		iv.setCache(true);
 		iv.setCacheHint(CacheHint.QUALITY);
 		return iv;
+	}
+	
+	@FXML
+	private void cerrarAvisoResolucion() {
+		paneAvisoResolucion.setVisible(false);
 	}
 }

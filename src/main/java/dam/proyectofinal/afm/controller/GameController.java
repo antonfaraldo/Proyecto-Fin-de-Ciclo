@@ -903,24 +903,29 @@ public class GameController {
 		Random random = new Random();
 		Color[] colores = {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN, Color.PURPLE, Color.ORANGE, Color.PINK};
 		
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 60; i++) {
 			Circle p = new Circle(random.nextInt(5, 10), colores[random.nextInt(colores.length)]);
 			
 			// Posición inicial
-			p.setCenterX(random.nextInt((int) root.getWidth()));
-			p.setCenterY(-20);
+			p.setCenterX(random.nextDouble() * root.getWidth());
+			p.setCenterY(-random.nextInt(100) -20);
 			root.getChildren().add(p);
 			
 			// Animación de caída
-			TranslateTransition fall = new TranslateTransition(Duration.seconds(random.nextDouble() * 2 + 1), p);
+			TranslateTransition fall = new TranslateTransition(Duration.seconds(2.0 + random.nextDouble() * 3.0), p);
 			fall.setToY(root.getHeight() + 40 );
-			fall.setByX(random.nextInt(100) - 50); // Movimiento lateral
+			fall.setByX(random.nextInt(200) - 100); // Movimiento lateral
+			
+			// Retraso aleatorio para qe no salgan al mismo tiempo
+			Duration delay = Duration.seconds(random.nextDouble() * 1.5);
+			fall.setDelay(delay);
 			
 			// Animación de rotación
-			ScaleTransition scale = new ScaleTransition(Duration.seconds(0.5), p);
+			ScaleTransition scale = new ScaleTransition(Duration.seconds(random.nextDouble() * 0.4 + 0.2), p);
 			scale.setToX(0.1);
 	        scale.setCycleCount(Animation.INDEFINITE);
 	        scale.setAutoReverse(true);
+	        scale.setDelay(delay);
 	        
 	        // Quitar el confeti
 	        fall.setOnFinished(e -> root.getChildren().remove(p));

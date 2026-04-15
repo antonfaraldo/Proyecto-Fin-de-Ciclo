@@ -906,9 +906,12 @@ public class GameController {
 		for (int i = 0; i < 60; i++) {
 			Circle p = new Circle(random.nextInt(5, 10), colores[random.nextInt(colores.length)]);
 			
+			// Se desactiva el layout para que el confeti respete las cordenadas
+			p.setManaged(false);
+			
 			// Posición inicial
 			p.setCenterX(random.nextDouble() * root.getWidth());
-			p.setCenterY(-random.nextInt(100) -20);
+			p.setCenterY(-random.nextInt(200) -50);
 			root.getChildren().add(p);
 			
 			// Animación de caída

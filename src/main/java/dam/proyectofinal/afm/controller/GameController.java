@@ -792,7 +792,7 @@ public class GameController {
 		});
 	}
 	private void revelarMinasAnimado() {
-		List<Button> botonesConMina = new ArrayList<>();
+		List<Button> nodosFinales = new ArrayList<>();
 		
 		// Se buscan todos los botones que tienen una mina oculta
 		for (Node node : gridTablero.getChildren()) {
@@ -802,22 +802,27 @@ public class GameController {
 				Integer f = GridPane.getRowIndex(btn);
 				if (f != null && c != null) {
 					Casilla casilla = tablero.getCeldas()[f][c];
-					if (casilla.isEsMina() && !casilla.isRevelada()) {
-						botonesConMina.add(btn);
+					if (casilla.isEsMina() && !casilla.isRevelada() || (!casilla.isEsMina() && casilla.isMarcada())) {
+						nodosFinales.add(btn);
 					}
 				}
 			}
 		}
 		// Timeline para revelar las casillas
 		Timeline timelineAnimacion = new Timeline();
-		for (int i = 0; i < botonesConMina.size(); i++) {
-			Button btnMina = botonesConMina.get(i);
+		for (int i = 0; i < nodosFinales.size(); i++) {
+			Button btnActual = nodosFinales.get(i);
 			KeyFrame frame = new KeyFrame(Duration.millis(50 * i), e -> {
-				Integer col = GridPane.getColumnIndex(btnMina);
-				Integer fil = GridPane.getRowIndex(btnMina);
+				Integer col = GridPane.getColumnIndex(btnActual);
+				Integer fil = GridPane.getRowIndex(btnActual);
 				Casilla c = tablero.getCeldas()[fil][col];
-				c.setRevelada(true);
-				actualizarBotonCasilla(btnMina, c);
+				
+				// Si es una mina, se marca como revelada
+				if (c.isEsMina()) {
+					c.setRevelada(true);
+				}
+				// SI no es mina se pone la X 
+				actualizarBotonCasilla(btnActual, c);
 			});
 			timelineAnimacion.getKeyFrames().add(frame);
 		}
@@ -856,6 +861,10 @@ public class GameController {
                         obtenerColorPorNumero(minas));
 	        }
 	    } else if (casilla.isMarcada()) {
+	    	// SI el juego ha terminado y NO es mina se muestra la X roja
+	    	if (juegoTerminado && !casilla.isEsMina()) {
+	    		btn.setText("❌");
+	    	} else {
 	      // Se usa imagen en lugar de un emoji
 	    	ImageView banderaView = new ImageView(imagenBandera);
 	    	
@@ -869,6 +878,7 @@ public class GameController {
 	    	btn.setStyle("-fx-background-color: #bdc3c7; " +
 	                    "-fx-border-color: #ecf0f1 #7f8c8d #7f8c8d #ecf0f1; " +
 	                    "-fx-border-width: 2px;");
+	    	}
 	    } else {
 	        btn.setStyle("-fx-background-color: #bdc3c7; "
 	        		+                  "-fx-border-color: #ecf0f1 #7f8c8d #7f8c8d #ecf0f1; " 

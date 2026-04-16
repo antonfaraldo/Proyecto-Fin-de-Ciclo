@@ -82,6 +82,8 @@ public class GameController {
 	private ImageView banderaCache;
 	@FXML private VBox paneAvisoResolucion;
 	private final Image imagenError = new Image(getClass().getResourceAsStream("/images/X.png"));
+	private int filaMinaCulpable = -1;
+	private int colMinaCulpable = -1;
 	
 	public void inicializarJuego(Tablero tablero) {
 		this.tablero = tablero;
@@ -216,6 +218,8 @@ public class GameController {
 		juegoIniciado = false;
 		juegoTerminado = false;
 		banderasColocadas = 0;
+		this.filaMinaCulpable = -1;
+		this.colMinaCulpable = -1;
 		
 		// Se prepara la configuración de la bandera una sola vez para toda la partida
 		banderaCache = new ImageView(imagenBandera);
@@ -364,6 +368,8 @@ public class GameController {
 		refrescarTablero();
 		
 		if (casilla.isEsMina()) {
+			this.filaMinaCulpable = f;
+			this.colMinaCulpable = c;
 			finalizarPartida(false);
 		} else {
 			// Modo Contrarreloj
@@ -851,7 +857,23 @@ public class GameController {
 	    if (casilla.isRevelada()) {
 	        if (casilla.isEsMina()) {
 	            btn.setText("💣");
-	            btn.setStyle("-fx-background-color: #ff0000; -fx-text-fill: black; -fx-font-weight: bold; -fx-opacity: 1.0;");
+	           
+	            // Se comprara por cordenadas
+	            Integer fBoton = GridPane.getRowIndex(btn);
+	            Integer cBoton = GridPane.getColumnIndex(btn);
+	            
+	            // El boton que causa la derrota tiene un estilo destacado
+	            if (fBoton != null && cBoton != null && 
+	            		fBoton == filaMinaCulpable && cBoton == colMinaCulpable) {
+	            	
+	            	btn.setStyle("-fx-background-color: #ff4757; " + // Rojo brillante
+	                           "-fx-border-color: yellow; " +      // Borde amarillo llamativo
+	                           "-fx-border-width: 3px; " +         // Más grueso
+	                           "-fx-text-fill: black; -fx-font-weight: bold;");
+	            } else {
+	            	// Estilo para el resto de minas reveladas
+	                btn.setStyle("-fx-background-color: #ff0000; -fx-text-fill: black; -fx-font-weight: bold; -fx-opacity: 1.0;");
+	            }
 	        } else {
 	            int minas = casilla.getMinasAlrededor();
 	            btn.setText(minas > 0 ? String.valueOf(minas) : "");

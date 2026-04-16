@@ -867,8 +867,8 @@ public class GameController {
 	    		ImageView errorView = new ImageView(imagenError);
 	    		
 	    		// Se ajusta el tamaño del boton
-	    		errorView.setFitWidth(20);
-	    		errorView.setFitHeight(20);
+	    		errorView.setFitWidth(25);
+	    		errorView.setFitHeight(25);
 	    		errorView.setPreserveRatio(true);
 	    		
 	    		// Se aplica visualmente al boton
@@ -882,8 +882,8 @@ public class GameController {
 	    	ImageView banderaView = new ImageView(imagenBandera);
 	    	
 	    	// Se ajusta al tamaño del boton
-	    	banderaView.setFitWidth(20);
-	    	banderaView.setFitHeight(20);
+	    	banderaView.setFitWidth(25);
+	    	banderaView.setFitHeight(25);
 	    	banderaView.setPreserveRatio(true);
 	    	
 	    	btn.setGraphic(banderaView);

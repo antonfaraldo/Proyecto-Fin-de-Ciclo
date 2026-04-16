@@ -81,6 +81,7 @@ public class GameController {
 	private final Image imagenBandera = new Image(getClass().getResourceAsStream("/images/BanderaSinFondo.png"));
 	private ImageView banderaCache;
 	@FXML private VBox paneAvisoResolucion;
+	private final Image imagenError = new Image(getClass().getResourceAsStream("/images/X.png"));
 	
 	public void inicializarJuego(Tablero tablero) {
 		this.tablero = tablero;
@@ -863,7 +864,19 @@ public class GameController {
 	    } else if (casilla.isMarcada()) {
 	    	// SI el juego ha terminado y NO es mina se muestra la X roja
 	    	if (juegoTerminado && !casilla.isEsMina()) {
-	    		btn.setText("❌");
+	    		ImageView errorView = new ImageView(imagenError);
+	    		
+	    		// Se ajusta el tamaño del boton
+	    		errorView.setFitWidth(20);
+	    		errorView.setFitHeight(20);
+	    		errorView.setPreserveRatio(true);
+	    		
+	    		// Se aplica visualmente al boton
+	    		btn.setGraphic(errorView);
+	    		btn.setAlignment(Pos.CENTER);
+	    		
+	    		// Se mantiene el estilo de fondo
+	    		btn.setStyle("-fx-background-color: #fab1a0; -fx-border-color: #bdc3c7; -fx-border-width: 0.5px;");
 	    	} else {
 	      // Se usa imagen en lugar de un emoji
 	    	ImageView banderaView = new ImageView(imagenBandera);

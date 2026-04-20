@@ -59,5 +59,13 @@ public class EmailService {
         // Prueba
         service.enviarCorreo("antonfaraldomosquera@liceolapaz.net", "Prueba MineManager", "¡Funciona! El sistema de recuperación está listo.");
     }
+	
+	public void enviarCorreoActivacion(String destinatario, String codigo) {
+		String asunto = "Activa ty cuenta en Mine Manager";
+		String cuerpo = "¡Hola! Gracias por registrarte.\n\n" + 
+						"Tu código dr activación es: " + codigo + "\n" + 
+						"Este código expirará en 15 minutos";
+		enviarCorreo(destinatario, asunto, cuerpo);
+	}
 
 }

@@ -12,8 +12,35 @@ public class Usuario {
 	private String email;
 	private LocalDate fechaRegistro;
 	private LocalDateTime fechaUltimoAcceso;
+	private boolean activo = false;
+	private String codigoActivacion;
+	private LocalDateTime fechaExpiracionCodigo;
 	
 	
+	public boolean isActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
+	}
+
+	public String getCodigoActivacion() {
+		return codigoActivacion;
+	}
+
+	public void setCodigoActivacion(String codigoActivacion) {
+		this.codigoActivacion = codigoActivacion;
+	}
+
+	public LocalDateTime getFechaExpiracionCodigo() {
+		return fechaExpiracionCodigo;
+	}
+
+	public void setFechaExpiracionCodigo(LocalDateTime fechaExpiracionCodigo) {
+		this.fechaExpiracionCodigo = fechaExpiracionCodigo;
+	}
+
 	public LocalDateTime getFechaUltimoAcceso() {
 		return fechaUltimoAcceso;
 	}

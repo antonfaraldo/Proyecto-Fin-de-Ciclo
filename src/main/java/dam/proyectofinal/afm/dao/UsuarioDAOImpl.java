@@ -1,10 +1,11 @@
 package dam.proyectofinal.afm.dao;
 
-import java.util.List;
+import java.util.List; 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import org.mindrot.jbcrypt.BCrypt;
 import dam.proyectofinal.afm.model.Usuario;
 
 public class UsuarioDAOImpl  implements UsuarioDAO{
@@ -18,8 +19,8 @@ public class UsuarioDAOImpl  implements UsuarioDAO{
 			Usuario adminMaestro = new Usuario();
 			adminMaestro.setEmail("admin@minemanager.com");
 			adminMaestro.setNickname("admin");
-			adminMaestro.setPassword("1234");
-			
+			adminMaestro.setPassword(BCrypt.hashpw("1234", BCrypt.gensalt()));
+			adminMaestro.setActivo(true); // El admin siempre activo
 			usuariosMemoria.add(adminMaestro);
 			System.out.println("SISTEMA: Admin Maestro inicializado.");
 		}
@@ -30,12 +31,14 @@ public class UsuarioDAOImpl  implements UsuarioDAO{
 		// TODO Auto-generated method stub
 		// TEMPORAL
 		// Se impide que alguien se registre con el admin
-		if (usuario.getNickname().trim().equalsIgnoreCase("admin")) {
+		if (usuario.getNickname().trim().equalsIgnoreCase("admin") || existeEmail(usuario.getEmail())) {
 			return false;
 		}
+		// Cifrar antes de guardar la contraseña
+		usuario.setPassword(BCrypt.hashpw(usuario.getPassword(), BCrypt.gensalt()));
 		
-		if (existeEmail(usuario.getEmail()))
-		return false;
+		// El usuario se registra como inactivo por defecto
+		usuario.setActivo(false);
 		
 		usuariosMemoria.add(usuario);
 		System.out.println("Usuario guardado en memoria: " + usuario.getNickname());
@@ -46,17 +49,25 @@ public class UsuarioDAOImpl  implements UsuarioDAO{
 	public Usuario login(String nickname, String password) {
 		// TODO Auto-generated method stub
 		Usuario usuario = usuariosMemoria.stream()
-				.filter(u -> u.getNickname().equals(nickname) && u.getPassword().equals(password))
+				.filter(u -> u.getNickname().equals(nickname))
 				.findFirst()
 				.orElse(null);	
 		
-		// Si las credencilaes son validas se guarda el acceso
-		if (usuario != null) {
+		// SE verifica si ul usuario existe y si la contraseña coincide con el hash
+		if (usuario != null && BCrypt.checkpw(password, usuario.getPassword())) {
+			// Se bloquea el login si la cuenta no ha sido activada
+			if (!usuario.isActivo()) {
+				System.out.println("DEBUG: Intento de login en cuenta no activa: " + nickname);
+				return null;
+			}
+			
+			// Si las credencilaes son validas se guarda el acceso
 			usuario.setFechaUltimoAcceso(LocalDateTime.now());
 			System.out.println("DEBUG: " + nickname + " logueado. Acceso registrado.");
+			return usuario;
 		}
 		
-		return usuario;
+		return null;
 	}
 	
 	@Override

@@ -2,10 +2,13 @@ package dam.proyectofinal.afm.controller;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Random;
 
 import dam.proyectofinal.afm.dao.UsuarioDAO;
 import dam.proyectofinal.afm.dao.UsuarioDAOImpl;
 import dam.proyectofinal.afm.model.Usuario;
+import dam.proyectofinal.afm.service.EmailService;
 import dam.proyectofinal.afm.util.AppShell;
 import dam.proyectofinal.afm.util.FiltroNombre;
 import dam.proyectofinal.afm.util.View;
@@ -18,6 +21,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 
 public class LoginController {
 	@FXML private TextField loginNicknameField;
@@ -37,11 +41,16 @@ public class LoginController {
 	
 	@FXML private Label lblMayusAviso;
     @FXML private Label lblMayusAvisoReg;
+    
+    @FXML private VBox paneVerificarCodigo;
+    @FXML private TextField txtCodigoVerificacion;
 	
 	private boolean isPasswordVisible = false;
 	private boolean isRegisterPasswordVisible = false;
 	
 	private UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
+	
+	private Usuario usuarioPendiente;
 	
 	@FXML
 	public void initialize() {
@@ -210,7 +219,7 @@ public class LoginController {
 			AppShell.getInstance().loadView(View.MENU);
 			AppShell.getInstance().ajustarVentana();
 		} else {
-			feedbackLabel.setText("Nickname o contraseña incorrectos.");
+			feedbackLabel.setText("Nickname o contraseña incorrectos. O cuenta no activada.");
 			feedbackLabel.setStyle("-fx-text-fill: red;");
 		}
 	}
@@ -254,7 +263,20 @@ public class LoginController {
 		nuevoUsuario.setPassword(password);
 		nuevoUsuario.setFechaRegistro(LocalDate.now());
 		
+		// Se genera el codigo de 6 y digitos y la expiracion
+		String codigo = String.format("%06d", new Random().nextInt(999999));
+		nuevoUsuario.setCodigoActivacion(codigo);
+		nuevoUsuario.setFechaExpiracionCodigo(LocalDateTime.now().plusMinutes(15));
+		nuevoUsuario.setActivo(false);
+		
 		if (usuarioDAO.registrar(nuevoUsuario)) {
+			this.usuarioPendiente = nuevoUsuario; // SE guarda la referencia para la validacion
+			new EmailService().enviarCorreoActivacion(email, codigo);
+			
+			// Se muestra el panel de verificación
+			paneVerificarCodigo.setVisible(true);
+			paneVerificarCodigo.setManaged(true);
+			
 			feedbackLabel.setStyle("-fx-text-fill: green;");
 			feedbackLabel.setText("Registro con éxito. Ya puedes iniciar sesión");
 			
@@ -268,6 +290,37 @@ public class LoginController {
 			feedbackLabel.setStyle("-fx-text-fill: red;");
             feedbackLabel.setText("Error: El email ya está registrado.");
 		}
+	}
+	
+	@FXML
+	private void handleValidarCodigo() {
+		String codigoIntroducido = txtCodigoVerificacion.getText().trim();
+		
+		if (usuarioPendiente != null && codigoIntroducido.equals(usuarioPendiente.getCodigoActivacion())) {
+			if (LocalDateTime.now().isBefore(usuarioPendiente.getFechaExpiracionCodigo())) {
+				usuarioPendiente.setActivo(true);
+				
+				// Se oculta el panel
+				paneVerificarCodigo.setVisible(false);
+				paneVerificarCodigo.setManaged(false);
+				
+				feedbackLabel.setStyle("-fx-text-fill: green;");
+				feedbackLabel.setText("¡Cuenta activada con éxito! Ya puedes entrar.");
+				authTabPane.getSelectionModel().select(0); // Se mueve a la pestaña del login
+			} else {
+				feedbackLabel.setText("El código ha expirado (validez 15 min).");
+			}
+		} else {
+			feedbackLabel.setText("Código de verificación incorrecto.");
+		}
+	}
+	
+	@FXML
+	private void handleCancelarVerificacion() {
+		paneVerificarCodigo.setVisible(false);
+		paneVerificarCodigo.setManaged(false);
+		usuarioPendiente = null;
+		txtCodigoVerificacion.clear();
 	}
 	
 	@FXML

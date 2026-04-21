@@ -99,4 +99,38 @@ public class UsuarioDAOImpl  implements UsuarioDAO{
 	public int obtenerTotalUsuarios() {
 		return usuariosMemoria.size(); // Esto se hace asi de manera temporal hasta implementar de forma definitiva la base de datos
 	}
+	
+	@Override
+	public Usuario buscarPorEmail(String email) {
+		return usuariosMemoria.stream()
+				.filter(u -> u.getEmail().equalsIgnoreCase(email))
+				.findFirst()
+				.orElse(null);
+	}
+	
+	@Override
+	public boolean guardarTokenRecuperacion(String email, String token, LocalDateTime expiracion) {
+		Usuario u = buscarPorEmail(email);
+		if (u != null) {
+			u.setTokenRecuperacion(token);
+			u.setFechaExpiracionToken(expiracion);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean actualizarPassword(String email, String nuevaPassword) {
+		// TODO Auto-generated method stub
+		Usuario u = buscarPorEmail(email);
+		if (u != null) {
+			// Se cifra la nueva contraseña
+			String hash = BCrypt.hashpw(nuevaPassword, BCrypt.gensalt());
+			u.setPassword(hash);
+			u.setTokenRecuperacion(null); // Se limpia el token tras el uso
+			return true;
+		}
+		return false;
+	}
+	
 }

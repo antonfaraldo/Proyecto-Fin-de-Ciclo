@@ -61,10 +61,19 @@ public class EmailService {
     }
 	
 	public void enviarCorreoActivacion(String destinatario, String codigo) {
-		String asunto = "Activa ty cuenta en Mine Manager";
+		String asunto = "Activa tu cuenta en Mine Manager";
 		String cuerpo = "¡Hola! Gracias por registrarte.\n\n" + 
 						"Tu código dr activación es: " + codigo + "\n" + 
 						"Este código expirará en 15 minutos";
+		enviarCorreo(destinatario, asunto, cuerpo);
+	}
+	
+	public void enviarCorreoRecuperacion(String destinatario, String token) {
+		String asunto = "Recuperación de contraseña - Mine Manager Pro";
+		String cuerpo = "Has solicitado restablecer tu contraseña.\n\n"
+						+ "Introduce el siguiente código de seguridad en la aplicación:\n"
+						+ "CÓDIGO: " + token + "\n\n"
+						+ "Este código expirará en 15 minutos por seguridad.";
 		enviarCorreo(destinatario, asunto, cuerpo);
 	}
 

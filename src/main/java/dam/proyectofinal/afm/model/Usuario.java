@@ -15,8 +15,26 @@ public class Usuario {
 	private boolean activo = false;
 	private String codigoActivacion;
 	private LocalDateTime fechaExpiracionCodigo;
+	private String tokenRecuperacion;
+	private LocalDateTime fechaExpiracionToken;
 	
 	
+	public String getTokenRecuperacion() {
+		return tokenRecuperacion;
+	}
+
+	public void setTokenRecuperacion(String tokenRecuperacion) {
+		this.tokenRecuperacion = tokenRecuperacion;
+	}
+
+	public LocalDateTime getFechaExpiracionToken() {
+		return fechaExpiracionToken;
+	}
+
+	public void setFechaExpiracionToken(LocalDateTime fechaExpiracionToken) {
+		this.fechaExpiracionToken = fechaExpiracionToken;
+	}
+
 	public boolean isActivo() {
 		return activo;
 	}

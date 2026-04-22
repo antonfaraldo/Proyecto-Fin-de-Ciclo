@@ -93,4 +93,25 @@ public class CSVManager {
 		
 		return partidas;
 	}
+	
+	public static void guardarPartidas(List<Partida> partidas) {
+		// No se usa el true para sobreescribir el fichero completo
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(ficheroPartidas))) {
+			for (Partida partida : partidas) {
+				String fechaStr = partida.getFechaHora().format(formato);
+				String datos = String.format("%s;%s;%d;%b;%s%n", 
+						partida.getUsuario().getNickname(),
+						partida.getDificultad().getNivel(),
+						partida.getTiempoSegundos(),
+						partida.isVictoria(),
+						fechaStr
+						);
+				writer.write(datos);
+			}
+			System.out.println("CSV actualizado: se han guardado " + partidas.size() + " partidas.");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
 }

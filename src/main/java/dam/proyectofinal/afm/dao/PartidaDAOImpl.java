@@ -126,5 +126,17 @@ public class PartidaDAOImpl implements PartidaDAO{
 				.sorted((v1, v2) -> Integer.compare(v2.getTiempoTotal(), v1.getTiempoTotal()))
 				.collect(Collectors.toList());
 	}
+	
+	@Override
+	public void eliminarPartidasPorUsuario(String nickname) {
+		// Se borra la lista en memoria
+		historialPartidas.removeIf(p -> p.getUsuario().getNickname().equalsIgnoreCase(nickname));
+		
+		// Se guarda la lista limpia
+		CSVManager.guardarPartidas(historialPartidas);
+		
+		System.out.println("DEBUG: Se ha limpiado el historial del usuario: " + nickname);
+		
+	}
 
 }

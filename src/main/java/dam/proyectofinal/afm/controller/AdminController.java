@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Observable;
 import java.util.Optional;
 
+import dam.proyectofinal.afm.dao.PartidaDAO;
+import dam.proyectofinal.afm.dao.PartidaDAOImpl;
 import dam.proyectofinal.afm.dao.UsuarioDAO;
 import dam.proyectofinal.afm.dao.UsuarioDAOImpl;
 import dam.proyectofinal.afm.model.Usuario;
@@ -42,6 +44,7 @@ public class AdminController {
     @FXML private Label lblTotalUsuarios;
     
     private UsuarioDAO  usuarioDAO = new UsuarioDAOImpl();
+    private PartidaDAO partidaDAO = new PartidaDAOImpl();
     
     // Lista maestra con todos los usuarios
     private ObservableList<Usuario> listaMaestra = FXCollections.observableArrayList();
@@ -165,6 +168,11 @@ public class AdminController {
 			Optional<ButtonType> resultado = confirmacion.showAndWait();
 			if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
 				// Si el usuario pulsa aceptar
+				
+				// Primero se borra su historial de partidas
+				partidaDAO.eliminarPartidasPorUsuario(seleccionado.getNickname());
+				
+				
 				usuarioDAO.eliminar(seleccionado.getNickname());
 				cargarUsuarios(); // refrescar la tabla
 				// Se actualiza el Label con el nuevo total de usuarios

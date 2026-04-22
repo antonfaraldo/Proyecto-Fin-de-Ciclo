@@ -63,7 +63,7 @@ public class EmailService {
 	public void enviarCorreoActivacion(String destinatario, String codigo) {
 		String asunto = "Activa tu cuenta en Mine Manager";
 		String cuerpo = "¡Hola! Gracias por registrarte.\n\n" + 
-						"Tu código dr activación es: " + codigo + "\n" + 
+						"Tu código de activación es: " + codigo + "\n" + 
 						"Este código expirará en 15 minutos";
 		enviarCorreo(destinatario, asunto, cuerpo);
 	}

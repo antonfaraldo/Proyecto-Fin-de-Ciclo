@@ -18,5 +18,7 @@ public interface PartidaDAO {
 	
 	// Obtener las mejores puntuaciones 
 	List<Partida> obtenerRankingTop(Nivel nivel, int limite);
+	
+	void eliminarPartidasPorUsuario(String nickname);
 
 }

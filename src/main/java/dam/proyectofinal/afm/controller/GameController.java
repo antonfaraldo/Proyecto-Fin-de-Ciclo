@@ -47,6 +47,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -95,11 +96,16 @@ public class GameController {
 		// Limpiamos el grid de la partida de antes
 				gridTablero.getChildren().clear();
 				
+				int t = (columnas > 20 || filas > 15) ? 24 : 30;
+				
 				// Se generan los botones
 				for (int f = 0; f < filas; f++) {
 					for (int c = 0; c < columnas; c++) {
 						Button btn = new Button();
-						btn.setPrefSize(30,  30);
+						
+						btn.setMinSize(t, t);
+			            btn.setMaxSize(t, t);
+			            btn.setPrefSize(t, t);
 						
 						GridPane.setRowIndex(btn, f);
 						GridPane.setColumnIndex(btn, c);
@@ -847,9 +853,11 @@ public class GameController {
 		btn.setGraphic(null);
 	    btn.setText("");
 	    // Se fuerza el tamaño del boton para que no se mueva nunca 
-	    btn.setMinSize(30, 30);
-	    btn.setMaxSize(30, 30);
-	    btn.setPrefSize(30, 30);
+	  //  btn.setMinSize(30, 30);
+	    // btn.setMaxSize(30, 30);
+	    // btn.setPrefSize(30, 30);
+	    
+	    double tamIcono = btn.getPrefWidth() * 0.8;
 	    
 	 // Se elimina el espacio interno (padding) que empuja la imagen
 	    btn.setPadding(Insets.EMPTY);
@@ -857,6 +865,7 @@ public class GameController {
 	    if (casilla.isRevelada()) {
 	        if (casilla.isEsMina()) {
 	            btn.setText("💣");
+	            btn.setFont(new Font(tamIcono * 0.6));
 	           
 	            // Se comprara por cordenadas
 	            Integer fBoton = GridPane.getRowIndex(btn);

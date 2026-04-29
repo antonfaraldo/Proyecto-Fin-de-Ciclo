@@ -66,7 +66,7 @@ public class MenuController {
 	@FXML
 	private void handleAbrirGuiaWeb() {
 		// URL provisional
-		String url = "https://github.com/antonfaraldo/proyecto-fin-de-ciclo"; 
+		String url = "https://antonfaraldo.github.io/Proyecto-Fin-de-Ciclo/"; 
 		
 		// Abrir el navegador predeterminado del sistema
 		if (AppShell.getInstance().getHostServices() != null) {

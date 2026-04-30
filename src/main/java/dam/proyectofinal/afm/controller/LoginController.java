@@ -45,6 +45,9 @@ public class LoginController {
     
     @FXML private VBox paneVerificarCodigo;
     @FXML private TextField txtCodigoVerificacion;
+    
+    @FXML private VBox paneRecuperarPassword;
+    @FXML private TextField txtEmailRecuperacion;
 	
 	private boolean isPasswordVisible = false;
 	private boolean isRegisterPasswordVisible = false;
@@ -343,32 +346,42 @@ public class LoginController {
 	
 	@FXML
 	private void handleRecuperarPassword() {
-		// Se pide el email para buscar el usuario
-		TextInputDialog emailDialog = new TextInputDialog();
-		emailDialog.setTitle("Recuperar Contraseña");
-		emailDialog.setHeaderText("Restablecer acceso");
-		emailDialog.setContentText("Introduce tu email:");
-		
-		emailDialog.showAndWait().ifPresent(email -> {
-			Usuario u = usuarioDAO.buscarPorEmail(email.trim());
-			if (u != null) {
-				// Se genera un nuevo token 
-				String token = String.format("%06d", new Random().nextInt(999999));
-				u.setCodigoActivacion(token);
-				u.setFechaExpiracionCodigo(LocalDateTime.now().plusMinutes(15));
-				
-				this.usuarioPendiente = u;
-				new EmailService().enviarCorreoRecuperacion(email, token);
-				
-				// Se muestra el panel para que introduzca el código 
-				paneVerificarCodigo.setVisible(true);
-				paneVerificarCodigo.setManaged(true);
-				feedbackLabel.setText("Código de recuperación enviado al correo.");
-				feedbackLabel.setStyle("-fx-text-fill: blue;");
-			} else {
-				feedbackLabel.setText("El email no está registrado.");
-				feedbackLabel.setStyle("-fx-text-fill: red;");
-			}
-		});
+		feedbackLabel.setText("");
+		paneRecuperarPassword.setVisible(true);
+		paneRecuperarPassword.setManaged(true);
+	}
+	
+	@FXML 
+	private void handleEnviarCodigoRecuperacion() {
+		String email = txtEmailRecuperacion.getText().trim();
+		Usuario u = usuarioDAO.buscarPorEmail(email);
+		if (u != null) {
+			// Se genera un nuevo token
+			String token = String.format("%06d", new Random().nextInt(999999));
+			u.setCodigoActivacion(token);
+			u.setFechaExpiracionCodigo(LocalDateTime.now().plusMinutes(15));
+			
+			this.usuarioPendiente = u;
+			new EmailService().enviarCorreoRecuperacion(email, token);
+			
+			// Se oculta el panel y se muestra el panel de introducir código
+			paneRecuperarPassword.setVisible(false);
+			paneRecuperarPassword.setManaged(false);
+			paneVerificarCodigo.setVisible(true);
+			paneVerificarCodigo.setManaged(true);
+			
+			feedbackLabel.setText("Código de recuperación enviado al correo.");
+            feedbackLabel.setStyle("-fx-text-fill: blue;");
+		} else {
+			feedbackLabel.setText("El email no está registrado.");
+            feedbackLabel.setStyle("-fx-text-fill: red;");
+		}
+	}
+	
+	@FXML
+	private void handleCancelarRecuperacion() {
+		paneRecuperarPassword.setVisible(false);
+		paneRecuperarPassword.setManaged(false);
+		txtEmailRecuperacion.clear();
 	}
 }

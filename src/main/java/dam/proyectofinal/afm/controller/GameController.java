@@ -85,6 +85,7 @@ public class GameController {
 	private final Image imagenError = new Image(getClass().getResourceAsStream("/images/X.png"));
 	private int filaMinaCulpable = -1;
 	private int colMinaCulpable = -1;
+	@FXML private VBox paneConfirmacionAbandono;
 	
 	public void inicializarJuego(Tablero tablero) {
 		this.tablero = tablero;
@@ -767,15 +768,19 @@ public class GameController {
 	@FXML
 	private void volverAlMenu() {
 		if (!juegoTerminado && juegoIniciado) {
-			Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "¿Seguro que quieres abandonar la partida?");
-			if (confirm.showAndWait().get() != ButtonType.OK) return;
+			// Se activa el panel visual
+			gridTablero.setDisable(true); // 
+	        paneConfirmacionAbandono.setVisible(true);
+	        paneConfirmacionAbandono.setManaged(true);
+	        
+	        if (tablero.getDificultad().getNivel() == Nivel.CONTRARRELOJ) {
+	        	if (animationTimer != null) animationTimer.stop();
+	        } else {
+	        	if (cronometro != null) cronometro.pause();
+	        }
+		} else {
+			ejecutarSalidaDefinitiva();
 		}
-		// Obtener la ventana actual y quitando el maximizado de la dificultad dificil
-		Stage stage = (Stage) gridTablero.getScene().getWindow();
-		stage.setMaximized(false);
-		
-	    AppShell.getInstance().loadView(View.MENU);
-	    AppShell.getInstance().ajustarVentana();
 	}
 
 	public void prepararPartidaPersonalizada(int filas, int columnas, int minas) {
@@ -1034,4 +1039,34 @@ public class GameController {
 	private void cerrarAvisoResolucion() {
 		paneAvisoResolucion.setVisible(false);
 	}
+	
+	private void ejecutarSalidaDefinitiva() {
+		// Obtener la ventana actual y quitando el maximizado de la dificultad dificil
+				Stage stage = (Stage) gridTablero.getScene().getWindow();
+				stage.setMaximized(false);
+				
+			    AppShell.getInstance().loadView(View.MENU);
+			    AppShell.getInstance().ajustarVentana();
+	}
+	
+	@FXML 
+	private void handleCancelarAbandono() {
+		// SE oculta el panel y se rehabilita el tablero
+		paneConfirmacionAbandono.setVisible(false);
+		paneConfirmacionAbandono.setManaged(false);
+		gridTablero.setDisable(false);
+		
+		// Se reaunuda el cronometro segun el nivel
+		if (tablero.getDificultad().getNivel() == Nivel.CONTRARRELOJ) {
+			if (animationTimer != null) animationTimer.start();
+		} else {
+			if (cronometro != null) cronometro.play();
+		}
+	}
+	
+	@FXML
+	private void handleConfirmarSalir() {
+		ejecutarSalidaDefinitiva();
+	}
+	
 }

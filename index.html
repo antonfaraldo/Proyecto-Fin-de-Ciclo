@@ -37,7 +37,6 @@
         .controles li:last-child { border: none; }
         .controles li strong { color: var(--secondary); display: block; margin-bottom: 5px; }
         
-        /* Estilos específicos para Logros */
         .logros-container { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 20px; }
         .logro-item { background: #fff; padding: 12px 15px; border-radius: 6px; border: 1px solid #eee; display: flex; align-items: center; gap: 15px; transition: all 0.3s; }
         .logro-item:hover { border-color: var(--secondary); background: #fcfcfc; }
@@ -46,6 +45,7 @@
         .logro-info span { font-size: 0.85em; color: #636e72; }
 
         .warning { background: #fff3cd; border-left: 5px solid #ffca28; padding: 15px; margin: 20px 0; border-radius: 4px; font-size: 0.95em; }
+        .danger-box { background: #ffebee; border-left: 5px solid var(--accent); padding: 10px; margin-top: 10px; border-radius: 4px; font-size: 0.9em; }
         .info-box { background: #e1f5fe; border-left: 5px solid var(--secondary); padding: 15px; margin: 20px 0; border-radius: 4px; }
         
         .badge { background: var(--secondary); color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.75em; vertical-align: middle; }
@@ -79,62 +79,62 @@
     
     <p>Si ves un "1", significa que entre las casillas vecinas solo hay una bomba. Usa tu ingenio para deducir cuál es y márcala con una bandera 🚩 con el botón derecho. Una vez marcadas todas las bombas de un número, puedes clicar con seguridad en el resto de sus vecinas.</p>
 
-    <h2>🎮 Controles y Mecánicas</h2>
+    <h2>🎮 Controles y Mecánicas Avanzadas</h2>
     <ul class="controles">
         <li><strong>Click Izquierdo:</strong> Revela el contenido de una casilla. Si tocas una mina, la partida termina inmediatamente.</li>
-        <li><strong>Click Derecho:</strong> Coloca o retira una bandera 🚩. Sirve para marcar las posiciones donde estás seguro de que hay una mina y evitar clics accidentales.</li>
-        <li><strong>Chording (Doble Click / Combinado):</strong> Es la técnica de los expertos. Si haces clic sobre un número que ya tiene el número correcto de banderas a su alrededor, el sistema revelará automáticamente todas las casillas vacías restantes de su alrededor.</li>
+        <li><strong>Click Derecho:</strong> Coloca o retira una bandera 🚩 para marcar una mina sospechosa.</li>
+        <li>
+            <strong>Chording (Doble Click / Combinado):</strong> 
+            Si haces clic sobre un número que ya tiene el número correcto de banderas a su alrededor, el sistema revelará automáticamente las casillas restantes.
+            <div class="danger-box">
+                <strong>💀 Riesgo de Error:</strong> Si las banderas están <strong>mal colocadas</strong> (aunque el número sea correcto), al hacer chording se revelará la mina real y <strong>perderás la partida al instante</strong>.
+            </div>
+        </li>
+        <li>
+            <strong>Iluminación de Vecindad:</strong>
+            Si mantienes pulsado sobre una casilla numérica y aún no has colocado todas las banderas necesarias, las 8 casillas de alrededor se <strong>iluminarán</strong> temporalmente para ayudarte a identificar el área de influencia del número.
+        </li>
     </ul>
+
 	<h3>⌨️ Atajos de Teclado (Modo Pro)</h3>
-    <p>Para una experiencia más ágil, puedes utilizar las siguientes teclas durante la partida:</p>
     <ul class="controles">
         <li><strong>Tecla [ R ]:</strong> Reiniciar la partida actual al instante.</li>
-        <li><strong>Tecla [ P ]:</strong> Pausar el juego (detiene el cronómetro y oculta el tablero para evitar trampas).</li>
-        <li><strong>Tecla [ ESC ]:</strong> Abandonar la partida y volver al menú principal de selección de nivel.</li>
+        <li><strong>Tecla [ P ]:</strong> Pausar el juego (detiene el cronómetro y oculta el tablero).</li>
+        <li><strong>Tecla [ ESC ]:</strong> Abandonar la partida y volver al menú principal.</li>
     </ul>
 
     <h2>🗺️ Desafíos y Niveles</h2>
     <div class="grid-niveles">
         <div class="nivel-card">
             <h3>Fácil</h3>
-            <p>Tablero de 8x8 con 10 minas.<br>Densidad: ~15% de minas.<br>Ideal para calentar motores.</p>
+            <p>Tablero de 8x8 con 10 minas.<br>Densidad: ~15% de minas.</p>
         </div>
         <div class="nivel-card">
             <h3>Medio</h3>
-            <p>Tablero de 16x16 con 40 minas.<br>El reto clásico para jugadores intermedios.</p>
+            <p>Tablero de 16x16 con 40 minas.<br>El reto clásico para intermedios.</p>
         </div>
         <div class="nivel-card">
             <h3>Difícil</h3>
-            <p>Tablero de 16x30 con 99 minas.<br>Requiere concentración total y gestión de riesgos.</p>
+            <p>Tablero de 16x30 con 99 minas.<br>Requiere concentración total.</p>
         </div>
         <div class="nivel-card especial">
             <h3>⏱ Contrarreloj <span class="badge">NUEVO</span></h3>
-            <p>Aquí no solo luchas contra las minas, sino contra el reloj.</p>
-            <div class="info-box">
-                <strong>Reglas del modo:</strong>
-                <ul>
-                    <li>Empiezas con un contador de <strong>60 segundos</strong>.</li>
-                    <li>Por cada casilla revelada con éxito, sumas <strong>+1 segundo</strong> extra.</li>
-                    <li>Si ejecutas un <em>Chording</em> exitoso, sumas el tiempo proporcional a las casillas abiertas.</li>
-                    <li>Si el tiempo llega a 0, las minas detonarán automáticamente.</li>
-                </ul>
-            </div>
+            <p>Empiezas con 60s. Cada casilla revelada suma +1s. ¡Usa el chording para ganar tiempo!</p>
         </div>
         <div class="nivel-card">
             <h3>Personalizado <span class="badge no-ranking">SIN RANKING</span></h3>
-            <p>Tú tienes el control total. Define filas, columnas y cantidad de minas (hasta un máximo del 50% del tablero).</p>
+            <p>Define filas, columnas y minas a tu gusto.</p>
         </div>
     </div>
 
     <h2>🏆 Competición y Progresión</h2>
-    <p><strong>Mine Manager Pro</strong> incluye un sistema de persistencia de datos desarrollado en Java para registrar tu evolución:</p>
+    <p>Registra tu evolución mediante nuestro sistema de persistencia en Java:</p>
     <ul>
-        <li><strong>Ranking Global:</strong> Compara tus tiempos con la comunidad en los tres niveles estándar e intenta entrar en el Top 10.</li>
-        <li><strong>Estadísticas:</strong> Consulta tu ratio de victorias y tiempo total jugado desde tu perfil personal.</li>
+        <li><strong>Ranking Global:</strong> Intenta entrar en el Top 10 de los niveles estándar.</li>
+        <li><strong>Estadísticas:</strong> Consulta tu ratio de victorias y tiempo total de juego.</li>
     </ul>
 
     <h2>🎖️ Galería de Logros</h2>
-    <p>Supera desafíos específicos para desbloquear medallas en tu perfil. Aquí tienes la lista completa de objetivos:</p>
     
     <h3>⚡ Velocidad y Habilidad</h3>
     <div class="logros-container">
@@ -174,14 +174,6 @@
             <div class="logro-icon">🥇</div>
             <div class="logro-info"><strong>Maestro de Oro</strong><span>Acumula un total de 100 victorias.</span></div>
         </div>
-        <div class="logro-item">
-            <div class="logro-icon">💂</div>
-            <div class="logro-info"><strong>Veterano de Guerra</strong><span>Acumula un total de 200 victorias.</span></div>
-        </div>
-        <div class="logro-item">
-            <div class="logro-icon">🔱</div>
-            <div class="logro-info"><strong>Leyenda de las Minas</strong><span>Acumula un total de 500 victorias.</span></div>
-        </div>
     </div>
 
     <h3>🧩 Desafíos de Élite</h3>
@@ -191,20 +183,8 @@
             <div class="logro-info"><strong>Estratega Preciso</strong><span>Gana sin colocar ni una sola bandera.</span></div>
         </div>
         <div class="logro-item">
-            <div class="logro-icon">📐</div>
-            <div class="logro-info"><strong>Arquitecto</strong><span>Gana una partida en nivel personalizado.</span></div>
-        </div>
-        <div class="logro-item">
-            <div class="logro-icon">🧊</div>
-            <div class="logro-info"><strong>Purista del Medio</strong><span>Gana 3 partidas en MEDIO sin banderas.</span></div>
-        </div>
-        <div class="logro-item">
             <div class="logro-icon">🧠</div>
             <div class="logro-info"><strong>Maestro del Cálculo</strong><span>Gana en DIFÍCIL sin colocar banderas.</span></div>
-        </div>
-        <div class="logro-item">
-            <div class="logro-icon">⌛</div>
-            <div class="logro-info"><strong>Superviviente del Tiempo</strong><span>Gana tu primera partida en Contrarreloj.</span></div>
         </div>
         <div class="logro-item">
             <div class="logro-icon">💀</div>
@@ -217,7 +197,7 @@
     </div>
 
     <div class="warning">
-        <strong>⚠️ Nota de Integridad:</strong> Para mantener la competitividad justa, los récords obtenidos en el modo "Personalizado" no se suben al Ranking Global, aunque sí computan para ciertos logros de veteranía.
+        <strong>⚠️ Nota de Integridad:</strong> Los récords en modo "Personalizado" no se suben al Ranking Global para mantener la competición justa.
     </div>
 
 </div>

@@ -12,6 +12,9 @@
             --success: #27ae60;
             --bg: #f8f9fa;
             --text: #2d3436;
+            --gold: #f1c40f;
+            --silver: #bdc3c7;
+            --bronze: #cd7f32;
         }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--text); background-color: var(--bg); max-width: 950px; margin: auto; padding: 0; }
         header { background: var(--primary); color: white; padding: 40px 20px; text-align: center; border-bottom: 5px solid var(--secondary); }
@@ -21,7 +24,6 @@
         h2 { border-left: 5px solid var(--secondary); padding-left: 15px; color: var(--primary); margin-top: 40px; }
         h3 { color: var(--secondary); margin-bottom: 10px; }
 
-        /* Estilos para la explicación del juego */
         .tutorial-grid { display: flex; gap: 20px; background: #f1f2f6; padding: 20px; border-radius: 8px; align-items: center; margin-bottom: 20px; }
         .num-box { background: #34495e; color: white; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 5px; font-weight: bold; font-size: 1.2em; flex-shrink: 0; }
         
@@ -35,6 +37,14 @@
         .controles li:last-child { border: none; }
         .controles li strong { color: var(--secondary); display: block; margin-bottom: 5px; }
         
+        /* Estilos específicos para Logros */
+        .logros-container { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 20px; }
+        .logro-item { background: #fff; padding: 12px 15px; border-radius: 6px; border: 1px solid #eee; display: flex; align-items: center; gap: 15px; transition: all 0.3s; }
+        .logro-item:hover { border-color: var(--secondary); background: #fcfcfc; }
+        .logro-icon { font-size: 1.5em; width: 40px; text-align: center; }
+        .logro-info strong { display: block; color: var(--primary); font-size: 0.95em; }
+        .logro-info span { font-size: 0.85em; color: #636e72; }
+
         .warning { background: #fff3cd; border-left: 5px solid #ffca28; padding: 15px; margin: 20px 0; border-radius: 4px; font-size: 0.95em; }
         .info-box { background: #e1f5fe; border-left: 5px solid var(--secondary); padding: 15px; margin: 20px 0; border-radius: 4px; }
         
@@ -42,6 +52,10 @@
         .no-ranking { background: var(--accent); }
         
         .footer { text-align: center; padding: 40px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #eee; margin-top: 40px; }
+        
+        @media (max-width: 600px) {
+            .logros-container { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -116,9 +130,91 @@
     <p><strong>Mine Manager Pro</strong> incluye un sistema de persistencia de datos desarrollado en Java para registrar tu evolución:</p>
     <ul>
         <li><strong>Ranking Global:</strong> Compara tus tiempos con la comunidad en los tres niveles estándar e intenta entrar en el Top 10.</li>
-        <li><strong>Sistema de Logros:</strong> Obtén medallas por hitos (ej: ganar sin usar banderas, ganar en tiempo récord o sobrevivir 5 partidas seguidas).</li>
         <li><strong>Estadísticas:</strong> Consulta tu ratio de victorias y tiempo total jugado desde tu perfil personal.</li>
     </ul>
+
+    <h2>🎖️ Galería de Logros</h2>
+    <p>Supera desafíos específicos para desbloquear medallas en tu perfil. Aquí tienes la lista completa de objetivos:</p>
+    
+    <h3>⚡ Velocidad y Habilidad</h3>
+    <div class="logros-container">
+        <div class="logro-item">
+            <div class="logro-icon">⚡</div>
+            <div class="logro-info"><strong>Principiante Veloz</strong><span>Gana en menos de 30s en nivel FÁCIL.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">🍀</div>
+            <div class="logro-info"><strong>Pura Suerte</strong><span>Gana una partida en menos de 5 segundos.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">🎓</div>
+            <div class="logro-info"><strong>Maestro Minero</strong><span>Supera el desafío del nivel DIFÍCIL.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">⚔️</div>
+            <div class="logro-info"><strong>Campo de Minas Superado</strong><span>Gana una partida en nivel MEDIO.</span></div>
+        </div>
+    </div>
+
+    <h3>📈 Carrera y Veteranía</h3>
+    <div class="logros-container">
+        <div class="logro-item">
+            <div class="logro-icon">🔨</div>
+            <div class="logro-info"><strong>Desactivador Novato</strong><span>Acumula un total de 5 victorias.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">⛓️</div>
+            <div class="logro-info"><strong>Novato del Hierro</strong><span>Acumula un total de 10 victorias.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">🥈</div>
+            <div class="logro-info"><strong>Experto de Plata</strong><span>Acumula un total de 50 victorias.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">🥇</div>
+            <div class="logro-info"><strong>Maestro de Oro</strong><span>Acumula un total de 100 victorias.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">💂</div>
+            <div class="logro-info"><strong>Veterano de Guerra</strong><span>Acumula un total de 200 victorias.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">🔱</div>
+            <div class="logro-info"><strong>Leyenda de las Minas</strong><span>Acumula un total de 500 victorias.</span></div>
+        </div>
+    </div>
+
+    <h3>🧩 Desafíos de Élite</h3>
+    <div class="logros-container">
+        <div class="logro-item">
+            <div class="logro-icon">🎯</div>
+            <div class="logro-info"><strong>Estratega Preciso</strong><span>Gana sin colocar ni una sola bandera.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">📐</div>
+            <div class="logro-info"><strong>Arquitecto</strong><span>Gana una partida en nivel personalizado.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">🧊</div>
+            <div class="logro-info"><strong>Purista del Medio</strong><span>Gana 3 partidas en MEDIO sin banderas.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">🧠</div>
+            <div class="logro-info"><strong>Maestro del Cálculo</strong><span>Gana en DIFÍCIL sin colocar banderas.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">⌛</div>
+            <div class="logro-info"><strong>Superviviente del Tiempo</strong><span>Gana tu primera partida en Contrarreloj.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">💀</div>
+            <div class="logro-info"><strong>Leyenda del Abismo</strong><span>Gana 50 partidas en modo DIFÍCIL.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">🌑</div>
+            <div class="logro-info"><strong>Instinto Ciego</strong><span>Gana en Contrarreloj sin banderas.</span></div>
+        </div>
+    </div>
 
     <div class="warning">
         <strong>⚠️ Nota de Integridad:</strong> Para mantener la competitividad justa, los récords obtenidos en el modo "Personalizado" no se suben al Ranking Global, aunque sí computan para ciertos logros de veteranía.

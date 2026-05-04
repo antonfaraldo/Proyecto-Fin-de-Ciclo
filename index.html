@@ -12,9 +12,6 @@
             --success: #27ae60;
             --bg: #f8f9fa;
             --text: #2d3436;
-            --gold: #f1c40f;
-            --silver: #bdc3c7;
-            --bronze: #cd7f32;
         }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--text); background-color: var(--bg); max-width: 950px; margin: auto; padding: 0; }
         header { background: var(--primary); color: white; padding: 40px 20px; text-align: center; border-bottom: 5px solid var(--secondary); }
@@ -37,25 +34,23 @@
         .controles li:last-child { border: none; }
         .controles li strong { color: var(--secondary); display: block; margin-bottom: 5px; }
         
-        .logros-container { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 20px; }
+        .logros-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
         .logro-item { background: #fff; padding: 12px 15px; border-radius: 6px; border: 1px solid #eee; display: flex; align-items: center; gap: 15px; transition: all 0.3s; }
         .logro-item:hover { border-color: var(--secondary); background: #fcfcfc; }
-        .logro-icon { font-size: 1.5em; width: 40px; text-align: center; }
-        .logro-info strong { display: block; color: var(--primary); font-size: 0.95em; }
-        .logro-info span { font-size: 0.85em; color: #636e72; }
+        .logro-icon { font-size: 1.4em; width: 35px; text-align: center; }
+        .logro-info strong { display: block; color: var(--primary); font-size: 0.9em; }
+        .logro-info span { font-size: 0.8em; color: #636e72; }
 
         .warning { background: #fff3cd; border-left: 5px solid #ffca28; padding: 15px; margin: 20px 0; border-radius: 4px; font-size: 0.95em; }
         .danger-box { background: #ffebee; border-left: 5px solid var(--accent); padding: 10px; margin-top: 10px; border-radius: 4px; font-size: 0.9em; }
         .info-box { background: #e1f5fe; border-left: 5px solid var(--secondary); padding: 15px; margin: 20px 0; border-radius: 4px; }
+        .info-box ul { margin: 10px 0 0 0; padding-left: 20px; }
         
         .badge { background: var(--secondary); color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.75em; vertical-align: middle; }
         .no-ranking { background: var(--accent); }
-        
         .footer { text-align: center; padding: 40px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #eee; margin-top: 40px; }
         
-        @media (max-width: 600px) {
-            .logros-container { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 600px) { .logros-container { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -68,7 +63,7 @@
 <div class="container">
     
     <h2>📖 ¿Cómo se juega? Lógica para Principiantes</h2>
-    <p>Mucha gente piensa que el Buscaminas es un juego de azar, pero es un **desafío de pura lógica**. El objetivo es despejar todas las casillas que no contienen minas.</p>
+    <p>El Buscaminas es un **desafío de pura lógica**. El objetivo es despejar todas las casillas que no contienen minas.</p>
     
     <div class="tutorial-grid">
         <div class="num-box">3</div>
@@ -77,49 +72,58 @@
         </div>
     </div>
     
-    <p>Si ves un "1", significa que entre las casillas vecinas solo hay una bomba. Usa tu ingenio para deducir cuál es y márcala con una bandera 🚩 con el botón derecho. Una vez marcadas todas las bombas de un número, puedes clicar con seguridad en el resto de sus vecinas.</p>
+    <p>Si ves un "1", significa que entre las casillas vecinas solo hay una bomba. Usa tu ingenio para deducir cuál es y márcala con una bandera 🚩.</p>
 
     <h2>🎮 Controles y Mecánicas Avanzadas</h2>
     <ul class="controles">
-        <li><strong>Click Izquierdo:</strong> Revela el contenido de una casilla. Si tocas una mina, la partida termina inmediatamente.</li>
-        <li><strong>Click Derecho:</strong> Coloca o retira una bandera 🚩 para marcar una mina sospechosa.</li>
+        <li><strong>Click Izquierdo:</strong> Revela una casilla. Si tocas una mina, la partida termina inmediatamente.</li>
+        <li><strong>Click Derecho:</strong> Coloca o retira una bandera 🚩 para marcar minas sospechosas.</li>
         <li>
             <strong>Chording (Doble Click / Combinado):</strong> 
-            Si haces clic sobre un número que ya tiene el número correcto de banderas a su alrededor, el sistema revelará automáticamente las casillas restantes.
+            Si un número tiene ya el número correcto de banderas, se revelarán automáticamente las casillas restantes.
             <div class="danger-box">
-                <strong>💀 Riesgo de Error:</strong> Si las banderas están <strong>mal colocadas</strong> (aunque el número sea correcto), al hacer chording se revelará la mina real y <strong>perderás la partida al instante</strong>.
+                <strong>💀 Riesgo de Error:</strong> Si las banderas están <strong>mal colocadas</strong>, al hacer chording se revelará la mina real y <strong>perderás la partida al instante</strong>.
             </div>
         </li>
         <li>
             <strong>Iluminación de Vecindad:</strong>
-            Si mantienes pulsado sobre una casilla numérica y aún no has colocado todas las banderas necesarias, las 8 casillas de alrededor se <strong>iluminarán</strong> temporalmente para ayudarte a identificar el área de influencia del número.
+            Al mantener pulsado un número sin haber colocado todas sus banderas, las 8 casillas de alrededor se <strong>iluminarán</strong> para ayudarte a planificar.
         </li>
     </ul>
 
 	<h3>⌨️ Atajos de Teclado (Modo Pro)</h3>
     <ul class="controles">
-        <li><strong>Tecla [ R ]:</strong> Reiniciar la partida actual al instante.</li>
-        <li><strong>Tecla [ P ]:</strong> Pausar el juego (detiene el cronómetro y oculta el tablero).</li>
-        <li><strong>Tecla [ ESC ]:</strong> Abandonar la partida y volver al menú principal.</li>
+        <li><strong>Tecla [ R ]:</strong> Reiniciar partida.</li>
+        <li><strong>Tecla [ P ]:</strong> Pausar el juego (oculta el tablero para evitar trampas).</li>
+        <li><strong>Tecla [ ESC ]:</strong> Volver al menú principal.</li>
     </ul>
 
     <h2>🗺️ Desafíos y Niveles</h2>
     <div class="grid-niveles">
         <div class="nivel-card">
             <h3>Fácil</h3>
-            <p>Tablero de 8x8 con 10 minas.<br>Densidad: ~15% de minas.</p>
+            <p>Tablero de 8x8 con 10 minas.</p>
         </div>
         <div class="nivel-card">
             <h3>Medio</h3>
-            <p>Tablero de 16x16 con 40 minas.<br>El reto clásico para intermedios.</p>
+            <p>Tablero de 16x16 con 40 minas.</p>
         </div>
         <div class="nivel-card">
             <h3>Difícil</h3>
-            <p>Tablero de 16x30 con 99 minas.<br>Requiere concentración total.</p>
+            <p>Tablero de 16x30 con 99 minas.</p>
         </div>
         <div class="nivel-card especial">
             <h3>⏱ Contrarreloj <span class="badge">NUEVO</span></h3>
-            <p>Empiezas con 60s. Cada casilla revelada suma +1s. ¡Usa el chording para ganar tiempo!</p>
+            <p>Aquí no solo luchas contra las minas, sino contra el reloj.</p>
+            <div class="info-box">
+                <strong>Reglas del modo:</strong>
+                <ul>
+                    <li>Empiezas con un contador de <strong>60 segundos</strong>.</li>
+                    <li>Por cada casilla revelada con éxito, sumas <strong>+1 segundo</strong> extra.</li>
+                    <li>Si ejecutas un <em>Chording</em> exitoso, sumas el tiempo proporcional a las casillas abiertas.</li>
+                    <li>Si el tiempo llega a 0, las minas detonarán automáticamente.</li>
+                </ul>
+            </div>
         </div>
         <div class="nivel-card">
             <h3>Personalizado <span class="badge no-ranking">SIN RANKING</span></h3>
@@ -130,13 +134,13 @@
     <h2>🏆 Competición y Progresión</h2>
     <p>Registra tu evolución mediante nuestro sistema de persistencia en Java:</p>
     <ul>
-        <li><strong>Ranking Global:</strong> Intenta entrar en el Top 10 de los niveles estándar.</li>
+        <li><strong>Ranking Global:</strong> Compite por el Top 10 en niveles estándar.</li>
         <li><strong>Estadísticas:</strong> Consulta tu ratio de victorias y tiempo total de juego.</li>
     </ul>
 
-    <h2>🎖️ Galería de Logros</h2>
+    <h2>🎖️ Galería de Logros (17 Objetivos)</h2>
     
-    <h3>⚡ Velocidad y Habilidad</h3>
+    <h3>⚡ Habilidad y Velocidad</h3>
     <div class="logros-container">
         <div class="logro-item">
             <div class="logro-icon">⚡</div>
@@ -154,9 +158,17 @@
             <div class="logro-icon">⚔️</div>
             <div class="logro-info"><strong>Campo de Minas Superado</strong><span>Gana una partida en nivel MEDIO.</span></div>
         </div>
+        <div class="logro-item">
+            <div class="logro-icon">⌛</div>
+            <div class="logro-info"><strong>Superviviente del Tiempo</strong><span>Gana tu primera partida en modo Contrarreloj.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">📐</div>
+            <div class="logro-info"><strong>Arquitecto</strong><span>Gana una partida en un nivel personalizado.</span></div>
+        </div>
     </div>
 
-    <h3>📈 Carrera y Veteranía</h3>
+    <h3>📈 Carrera y Acumulación</h3>
     <div class="logros-container">
         <div class="logro-item">
             <div class="logro-icon">🔨</div>
@@ -174,30 +186,42 @@
             <div class="logro-icon">🥇</div>
             <div class="logro-info"><strong>Maestro de Oro</strong><span>Acumula un total de 100 victorias.</span></div>
         </div>
-    </div>
-
-    <h3>🧩 Desafíos de Élite</h3>
-    <div class="logros-container">
         <div class="logro-item">
-            <div class="logro-icon">🎯</div>
-            <div class="logro-info"><strong>Estratega Preciso</strong><span>Gana sin colocar ni una sola bandera.</span></div>
+            <div class="logro-icon">💂</div>
+            <div class="logro-info"><strong>Veterano de Guerra</strong><span>Acumula un total de 200 victorias.</span></div>
         </div>
         <div class="logro-item">
-            <div class="logro-icon">🧠</div>
-            <div class="logro-info"><strong>Maestro del Cálculo</strong><span>Gana en DIFÍCIL sin colocar banderas.</span></div>
+            <div class="logro-icon">🔱</div>
+            <div class="logro-info"><strong>Leyenda de las Minas</strong><span>Acumula un total de 500 victorias.</span></div>
         </div>
         <div class="logro-item">
             <div class="logro-icon">💀</div>
             <div class="logro-info"><strong>Leyenda del Abismo</strong><span>Gana 50 partidas en modo DIFÍCIL.</span></div>
         </div>
+    </div>
+
+    <h3>🧩 Desafíos de Estrategia (Sin Banderas)</h3>
+    <div class="logros-container">
+        <div class="logro-item">
+            <div class="logro-icon">🎯</div>
+            <div class="logro-info"><strong>Estratega Preciso</strong><span>Gana una partida sin colocar ni una sola bandera.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">🧊</div>
+            <div class="logro-info"><strong>Purista del Medio</strong><span>Gana 3 partidas en MEDIO sin usar banderas.</span></div>
+        </div>
+        <div class="logro-item">
+            <div class="logro-icon">🧠</div>
+            <div class="logro-info"><strong>Maestro del Cálculo</strong><span>Gana en nivel DIFÍCIL sin colocar ninguna bandera.</span></div>
+        </div>
         <div class="logro-item">
             <div class="logro-icon">🌑</div>
-            <div class="logro-info"><strong>Instinto Ciego</strong><span>Gana en Contrarreloj sin banderas.</span></div>
+            <div class="logro-info"><strong>Instinto Ciego</strong><span>Gana en modo Contrarreloj sin banderas.</span></div>
         </div>
     </div>
 
     <div class="warning">
-        <strong>⚠️ Nota de Integridad:</strong> Los récords en modo "Personalizado" no se suben al Ranking Global para mantener la competición justa.
+        <strong>⚠️ Nota de Integridad:</strong> Los récords en modo "Personalizado" no se suben al Ranking Global.
     </div>
 
 </div>

@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS usuarios_logros (
 -- INSERCIÓN DE DATOS INICIALES
 -- ==========================================================
 
--- Inserción del Admin Maestro (Password: 1234)
+-- Inserción del Admin Maestro
 INSERT INTO usuarios (nickname, email, password, fecha_registro, activo, rol) 
 VALUES ('admin', 'anton.estudios.11@gmail.com', '$2a$10$mRgnPdSshQPQR6ks06DNiO0.z.t0uF8kOsnS5E7pTf.WnSsh6q.6G', CURDATE(), true, 'ADMIN');
 

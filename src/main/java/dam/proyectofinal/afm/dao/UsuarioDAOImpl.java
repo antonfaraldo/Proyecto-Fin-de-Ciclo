@@ -17,7 +17,7 @@ public class UsuarioDAOImpl  implements UsuarioDAO{
 	public UsuarioDAOImpl() {
 		if (usuariosMemoria.isEmpty()) {
 			Usuario adminMaestro = new Usuario();
-			adminMaestro.setEmail("admin@minemanager.com");
+			adminMaestro.setEmail("anton.estudios.11@gmail.com");
 			adminMaestro.setNickname("admin");
 			adminMaestro.setPassword(BCrypt.hashpw("1234", BCrypt.gensalt()));
 			adminMaestro.setActivo(true); // El admin siempre activo

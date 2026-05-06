@@ -312,6 +312,7 @@ public class GameController {
 		// Ajustamos el tamaño de la ventana según el nivel
 		javafx.application.Platform.runLater(() -> {
 			Stage stage = (Stage) gridTablero.getScene().getWindow();
+			/*
 			if (nivelSeleccionado == Nivel.DIFICIL) {
 				stage.setMaximized(true);
 			} else {
@@ -319,6 +320,7 @@ public class GameController {
 		            AppShell.getInstance().ajustarVentana();
 				}
 			}
+			*/
 			
 			// Atajos del teclado
 			configurarAtajosTeclado();

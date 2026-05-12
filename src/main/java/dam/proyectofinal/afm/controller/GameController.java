@@ -1,6 +1,6 @@
 package dam.proyectofinal.afm.controller;
 
-import dam.proyectofinal.afm.dao.PartidaDAOImpl;   
+import dam.proyectofinal.afm.dao.PartidaDAOImpl;    
 
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
@@ -52,6 +52,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -86,6 +87,27 @@ public class GameController {
 	private int filaMinaCulpable = -1;
 	private int colMinaCulpable = -1;
 	@FXML private VBox paneConfirmacionAbandono;
+	private AudioClip soundClick;
+	private AudioClip soundFlag;
+	private AudioClip soundExplosion;
+	private AudioClip soundVictory;
+	
+	@FXML
+	public void intialize() {
+		try {
+			// Se cargan los archivos
+			soundClick = new AudioClip(getClass().getResource("").toExternalForm());
+			soundFlag = new AudioClip(getClass().getResource("").toExternalForm());
+	        soundExplosion = new AudioClip(getClass().getResource("/sounds/explosion.wav").toExternalForm());  // Este audio tiene creative commons 0
+	        soundVictory = new AudioClip(getClass().getResource("").toExternalForm());
+	        
+	        // Ajuste de volumen
+	        soundClick.setVolume(0.5);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println("Aviso: No se pudieron cargar los sonidos. Verifica que existan en la carpeta /sounds/");
+		}
+	}
 	
 	public void inicializarJuego(Tablero tablero) {
 		this.tablero = tablero;
@@ -182,6 +204,9 @@ public class GameController {
 			casilla.setMarcada(true);
 			banderasColocadas++;
 		}
+		
+		if (soundFlag != null) soundFlag.play();
+		
 		actualizarBotonCasilla(btn, casilla);
 		
 		int totalMinas = tablero.getDificultad().getNumMinas();
@@ -373,6 +398,8 @@ public class GameController {
 			juegoIniciado = true;
 		}
 		
+		if (soundClick != null && !casilla.isEsMina()) soundClick.play();
+		
 		tablero.revelarCasilla(f, c);
 		refrescarTablero();
 		
@@ -413,6 +440,7 @@ public class GameController {
         gridTablero.setDisable(true);
         
         if (victoria) {
+        	if (soundVictory != null) soundVictory.play();
         	lblEstadoFinal.setText("¡VICTORIA!");
             lblEstadoFinal.setStyle("-fx-text-fill: #2ecc71;");
             // Animación confeti
@@ -431,6 +459,7 @@ public class GameController {
             vboxFinal.setVisible(true);
             gridTablero.setOpacity(0.4);
         } else {
+        	if (soundExplosion != null) soundExplosion.play();
             revelarMinasAnimado();
             // Animación 
             TranslateTransition tt = new TranslateTransition(Duration.millis(50), gridTablero);

@@ -91,6 +91,8 @@ public class GameController {
 	private AudioClip soundFlag;
 	private AudioClip soundExplosion;
 	private AudioClip soundVictory;
+	@FXML private Button btnSonido;
+	private boolean sonidoActivado = true; // Por defecto el sonido esta activado
 	
 	@FXML
 	public void intialize() {
@@ -205,7 +207,7 @@ public class GameController {
 			banderasColocadas++;
 		}
 		
-		if (soundFlag != null) soundFlag.play();
+		if (sonidoActivado && soundFlag != null) soundFlag.play();
 		
 		actualizarBotonCasilla(btn, casilla);
 		
@@ -398,7 +400,7 @@ public class GameController {
 			juegoIniciado = true;
 		}
 		
-		if (soundClick != null && !casilla.isEsMina()) soundClick.play();
+		if (sonidoActivado && soundClick != null && !casilla.isEsMina()) soundClick.play();
 		
 		tablero.revelarCasilla(f, c);
 		refrescarTablero();
@@ -440,7 +442,8 @@ public class GameController {
         gridTablero.setDisable(true);
         
         if (victoria) {
-        	if (soundVictory != null) soundVictory.play();
+        	if (sonidoActivado && soundVictory != null) soundVictory.play();
+        	
         	lblEstadoFinal.setText("¡VICTORIA!");
             lblEstadoFinal.setStyle("-fx-text-fill: #2ecc71;");
             // Animación confeti
@@ -459,7 +462,7 @@ public class GameController {
             vboxFinal.setVisible(true);
             gridTablero.setOpacity(0.4);
         } else {
-        	if (soundExplosion != null) soundExplosion.play();
+        	if (sonidoActivado && soundExplosion != null) soundExplosion.play();
             revelarMinasAnimado();
             // Animación 
             TranslateTransition tt = new TranslateTransition(Duration.millis(50), gridTablero);
@@ -1098,6 +1101,17 @@ public class GameController {
 	@FXML
 	private void handleConfirmarSalir() {
 		ejecutarSalidaDefinitiva();
+	}
+	
+	@FXML
+	private void toggleSonido() {
+		sonidoActivado = !sonidoActivado;
+		
+		if (sonidoActivado) {
+			btnSonido.setText("🔊");
+		} else {
+			btnSonido.setText("🔇");
+		}
 	}
 	
 }

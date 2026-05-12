@@ -93,18 +93,22 @@ public class GameController {
 	private AudioClip soundVictory;
 	@FXML private Button btnSonido;
 	private boolean sonidoActivado = true; // Por defecto el sonido esta activado
+	private AudioClip soundAlert;
+	private int ultimoSegundo = -1; // Evita que el sonido se repita
 	
 	@FXML
-	public void intialize() {
+	public void initialize() {
 		try {
 			// Se cargan los archivos
 			soundClick = new AudioClip(getClass().getResource("/sounds/click.wav").toExternalForm()); // creative commons 0
 			soundFlag = new AudioClip(getClass().getResource("/sounds/Flag.wav").toExternalForm()); // creative commons 0
 	        soundExplosion = new AudioClip(getClass().getResource("/sounds/explosion.wav").toExternalForm());  // Este audio tiene creative commons 0
 	        soundVictory = new AudioClip(getClass().getResource("/sounds/victory.mp3").toExternalForm()); 	// Este audio tiene creative commons 0
+	        soundAlert = new AudioClip(getClass().getResource("/sounds/alert.wav").toExternalForm());
 	        
 	        // Ajuste de volumen
 	        soundClick.setVolume(0.5);
+	        soundAlert.setVolume(0.4); // Volumen de la alerta un pco más bajo para que no moleste
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.err.println("Aviso: No se pudieron cargar los sonidos. Verifica que existan en la carpeta /sounds/");
@@ -633,6 +637,7 @@ public class GameController {
 		
 		segundosTranscurridos = 0;
 		lastUpdate = 0;
+		ultimoSegundo = -1;
 		// lblTiempo.setText("Tiempo: 0s");
 		
 		// Se verifica si el nivel es contrarreloj
@@ -648,6 +653,23 @@ public class GameController {
 					if (lastUpdate > 0 && !pausado && !juegoTerminado) {
 						double elapsedSeconds = (now - lastUpdate) / 1_000_000_000.0;
 						tiempoContrarreloj -= elapsedSeconds;
+						
+						//Lógica de sonido de alerta 
+						if (tiempoContrarreloj <= 10.0 && tiempoContrarreloj > 0) {
+							int segundoActual = (int) tiempoContrarreloj;
+							
+							if (segundoActual != ultimoSegundo) {
+								// Solo suena en el segundo 10 y 5 
+								if (sonidoActivado && soundAlert != null) {
+									if (segundoActual == 10 || segundoActual == 5) {
+										// Si queda menos de 5s suena mas agudo
+										soundAlert.setRate(segundoActual <= 5.0 ? 1.5 : 1.0);
+										soundAlert.play();
+									}
+								}
+								ultimoSegundo = segundoActual;
+							}
+						}
 						
 						// Cambio de color cuando se acaba el tiempo
 						if (tiempoContrarreloj <= 5.0) {

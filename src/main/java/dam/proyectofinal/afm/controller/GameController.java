@@ -96,10 +96,10 @@ public class GameController {
 	public void intialize() {
 		try {
 			// Se cargan los archivos
-			soundClick = new AudioClip(getClass().getResource("").toExternalForm());
-			soundFlag = new AudioClip(getClass().getResource("").toExternalForm());
+			soundClick = new AudioClip(getClass().getResource("/sounds/click.wav").toExternalForm()); // creative commons 0
+			soundFlag = new AudioClip(getClass().getResource("/sounds/Flag.wav").toExternalForm()); // creative commons 0
 	        soundExplosion = new AudioClip(getClass().getResource("/sounds/explosion.wav").toExternalForm());  // Este audio tiene creative commons 0
-	        soundVictory = new AudioClip(getClass().getResource("").toExternalForm());
+	        soundVictory = new AudioClip(getClass().getResource("/sounds/victory.mp3").toExternalForm()); 	// Este audio tiene creative commons 0
 	        
 	        // Ajuste de volumen
 	        soundClick.setVolume(0.5);

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class FiltroNombre {
 	private static List<String> palabrasProhibidas = new ArrayList<>();
-	private static final String ruta_json = "/json/filtro.json";
+	private static final String ruta_json = "/json/Filtro.json";
 	
 	// Se cargan las palabras prohibidas
 	public static void cargarPalabrasDesdeJson() {

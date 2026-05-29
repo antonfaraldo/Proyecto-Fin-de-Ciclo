@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<StackPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.proyectofinal.afm.controller.GameController">
+   <children>
+      <BorderPane fx:id="mainContainer" StackPane.alignment="CENTER">
+         <top>
+            <HBox alignment="CENTER" spacing="30.0" BorderPane.alignment="CENTER">
+                <padding><Insets bottom="10.0" left="10.0" right="10.0" top="10.0" /></padding>
+                <children>
+                <Button fx:id="btnSonido" onAction="#toggleSonido" style="-fx-background-color: transparent; -fx-cursor: hand;" text="🔊">
+                	<font>
+                		<Font size="18.0" />
+                	</font>
+                </Button>
+                  <Label fx:id="lblMinas" text="Minas: 000" />
+                  <Button fx:id="btnReiniciar" onAction="#resetJuego" text="Reiniciar" />
+                  <Button fx:id="btnPausa" onAction="#handlePausa" text="⏸ Pausa" />
+                  <Label fx:id="lblTiempo" text="Tiempo: 000" />
+                  <Label fx:id="lblMejorTiempo" text="Récord: --" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" />
+                </children>
+            </HBox>
+         </top>
+         
+         <center>
+            <StackPane BorderPane.alignment="CENTER">
+               <children>
+                  <GridPane fx:id="gridTablero" alignment="CENTER" hgap="1" vgap="1">
+                    <padding>
+                        <Insets bottom="10" left="10" right="10" top="10" />
+                    </padding>
+                  </GridPane>
+
+                  <VBox fx:id="vboxPausa" alignment="CENTER" spacing="20" visible="false" 
+                        style="-fx-background-color: rgba(0,0,0,0.7); -fx-background-radius: 0;">
+                      <children>
+                          <Label style="-fx-text-fill: white; -fx-font-size: 32px; -fx-font-weight: bold;" text="⏸ JUEGO PAUSADO" />
+                          <Label style="-fx-text-fill: #ddd; -fx-font-size: 16px;" text="Partida en pausa" />
+                          <Button onAction="#handlePausa" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-padding: 12 25; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 5;" text="Reanudar Partida" />
+                      </children>
+                  </VBox>
+               </children>
+            </StackPane>
+         </center>
+      
+         <bottom>
+            <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+                <padding><Insets bottom="15" top="5"/></padding>
+                <Button onAction="#volverAlMenu" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20 8 20;" text="🏠 Volver al Menú" />
+            </VBox>
+         </bottom>
+      </BorderPane>
+
+      <VBox fx:id="vboxFinal" alignment="CENTER" maxHeight="250" maxWidth="400" spacing="15.0" visible="false" 
+            style="-fx-background-color: rgba(44, 62, 80, 0.98); -fx-background-radius: 20; -fx-padding: 30;">
+         <children>
+            <Label fx:id="lblEstadoFinal" text="¡VICTORIA!" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="40.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblDetallesFinal" text="Tiempo: 0s | Banderas: 0" textFill="#bdc3c7">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" spacing="20.0">
+               <children>
+                  <Button onAction="#resetJuego" prefHeight="40" prefWidth="130" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;" text="REINTENTAR" />
+                  <Button onAction="#volverAlMenu" prefHeight="40" prefWidth="130" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;" text="MENÚ" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+
+      <VBox fx:id="paneAvisoResolucion" alignment="CENTER" visible="false" style="-fx-background-color: rgba(0,0,0,0.85);">
+          <children>
+              <VBox alignment="CENTER" maxWidth="420.0" spacing="20.0" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 15, 0, 0, 0);">
+                  <children>
+                      <Label text="🖥️ RECOMENDACIÓN" textFill="#2980b9">
+                          <font>
+                              <Font name="System Bold" size="22.0" />
+                          </font>
+                      </Label>
+                      <Label wrapText="true" style="-fx-text-fill: #2c3e50; -fx-font-size: 14px;" text="Has diseñado un tablero de grandes dimensiones. Te recomendamos jugar en pantalla completa para ver todas las casillas correctamente." textAlignment="CENTER" />
+                      <Button onAction="#cerrarAvisoResolucion" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 5;" text="ENTENDIDO" />
+                  </children>
+              </VBox>
+          </children>
+      </VBox>
+
+      <VBox fx:id="paneConfirmacionAbandono" alignment="CENTER" managed="false" spacing="20.0" style="-fx-background-color: rgba(44, 62, 80, 0.95); -fx-background-radius: 15; -fx-border-color: #3498db; -fx-border-width: 2; -fx-border-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 15, 0, 0, 0);" visible="false">
+         <children>
+            <Label text="⚠️ ¿ABANDONAR PARTIDA?" textFill="WHITE">
+               <font><Font name="System Bold" size="20.0" /></font>
+            </Label>
+            <Label alignment="CENTER" maxWidth="300" text="Si sales ahora, perderás todo el progreso de esta partida." textAlignment="CENTER" textFill="#bdc3c7" wrapText="true" />
+            <HBox alignment="CENTER" spacing="20.0">
+               <children>
+                  <Button onAction="#handleCancelarAbandono" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 5;" text="CONTINUAR JUGANDO" />
+                  <Button onAction="#handleConfirmarSalir" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 5;" text="SALIR AL MENÚ" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+         </padding>
+      </VBox>
+   </children>
+</StackPane>

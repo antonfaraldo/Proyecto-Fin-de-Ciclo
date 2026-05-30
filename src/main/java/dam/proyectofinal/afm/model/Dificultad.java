@@ -1,10 +1,24 @@
 package dam.proyectofinal.afm.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "dificultades")
 public class Dificultad {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_dificultad")
 	private int idDificultad;
+    @Column(name = "nivel", nullable = false)
+    @Enumerated(EnumType.STRING)
 	private Nivel nivel;
+    @Column(name = "filas", nullable = false)
 	private int filas;
+    @Column(name = "columnas", nullable = false)
 	private int columnas;
+    @Column(name = "num_minas", nullable = false)
 	private int numMinas;
 	
 	public Dificultad() {}

@@ -1,16 +1,30 @@
 package dam.proyectofinal.afm.model;
 
 import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "partidas")
 public class Partida {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_partida")
 	private int idPartida;
+    @Column(name = "tiempo_segundos", nullable = false)
 	private int tiempoSegundos;
+    @Column(name = "fecha_hora", nullable = false)
 	private LocalDateTime fechaHora;
+    @Column(name = "victoria", nullable = false)
 	private boolean victoria;
+    @Column(name = "num_banderas_usadas")
 	private int numBanderasUsadas;
 	
 	//Relaciones del diagrama
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario", nullable = false)
 	private Usuario usuario;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_dificultad", nullable = false)
 	private Dificultad dificultad;
 
 	public Partida() {}

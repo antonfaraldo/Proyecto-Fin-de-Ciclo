@@ -6,13 +6,15 @@ module MineManagerFX {
     requires javafx.media;
     requires jakarta.mail;
     requires jbcrypt;
+    requires org.hibernate.orm.core;
+    requires jakarta.persistence;
 
     // 1. Abrimos los controladores para que JavaFX pueda inyectar los @FXML
     // Esto es vital para que funcionen tus archivos en /fxml/
+    opens dam.proyectofinal.afm.model to org.hibernate.orm.core, jakarta.persistence;
     opens dam.proyectofinal.afm.controller to javafx.fxml;
 
     // 2. Abrimos los modelos para que las TableView (Ranking) puedan leer los datos
-    opens dam.proyectofinal.afm.model to javafx.base;
     
     
     opens dam.proyectofinal.afm.service to jakarta.mail;

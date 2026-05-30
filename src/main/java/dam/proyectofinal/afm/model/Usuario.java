@@ -1,22 +1,49 @@
 package dam.proyectofinal.afm.model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "usuarios")
 public class Usuario {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_usuario")
 	private int idUsuario;
+    @Column(name = "nickname", nullable = false, unique = true, length = 50)
 	private String nickname;
+    @Column(name = "password", nullable = false, length = 255)
 	private String password;
+    @Column(name = "email", nullable = false, unique = true, length = 100)
 	private String email;
+    @Column(name = "fecha_registro", nullable = false)
 	private LocalDate fechaRegistro;
+    @Column(name = "fecha_ultimo_acceso")
 	private LocalDateTime fechaUltimoAcceso;
+    @Column(name = "activo")
 	private boolean activo = false;
+    @Column(name = "codigo_activacion", length = 100)
 	private String codigoActivacion;
+    @Column(name = "fecha_expiracion_codigo")
 	private LocalDateTime fechaExpiracionCodigo;
+    @Column(name = "token_recuperacion", length = 100)
 	private String tokenRecuperacion;
+    @Column(name = "fecha_expiracion_token")
 	private LocalDateTime fechaExpiracionToken;
+    @Column(name = "rol")
+    private String rol = "USER"; // Nota: Asegúrate de crear el Enum o mapearlo como String si usas texto
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "usuarios_logros",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_logro")
+    )
+    private List<Logro> logros = new ArrayList<>();
 	
 	
 	public String getTokenRecuperacion() {
@@ -68,7 +95,7 @@ public class Usuario {
 	}
 
 	public boolean isEsAdmin() {
-		return "admin".equalsIgnoreCase(this.nickname);
+		return "admin".equalsIgnoreCase(this.nickname) || "ADMIN".equalsIgnoreCase(this.rol);
 	}
 	
 	public int getIdUsuario() {
@@ -83,7 +110,6 @@ public class Usuario {
 	public void setLogros(List<Logro> logros) {
 		this.logros = logros;
 	}
-	private List<Logro> logros = new ArrayList<>();
 	
 	public int getId() {
 		return idUsuario;

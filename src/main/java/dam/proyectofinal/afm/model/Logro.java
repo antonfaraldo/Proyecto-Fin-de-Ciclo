@@ -1,10 +1,20 @@
 package dam.proyectofinal.afm.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "logros")
 public class Logro {
+    @Id
+    @Column(name = "id_logro")
 	private int idLogro;
+    @Column(name = "nombre", nullable = false, unique = true, length = 100)
 	private String nombre;
+    @Column(name = "descripcion", nullable = false, columnDefinition = "TEXT")
 	private String descripcion;
+    @Column(name = "tiempo_objetivo")
 	private int tiempoObjetivo;
+    @Transient
 	private boolean desbloqueado;
 	
 	public Logro() {}

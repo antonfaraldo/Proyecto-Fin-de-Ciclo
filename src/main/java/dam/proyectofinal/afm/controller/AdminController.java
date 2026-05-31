@@ -28,6 +28,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class AdminController {
@@ -44,6 +45,16 @@ public class AdminController {
     @FXML private Button btnCambiarRol;
 
     @FXML private Label lblTotalUsuarios;
+
+    @FXML private VBox panePrincipal;
+    @FXML private VBox paneConfirmacion;
+    @FXML private Label lblConfirmarTitulo;
+    @FXML private Label lblConfirmarMensaje;
+    @FXML private Button btnAceptarConfirmacion;
+
+    @FXML private VBox paneAviso;
+    @FXML private Label lblAvisoTitulo;
+    @FXML private Label lblAvisoMensaje;
 
     private UsuarioDAO  usuarioDAO = new UsuarioDAOImpl();
     private PartidaDAO partidaDAO = new PartidaDAOImpl();
@@ -157,44 +168,70 @@ public class AdminController {
 		tablaUsuarios.setItems(listaMaestra);
 	}
 
+    private void mostrarAvisoPersonalizado(String titulo, String mensaje) {
+        lblAvisoTitulo.setText(titulo);
+        lblAvisoMensaje.setText(mensaje);
+
+        panePrincipal.setOpacity(0.3);
+        panePrincipal.setDisable(true);
+        paneAviso.setVisible(true);
+    }
+    @FXML
+    private void handleCerrarAviso() {
+        paneAviso.setVisible(false);
+        panePrincipal.setOpacity(1.0);
+        panePrincipal.setDisable(false);
+    }
+    private void mostrarConfirmacionPersonalizada(String titulo, String mensaje, Runnable accionConfirmada) {
+        lblConfirmarTitulo.setText(titulo);
+        lblConfirmarMensaje.setText(mensaje);
+
+        btnAceptarConfirmacion.setOnAction(e -> {
+            accionConfirmada.run(); // Ejecuta el borrado o cambio de rol
+            ocultarConfirmacion();
+        });
+
+        panePrincipal.setOpacity(0.3);
+        panePrincipal.setDisable(true);
+        paneConfirmacion.setVisible(true);
+    }
+    @FXML
+    private void handleCancelarConfirmacion() {
+        ocultarConfirmacion();
+    }
+
+    private void ocultarConfirmacion() {
+        paneConfirmacion.setVisible(false);
+        panePrincipal.setOpacity(1.0);
+        panePrincipal.setDisable(false);
+    }
+
 	@FXML
 	private void handleEliminar() {
 		Usuario seleccionado = tablaUsuarios.getSelectionModel().getSelectedItem();
 		if (seleccionado != null) {
-			// El admin no se puede borrar así mismo
-			if (seleccionado.getNickname().equals("admin")) {
-				mostrarAlerta("Error", "No puedes eliminar la cuenta de administrador principal.");
+            // El admin no se puede borrar así mismo
+            if (seleccionado.getNickname().equals("admin")) {
+                mostrarAvisoPersonalizado("🚫 ACCIÓN DENEGADA", "No puedes eliminar la cuenta de administrador principal.");
                 return;
-			}
-			// Alerta de confirmación
-			Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-			confirmacion.setTitle("Confirmar eliminación");
-			confirmacion.setHeaderText("¿Estás seguro de que deseas eliminar al usuario?");
-			confirmacion.setContentText("Está acción borrará a " + seleccionado.getNickname() + " de forma permanente.");
+            }
+            mostrarConfirmacionPersonalizada(
+                "⚠️ ELIMINAR USUARIO",
+                "¿Estás seguro de que deseas eliminar permanentemente a " + seleccionado.getNickname() + "? Esta acción no se puede deshacer.",
+                () -> {
+                    partidaDAO.eliminarPartidasPorUsuario(seleccionado.getNickname());
+                    usuarioDAO.eliminar(seleccionado.getNickname());
+                    cargarUsuarios();
 
-			Optional<ButtonType> resultado = confirmacion.showAndWait();
-			if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
-				// Si el usuario pulsa aceptar
-
-				// Primero se borra su historial de partidas
-				partidaDAO.eliminarPartidasPorUsuario(seleccionado.getNickname());
-
-
-				usuarioDAO.eliminar(seleccionado.getNickname());
-				cargarUsuarios(); // refrescar la tabla
-				// Se actualiza el Label con el nuevo total de usuarios
-				int nuevoTotal = usuarioDAO.obtenerTotalUsuarios();
-				lblTotalUsuarios.setText("Usuarios totales: " + nuevoTotal);
-
-				System.out.println("Usuario eliminado: " + seleccionado.getNickname());
-			} else {
-				// Si pulsa cancelar o cierra la ventana
-				System.out.println("Eliminación cancelada");
-			}
-		} else {
-			mostrarAlerta("Selección necesaria", "Por favor, selecciona un usuario de la tabla para eliminarlo.");
-		}
-		}
+                    int nuevoTotal = usuarioDAO.obtenerTotalUsuarios();
+                    lblTotalUsuarios.setText("Usuarios totales: " + nuevoTotal);
+                    System.out.println("Usuario eliminado: " + seleccionado.getNickname());
+                }
+            );
+        } else {
+            mostrarAvisoPersonalizado("Selección necesaria", "Por favor, selecciona un usuario de la tabla para eliminarlo.");
+        }
+    }
 
 	private void mostrarAlerta(String titulo, String mensaje) {
 		// TODO Auto-generated method stub
@@ -236,26 +273,21 @@ public class AdminController {
             String rolActual = seleccionado.getRol() != null ? seleccionado.getRol().toUpperCase() : "USER";
             String nuevoRol = rolActual.equals("ADMIN") ? "USER" : "ADMIN";
 
-            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmacion.setTitle("Confirmar Modificación de Rol");
-            confirmacion.setHeaderText("¿Deseas cambiar los privilegios de este usuario?");
-            confirmacion.setContentText("El usuario '" + seleccionado.getNickname() +
-                    "' cambiará de rango: [" + rolActual + " ➔ " + nuevoRol + "]");
-
-            Optional<ButtonType> resultado = confirmacion.showAndWait();
-            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
-                boolean exito = usuarioDAO.cambiarRol(seleccionado.getNickname(), nuevoRol);
-
-                if (exito) {
-                    System.out.println("SISTEMA: Rol actualizado en BD para " + seleccionado.getNickname());
-                    cargarUsuarios();
-                    tablaUsuarios.getSelectionModel().select(seleccionado);
-                } else {
-                    mostrarAlerta("Error de Persistencia", "No se pudo actualizar el rol debido a un fallo en el servidor.");
-                }
-            }
+            mostrarConfirmacionPersonalizada(
+                    "⚙️ CAMBIAR ROL DE USUARIO",
+                    "¿Deseas modificar los permisos de " + seleccionado.getNickname() + "? Pasará de rango: [" + rolActual + " ➔ " + nuevoRol + "]",
+                    () -> {
+                        if (usuarioDAO.cambiarRol(seleccionado.getNickname(), nuevoRol)) {
+                            System.out.println("SISTEMA: Rol actualizado en BD para " + seleccionado.getNickname());
+                            cargarUsuarios();
+                            tablaUsuarios.getSelectionModel().select(seleccionado);
+                        } else {
+                            mostrarAvisoPersonalizado("Error de Persistencia", "No se pudo actualizar el rol debido a un fallo en el servidor.");
+                        }
+                    }
+            );
         } else {
-            mostrarAlerta("Selección necesaria", "Por favor, selecciona un usuario de la tabla para cambiar su rol.");
+            mostrarAvisoPersonalizado("Selección necesaria", "Por favor, selecciona un usuario de la tabla para cambiar su rol.");
         }
     }
 }

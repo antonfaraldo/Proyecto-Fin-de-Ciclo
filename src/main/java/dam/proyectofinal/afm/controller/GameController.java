@@ -125,7 +125,7 @@ public class GameController {
 		// Limpiamos el grid de la partida de antes
 				gridTablero.getChildren().clear();
 				
-				int t = (columnas > 20 || filas > 15) ? 24 : 30;
+				int t = (columnas > 20 || filas > 15) ? 20 : 26;
 				
 				// Se generan los botones
 				for (int f = 0; f < filas; f++) {

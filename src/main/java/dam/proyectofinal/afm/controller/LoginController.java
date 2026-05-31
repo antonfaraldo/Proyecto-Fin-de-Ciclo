@@ -3,6 +3,7 @@ package dam.proyectofinal.afm.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Random;
 
 import dam.proyectofinal.afm.dao.UsuarioDAO;
@@ -11,6 +12,7 @@ import dam.proyectofinal.afm.model.Usuario;
 import dam.proyectofinal.afm.service.EmailService;
 import dam.proyectofinal.afm.util.AppShell;
 import dam.proyectofinal.afm.util.FiltroNombre;
+import dam.proyectofinal.afm.util.HibernateUtil;
 import dam.proyectofinal.afm.util.View;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -23,6 +25,8 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class LoginController {
 	@FXML private TextField loginNicknameField;
@@ -127,7 +131,7 @@ public class LoginController {
 				}
 				event.consume();
 				break;
-				
+
 			case ENTER:
 				if (selectedIndex == 0) handleLogin();
 				else handleRegister();
@@ -213,19 +217,32 @@ public class LoginController {
 	
 	@FXML
 	private void handleLogin() {
-		String nickname = loginNicknameField.getText().trim(); // Con el trim se limpian espacios accidentales delante o detrás
-		String password = isPasswordVisible ? loginPasswordVisibleField.getText() : loginPasswordField.getText();
-		
-		Usuario usuario = usuarioDAO.login(nickname, password);
-		
-		if (usuario != null) {
-			AppShell.getInstance().setUsuario(usuario);
-			AppShell.getInstance().loadView(View.MENU);
-			AppShell.getInstance().ajustarVentana();
-		} else {
-			feedbackLabel.setText("Nickname o contraseña incorrectos. O cuenta no activada.");
-			feedbackLabel.setStyle("-fx-text-fill: red;");
-		}
+        try {
+            String nickname = loginNicknameField.getText().trim(); // Con el trim se limpian espacios accidentales delante o detrás
+            String password = isPasswordVisible ? loginPasswordVisibleField.getText() : loginPasswordField.getText();
+
+            Usuario usuario = usuarioDAO.login(nickname, password);
+
+            if (usuario != null) {
+                System.out.println("SISTEMA: Credenciales correctas para: " + usuario.getNickname());
+                System.out.println("SISTEMA: Intentando transferir el control a AppShell para renderizar el Menú...");
+
+                AppShell.getInstance().setUsuario(usuario);
+                AppShell.getInstance().loadView(View.MENU);
+                AppShell.getInstance().ajustarVentana();
+
+                System.out.println("SISTEMA: ¡Transición de pantalla completada con éxito!");
+            } else {
+                feedbackLabel.setText("Nickname o contraseña incorrectos. O cuenta no activada.");
+                feedbackLabel.setStyle("-fx-text-fill: red;");
+            }
+        } catch (Throwable t) {
+            System.err.println("🚨 ERROR CRÍTICO OCURRIDO DURANTE LA TRANSICIÓN DE ESCENAS:");
+            t.printStackTrace();
+
+            feedbackLabel.setText("Error al cargar el Menú Principal. Revisa la consola.");
+            feedbackLabel.setStyle("-fx-text-fill: orange;");
+        }
 	}
 	@FXML
 	private void handleRegister() {
@@ -310,29 +327,45 @@ public class LoginController {
 					pwdDialog.setTitle("Nueva Contraseña");
 					pwdDialog.setHeaderText("Token validado");
 					pwdDialog.setContentText("Introduce tu nueva contraseña");
-					pwdDialog.showAndWait().ifPresent(nuevaPwd -> {
+
+                    Optional<String> resultadoPwd =  pwdDialog.showAndWait();
+					if  (resultadoPwd.isPresent() && !resultadoPwd.get().trim().isEmpty()) {
+                        String nuevaPwd = resultadoPwd.get().trim();
 						if (usuarioDAO.actualizarPassword(usuarioPendiente.getEmail(), nuevaPwd)) {
-							feedbackLabel.setText("Contraseña actualizada con éxito.");
-						}
-					});
+							feedbackLabel.setText("Contraseña actualizada con éxito.Ya puedes iniciar sesion");
+                            feedbackLabel.setStyle("-fx-text-fill: green;");
+						} else {
+                            feedbackLabel.setText("Error interno al actualizar la contraseña.");
+                            feedbackLabel.setStyle("-fx-text-fill: red;");
+                        }
+					}
 				} else {
 					// Lógica de activación normal
 					usuarioPendiente.setActivo(true);
+                    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+                        Transaction tx = session.beginTransaction();
+                        session.merge(usuarioPendiente);
+                        tx.commit();
+                        System.out.println("SISTEMA: Cuenta activada exitosamente en MySQL para: " + usuarioPendiente.getNickname());
+                    } catch (Exception ex) {
+                        System.err.println("ERROR: No se pudo actualizar el estado activo en MySQL: " + ex.getMessage());
+                    }
 					feedbackLabel.setText("¡Cuenta activada con éxito! Ya puedes entrar.");
+                    feedbackLabel.setStyle("-fx-text-fill: green;");
 				}
 				
 				// Se oculta el panel
 				paneVerificarCodigo.setVisible(false);
 				paneVerificarCodigo.setManaged(false);
-				
-				feedbackLabel.setStyle("-fx-text-fill: green;");
-				feedbackLabel.setText("¡Cuenta activada con éxito! Ya puedes entrar.");
-				authTabPane.getSelectionModel().select(0); // Se mueve a la pestaña del login
+                txtCodigoVerificacion.clear();
+                authTabPane.getSelectionModel().select(0); // Se mueve a la pestaña del login
 			} else {
 				feedbackLabel.setText("El código ha expirado (validez 15 min).");
+                feedbackLabel.setStyle("-fx-text-fill: red;");
 			}
 		} else {
 			feedbackLabel.setText("Código de verificación incorrecto.");
+            feedbackLabel.setStyle("-fx-text-fill: red;");
 		}
 	}
 	
@@ -358,15 +391,18 @@ public class LoginController {
 		if (u != null) {
 			// Se genera un nuevo token
 			String token = String.format("%06d", new Random().nextInt(999999));
+            // Se guarda el token en la bd
+            usuarioDAO.guardarTokenRecuperacion(email, token, LocalDateTime.now().plusMinutes(15));
 			u.setCodigoActivacion(token);
 			u.setFechaExpiracionCodigo(LocalDateTime.now().plusMinutes(15));
-			
 			this.usuarioPendiente = u;
 			new EmailService().enviarCorreoRecuperacion(email, token);
 			
 			// Se oculta el panel y se muestra el panel de introducir código
 			paneRecuperarPassword.setVisible(false);
 			paneRecuperarPassword.setManaged(false);
+            txtEmailRecuperacion.clear();
+
 			paneVerificarCodigo.setVisible(true);
 			paneVerificarCodigo.setManaged(true);
 			

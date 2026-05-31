@@ -8,6 +8,7 @@ module MineManagerFX {
     requires jbcrypt;
     requires org.hibernate.orm.core;
     requires jakarta.persistence;
+    requires java.naming;
 
     // 1. Abrimos los controladores para que JavaFX pueda inyectar los @FXML
     // Esto es vital para que funcionen tus archivos en /fxml/

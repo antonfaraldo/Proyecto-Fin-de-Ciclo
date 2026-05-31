@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ import dam.proyectofinal.afm.model.Dificultad;
 import dam.proyectofinal.afm.model.Nivel;
 import dam.proyectofinal.afm.model.Partida;
 import dam.proyectofinal.afm.model.Usuario;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class CSVManager {
 	private static final String ficheroPartidas = "historial.csv";
@@ -48,50 +51,82 @@ public class CSVManager {
 		
 		if (!archivoLeer.exists()) return partidas;
 		
-		try (BufferedReader br = new BufferedReader(new FileReader(archivoLeer))) {
-			String linea;
-			while ((linea = br.readLine()) != null) {
-				if (linea.trim().isEmpty()) continue; // Se saltan lineas vacias
-				
-				String[] datos = linea.split(";");
-				if (datos.length >= 5) {
-					try {
-					Partida p = new Partida();
-					
-					// Se reconstruye el usuario
-					Usuario user = new Usuario();
-					user.setNickname(datos[0]);
-					p.setUsuario(user);
-					
-					// Seguridad en el ENUM
-					try {
-					// Se reconstruye la dificultad 
-						Nivel nivel = Nivel.valueOf(datos[1].toUpperCase().trim());
-						p.setDificultad(new Dificultad(0, nivel, 0, 0, 0));
-					} catch (IllegalArgumentException e) {
-						// TODO: handle exception
-						System.err.println("Nivel no válido en línea: " + linea);
-	                    continue;
-					}
-					
-					p.setTiempoSegundos(Integer.parseInt(datos[2].trim()));
-					p.setVictoria(Boolean.parseBoolean(datos[3].trim()));
-                    p.setFechaHora(LocalDateTime.parse(datos[4].trim(), formato));
-                    
-                    partidas.add(p);
-                    
-					} catch (Exception e) {
-						// TODO: handle exception
-						System.err.println("Error procesando línea: " + linea + " -> " + e.getMessage());
-					}
-				} 
-			}
-		} catch (IOException e) {
-			// TODO: handle exception
-			System.err.println("Error al importar CSV: " + e.getMessage());
-		}
-		
-		return partidas;
+		try (BufferedReader br = new BufferedReader(new FileReader(archivoLeer));
+            Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                if (linea.trim().isEmpty()) continue; // Se saltan lineas vacias
+
+                String[] datos = linea.split(";");
+                if (datos.length >= 5) {
+                    try {
+                        Partida p = new Partida();
+
+                        String nickCSV = datos[0].trim();
+                        Usuario user = session.createQuery("FROM Usuario WHERE lower(nickname) = lower(:n)", Usuario.class)
+                                .setParameter("n", nickCSV).uniqueResult();
+
+                        if (user == null) {
+                            user = new Usuario();
+                            user.setNickname(nickCSV);
+                            user.setEmail(nickCSV.toLowerCase() + "@minemanager.local");
+                            user.setPassword("$2a$10$mRgnPdSshQPQR6ks06DNiO0.z.t0uF8kOsnS5E7pTf.WnSsh6q.6G"); // Clave temporal "1234"
+                            user.setFechaRegistro(LocalDate.now());
+                            user.setActivo(true);
+
+                            Transaction txUser = session.beginTransaction();
+                            session.persist(user);
+                            txUser.commit();
+                        }
+                        p.setUsuario(user);
+
+                        Nivel nivel = Nivel.valueOf(datos[1].toUpperCase().trim());
+
+                        int filas = 8, columnas = 8, minas = 10;
+                        if (nivel == Nivel.MEDIO) {
+                            filas = 16;
+                            columnas = 16;
+                            minas = 40;
+                        } else if (nivel == Nivel.DIFICIL) {
+                            filas = 16;
+                            columnas = 30;
+                            minas = 99;
+                        } else if (nivel == Nivel.CONTRARRELOJ) {
+                            filas = 16;
+                            columnas = 16;
+                            minas = 50;
+                        }
+
+                        Dificultad difBD = session.createQuery(
+                                        "FROM Dificultad WHERE nivel = :niv AND filas = :f AND columnas = :c AND numMinas = :m", Dificultad.class)
+                                .setParameter("niv", nivel)
+                                .setParameter("f", filas)
+                                .setParameter("c", columnas)
+                                .setParameter("m", minas)
+                                .uniqueResult();
+
+                        if (difBD == null) {
+                            difBD = new Dificultad(0, nivel, filas, columnas, minas);
+                            Transaction txDif = session.beginTransaction();
+                            session.persist(difBD);
+                            txDif.commit();
+                        }
+                        p.setDificultad(difBD);
+
+                        p.setTiempoSegundos(Integer.parseInt(datos[2].trim()));
+                        p.setVictoria(Boolean.parseBoolean(datos[3].trim()));
+                        p.setFechaHora(LocalDateTime.parse(datos[4].trim(), formato));
+
+                        partidas.add(p);
+                    } catch (Exception e) {
+                        System.err.println("Aviso: Saltando línea corrupta del CSV -> " + e.getMessage());
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("ERROR: Fallo al leer el archivo CSV: " + e.getMessage());
+        }
+        return partidas;
 	}
 	
 	public static void guardarPartidas(List<Partida> partidas) {

@@ -34,7 +34,7 @@ public class Usuario {
 	private String tokenRecuperacion;
     @Column(name = "fecha_expiracion_token")
 	private LocalDateTime fechaExpiracionToken;
-    @Column(name = "rol")
+    @Column(name = "rol", columnDefinition = "ENUM('ADMIN', 'USER')")
     private String rol = "USER"; // Nota: Asegúrate de crear el Enum o mapearlo como String si usas texto
 
     @ManyToMany(fetch = FetchType.LAZY)

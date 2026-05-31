@@ -184,5 +184,26 @@ public class UsuarioDAOImpl  implements UsuarioDAO{
         }
         return false;
 	}
-	
+
+    @Override
+    public boolean cambiarRol(String nickname, String nuevoRol) {
+        Transaction tx = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
+
+            int filasAfectadas = session.createMutationQuery(
+                            "UPDATE Usuario SET rol = :nuevoRol WHERE lower(nickname) = lower(:nick)")
+                    .setParameter("nuevoRol", nuevoRol.toUpperCase().trim())
+                    .setParameter("nick", nickname)
+                    .executeUpdate();
+
+            tx.commit();
+            return filasAfectadas > 0;
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            System.err.println("ERROR al cambiar el rol del usuario en la base de datos: " + e.getMessage());
+            return false;
+        }
+    }
+
 }

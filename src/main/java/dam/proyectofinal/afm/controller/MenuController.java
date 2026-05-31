@@ -24,7 +24,8 @@ public class MenuController {
 			
 			lblBienvenida.setText("Bienvenido, " + nombre);
 		}
-		boolean esAdmin = AppShell.getInstance().getUsuario().getNickname().equalsIgnoreCase("admin");
+		boolean esAdmin = AppShell.getInstance().getUsuario() != null && AppShell.getInstance().getUsuario().isEsAdmin();
+
 		btnAdmin.setVisible(esAdmin);
 		btnAdmin.setManaged(esAdmin);
 		

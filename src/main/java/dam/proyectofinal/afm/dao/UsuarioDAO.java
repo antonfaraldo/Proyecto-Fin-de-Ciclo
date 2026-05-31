@@ -18,4 +18,5 @@ public interface UsuarioDAO {
 	Usuario buscarPorEmail(String email);
 	boolean guardarTokenRecuperacion(String email, String token, LocalDateTime expiracion);
 	boolean actualizarPassword(String email, String nuevaPassword);
+    boolean cambiarRol(String nickname, String nuevoRol);
 }

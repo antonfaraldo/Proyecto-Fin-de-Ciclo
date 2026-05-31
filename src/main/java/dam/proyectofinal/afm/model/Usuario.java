@@ -141,6 +141,13 @@ public class Usuario {
 	public void setFechaRegistro(LocalDate fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
 	}
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
 	public Usuario(int idUsuario, String nickname, String password, String email, LocalDate fechaRegistro) {
 		super();
 		this.idUsuario = idUsuario;

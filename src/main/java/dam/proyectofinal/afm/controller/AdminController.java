@@ -2,6 +2,7 @@ package dam.proyectofinal.afm.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Observable;
 import java.util.Optional;
 
@@ -36,16 +37,17 @@ public class AdminController {
     @FXML private TableColumn<Usuario, String> colFecha;
     @FXML private TableColumn<Usuario, LocalDateTime> colUltimoAcceso;
     @FXML private TextField txtFiltro;
-    
-    @FXML private Button btnEliminar; 
+
+    @FXML private Button btnEliminar;
     @FXML private Button btnVerStats;
     @FXML private Button btnVolver;
-    
+    @FXML private Button btnCambiarRol;
+
     @FXML private Label lblTotalUsuarios;
-    
+
     private UsuarioDAO  usuarioDAO = new UsuarioDAOImpl();
     private PartidaDAO partidaDAO = new PartidaDAOImpl();
-    
+
     // Lista maestra con todos los usuarios
     private ObservableList<Usuario> listaMaestra = FXCollections.observableArrayList();
 
@@ -56,15 +58,15 @@ public class AdminController {
     	colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
     	colFecha.setCellValueFactory(new PropertyValueFactory<>("fechaRegistro"));
     	colUltimoAcceso.setCellValueFactory(new PropertyValueFactory<>("fechaUltimoAcceso"));
-    	
+
     	// Se formatea la fecha
     	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-    	
+
     	colUltimoAcceso.setCellFactory(column -> new TableCell<Usuario, LocalDateTime>() {
     		@Override
     		protected void updateItem(LocalDateTime item, boolean empty) {
     			super.updateItem(item, empty);
-    			
+
     			// SI la fila esta vacia porque no hay usuario no se pone ningun texto
     			if (empty) {
     				setText(null);
@@ -82,12 +84,12 @@ public class AdminController {
     			}
 			}
     	});
-    	
+
     	configurarTooltips();
-    	
+
     	cargarUsuarios();
     	configurarFiltro();
-    	
+
     	int total = usuarioDAO.obtenerTotalUsuarios();
     	lblTotalUsuarios.setText("Usuarios totales: " + total);
     }
@@ -98,7 +100,7 @@ public class AdminController {
 		Tooltip tipFiltro = new Tooltip("Escribe un nickname para filtrar la lista en tiempo real");
         tipFiltro.setShowDelay(Duration.millis(300));
         txtFiltro.setTooltip(tipFiltro);
-        
+
         // Tooltip para los botones
         if (btnEliminar != null) {
         	Tooltip tipEliminar = new Tooltip("Borra permanentemente al usuario seleccionado");
@@ -113,12 +115,17 @@ public class AdminController {
         if (btnVolver != null) {
             btnVolver.setTooltip(new Tooltip("Regresar al menú principal"));
         }
+        if (btnCambiarRol != null) {
+            Tooltip tipRol = new Tooltip("Alterna los permisos del usuario seleccionado (ADMIN <=> USER)");
+            tipRol.setShowDelay(Duration.millis(300));
+            btnCambiarRol.setTooltip(tipRol);
+        }
 	}
 
 	private void configurarFiltro() {
 		// TODO Auto-generated method stub
 		FilteredList<Usuario> filteredData = new FilteredList<>(listaMaestra, p -> true);
-		
+
 		// Se añade un listener
 		txtFiltro.textProperty().addListener((observable, oldValue, newValue) -> {
 			filteredData.setPredicate(usuario -> {
@@ -127,7 +134,7 @@ public class AdminController {
 					return true;
 				}
 				String lowerCaseFilter = newValue.toLowerCase();
-				
+
 				// Se comprueba si el nickname contiene el texto buscado
 				if (usuario.getNickname().toLowerCase().contains(lowerCaseFilter)) {
 					return true;
@@ -135,10 +142,10 @@ public class AdminController {
 				return false; // No coincide
 			});
 		});
-		
+
 		SortedList<Usuario> sortedData = new SortedList<>(filteredData);
 		sortedData.comparatorProperty().bind(tablaUsuarios.comparatorProperty());
-		// Se actualizan los items de la tabla 
+		// Se actualizan los items de la tabla
 		tablaUsuarios.setItems(sortedData);
 	}
 
@@ -149,7 +156,7 @@ public class AdminController {
 		// Se pasa toda la lista a la tabla
 		tablaUsuarios.setItems(listaMaestra);
 	}
-	
+
 	@FXML
 	private void handleEliminar() {
 		Usuario seleccionado = tablaUsuarios.getSelectionModel().getSelectedItem();
@@ -164,26 +171,26 @@ public class AdminController {
 			confirmacion.setTitle("Confirmar eliminación");
 			confirmacion.setHeaderText("¿Estás seguro de que deseas eliminar al usuario?");
 			confirmacion.setContentText("Está acción borrará a " + seleccionado.getNickname() + " de forma permanente.");
-			
+
 			Optional<ButtonType> resultado = confirmacion.showAndWait();
 			if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
 				// Si el usuario pulsa aceptar
-				
+
 				// Primero se borra su historial de partidas
 				partidaDAO.eliminarPartidasPorUsuario(seleccionado.getNickname());
-				
-				
+
+
 				usuarioDAO.eliminar(seleccionado.getNickname());
 				cargarUsuarios(); // refrescar la tabla
 				// Se actualiza el Label con el nuevo total de usuarios
 				int nuevoTotal = usuarioDAO.obtenerTotalUsuarios();
 				lblTotalUsuarios.setText("Usuarios totales: " + nuevoTotal);
-				
+
 				System.out.println("Usuario eliminado: " + seleccionado.getNickname());
 			} else {
 				// Si pulsa cancelar o cierra la ventana
 				System.out.println("Eliminación cancelada");
-			}	
+			}
 		} else {
 			mostrarAlerta("Selección necesaria", "Por favor, selecciona un usuario de la tabla para eliminarlo.");
 		}
@@ -200,12 +207,12 @@ public class AdminController {
     private void handleVolver() {
         AppShell.getInstance().loadView(View.MENU);
     }
-	
+
 	@FXML
 	private void handleVerEstadisticasUsuario() {
 		// Se obtiene el usuario seleccionado
 		Usuario seleccionado = tablaUsuarios.getSelectionModel().getSelectedItem();
-		
+
 		if (seleccionado != null) {
 			// Se carga la vista
 			EstadisticasController controller = (EstadisticasController) AppShell.getInstance().loadView(View.ESTADISTICAS);
@@ -216,4 +223,39 @@ public class AdminController {
 			mostrarAlerta("Selección necesario", "Por favor, selecciona un usuario de la tabla para ver sus estadísticas");
 		}
 	}
+    @FXML
+    private void handleCambiarRol() {
+        Usuario seleccionado = tablaUsuarios.getSelectionModel().getSelectedItem();
+
+        if (seleccionado != null) {
+            // Seguridad, el admin principal no puede ser cambiado a user
+            if (seleccionado.getNickname().equals("admin")) {
+                mostrarAlerta("Acción denegada", "No es posible alterar el rol de la cuenta de administrador raíz.");
+                return;
+            }
+            String rolActual = seleccionado.getRol() != null ? seleccionado.getRol().toUpperCase() : "USER";
+            String nuevoRol = rolActual.equals("ADMIN") ? "USER" : "ADMIN";
+
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle("Confirmar Modificación de Rol");
+            confirmacion.setHeaderText("¿Deseas cambiar los privilegios de este usuario?");
+            confirmacion.setContentText("El usuario '" + seleccionado.getNickname() +
+                    "' cambiará de rango: [" + rolActual + " ➔ " + nuevoRol + "]");
+
+            Optional<ButtonType> resultado = confirmacion.showAndWait();
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                boolean exito = usuarioDAO.cambiarRol(seleccionado.getNickname(), nuevoRol);
+
+                if (exito) {
+                    System.out.println("SISTEMA: Rol actualizado en BD para " + seleccionado.getNickname());
+                    cargarUsuarios();
+                    tablaUsuarios.getSelectionModel().select(seleccionado);
+                } else {
+                    mostrarAlerta("Error de Persistencia", "No se pudo actualizar el rol debido a un fallo en el servidor.");
+                }
+            }
+        } else {
+            mostrarAlerta("Selección necesaria", "Por favor, selecciona un usuario de la tabla para cambiar su rol.");
+        }
+    }
 }
